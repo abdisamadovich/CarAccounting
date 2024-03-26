@@ -3,11 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+	<RootNamespace>MyCar</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MyCar.Core\MyCar.Core.csproj" />
-    <ProjectReference Include="..\MyCar.Repository\MyCar.Repository.csproj" />
-  </ItemGroup>
 
 </Project>

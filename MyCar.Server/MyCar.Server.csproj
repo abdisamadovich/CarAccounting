@@ -25,10 +25,7 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\MyCar.DataAccess\MyCar.DataAccess.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\MyCar.Service\MyCar.Service.csproj" />
   </ItemGroup>
 
 </Project>
