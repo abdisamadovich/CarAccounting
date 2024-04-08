@@ -1,0 +1,80 @@
+<div>
+	<div style="display: flex; justify-content: space-between">
+		<button type="button" (click)="showModalCarCreate()" class="btn btn-outline-info">+</button>
+		<button type="button" class="btn btn-outline-info">Settings</button>
+	</div>
+
+	<div>
+		<div id="manufacturers" class="drowdown">
+			<label for="name">Vehicles: </label>
+			<select [(ngModel)]="id" name="vehicle" (change)="vehicles" class="form=control">
+				<option [value] = "vehicle.id" *ngFor="let vehicle of vehicles">
+					{{vehicle.name}}
+				</option>
+			</select>
+		</div>
+	</div>
+
+	<div id="vehicle" *ngIf="modalCarCreate" class="modal" tabindex="-1" style="display: block" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="myModalLabel">Create Car</h5>
+					<button type="button" (click)="hideModalCarCreate()" class="btn-close" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="name">Name:</label>
+							<input type="text" [(ngModel)] = "name" class="form-control" id="carName" placeholder="Name" name="carName"
+								required="carName" />
+						</div>
+	
+						<div id="manufacturers" class="drowdown">
+							<label for="name">Manufacturers: </label>
+							<select [(ngModel)]="manufacturerId" name="manufacturer" (change)="manufacturers" class="form=control">
+								<option [value] = "manufacturer.id" *ngFor="let manufacturer of manufacturers">
+									{{manufacturer.name}}
+								</option>
+							</select>
+						</div>
+						
+						<div class="form-group">
+							<label for="model">Model</label>
+							<input type="text" [(ngModel)] = "model" class="form-control" placeholder="Model" name="name"
+								required="modelName" />
+						</div>
+	
+						<div class="drowdown form-group">
+							<label for="name">FeulTypes:</label>
+							<select [(ngModel)] = "fuelTypeId" name="feulType" (change)="fuelTypes" class="form=control">
+								<option [value] = "feulType.id" *ngFor="let feulType of fuelTypes">
+									{{feulType.name}}
+								</option>	
+							</select>
+						</div>
+	
+						<div class="form-group">
+							<label for="model">Fuel capacity:</label>
+							<input type="text" [(ngModel)]="fuelCapacity" class="form-control" 
+								name="modelName" required="modelName"/>
+						</div>
+	
+						<div class="form-group">
+							<label for="model">Description:</label>
+							<input type="text" [(ngModel)]="description" class="form-control" placeholder="Notes"
+								name="descriptionName" required="descriptionName" />
+						</div>
+	
+						<button type="button" class="m-1 btn btn-primary" data-dismiss="modal" (click)="hideModalCarCreate()">
+							No
+						</button>
+						<button class="btn btn-success" type="submit" (click)="saveAddChanges()">
+							Yes
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

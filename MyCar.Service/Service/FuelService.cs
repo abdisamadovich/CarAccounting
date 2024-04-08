@@ -3,7 +3,7 @@ using MyCar.DataAccess.Models;
 using MyCar.Repository.Interfaces;
 using MyCar.Repository.Repository;
 using MyCar.Service.Interfaces;
-using MyCar.Service.ViewModels;
+using MyCar.Service.ViewModels.FuelsViewModel;
 
 namespace MyCar.Service.Service;
 

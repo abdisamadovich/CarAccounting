@@ -1,8 +1,8 @@
 ﻿using MyCar.DataAccess.Models;
 using MyCar.Repository.Interfaces;
 using MyCar.Service.Interfaces;
-using MyCar.Service.ViewModels;
 using MyCar.Errors;
+using MyCar.Service.ViewModels.Manufacturers;
 
 namespace MyCar.Service.Service;
 

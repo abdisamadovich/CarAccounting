@@ -1,19 +1,58 @@
-import { HttpClientModule } from '@angular/common/http';
+// Imports
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 
+// Declarations
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './components/home/home.component';
+import { LayoutComponent } from './components/layout/layout.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { VehicleComponent } from './components/vehicle/vehicle.component';
+import { RefuelingComponent } from './components/refueling/refueling.component';
+import { ServiceComponent } from './components/service/service.component';
+import { ExpenceComponent } from './components/expence/expence.component';
+import { HistoryComponent } from './components/history/history.component';
+import { ReportsComponent } from './components/reports/reports.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { SettingComponent } from './components/setting/setting.component';
+import { Interceptor } from './interceptor/interceptor';
+import { FuelTypeApiService } from '@api/service/fuelType/fuelType.api-service';
+import { ManufacturerApiService } from '@api/service/manufacturers/manufacturer.api-service';
+import { VehicleApiService } from '@api/service/vehicles/vehicle.api-service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    LayoutComponent,
+    HeaderComponent,
+    FooterComponent,
+    VehicleComponent,
+    RefuelingComponent,
+    ServiceComponent,
+    ExpenceComponent,
+    HistoryComponent,
+    ReportsComponent,
+    SettingComponent,
   ],
   imports: [
-    BrowserModule, HttpClientModule,
-    AppRoutingModule
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    CommonModule,
+    FormsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: Interceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

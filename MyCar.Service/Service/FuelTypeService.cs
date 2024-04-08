@@ -2,8 +2,8 @@
 using MyCar.Repository.Interfaces;
 using MyCar.Repository.Repository;
 using MyCar.Service.Interfaces;
-using MyCar.Service.ViewModels;
 using MyCar.Errors;
+using MyCar.Service.ViewModels.FuelsTypesViewModel;
 
 namespace MyCar.Service.Service;
 
@@ -24,14 +24,10 @@ public class FuelTypeService : IFuelTypeService
         {
             throw new ParameterInvalidException("Name cannot be empty");
         }
-        if (fuelType.Measure < 0)
-        {
-            throw new ParameterInvalidException("enter a non-negative number");
-        }
+
         var entity = new FuelType
         {
             Name = fuelType.Name,
-            Measure = fuelType.Measure,
         };
 
         _repository.Insert(entity);
@@ -56,7 +52,6 @@ public class FuelTypeService : IFuelTypeService
         { 
             Id = x.Id, 
             Name = x.Name, 
-            Measure = x.Measure 
         }).ToList();
 
         return result;

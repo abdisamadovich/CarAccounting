@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyCar.Service.Interfaces;
-using MyCar.Service.ViewModels;
+using MyCar.Service.ViewModels.FuelsTypesViewModel;
 
 namespace MyCar.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class FuelTypeContoller : ControllerBase
+public class FuelTypeController : ControllerBase
 {
     private readonly IFuelTypeService _service;
-    public FuelTypeContoller(IFuelTypeService fuelTypeService)
+    public FuelTypeController(IFuelTypeService fuelTypeService)
     {
         _service = fuelTypeService;
     }

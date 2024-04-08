@@ -11,6 +11,5 @@ public class FuelTypeMap : IEntityTypeConfiguration<FuelType>
         builder.ToTable("FuelType");
 
         builder.Property(x => x.Name).IsRequired();
-        builder.Property(x => x.Measure).IsRequired();
     }
 }

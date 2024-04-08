@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyCar.DataAccess;
 using MyCar.Repository.Interfaces;
 using MyCar.Repository.Repository;
+using MyCar.Server.Configuration;
 using MyCar.Service.Interfaces;
 using MyCar.Service.Service;
 
@@ -14,6 +15,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.ConfigureCorsPolicy();
 
 // Repository
 builder.Services.AddScoped<IFuelTypeRepository, FuelTypeRepository>();
@@ -54,5 +56,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors("AllowSpecificOrigin");
 app.MapFallbackToFile("/index.html");
 app.Run();

@@ -1,4 +1,4 @@
-﻿using MyCar.Service.ViewModels;
+﻿using MyCar.Service.ViewModels.FuelsViewModel;
 
 namespace MyCar.Service.Interfaces;
 

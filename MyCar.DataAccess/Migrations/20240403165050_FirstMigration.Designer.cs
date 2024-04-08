@@ -12,7 +12,7 @@ using MyCar.DataAccess;
 namespace MyCar.DataAccess.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20240319104540_FirstMigration")]
+    [Migration("20240403165050_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -106,9 +106,6 @@ namespace MyCar.DataAccess.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Measure")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

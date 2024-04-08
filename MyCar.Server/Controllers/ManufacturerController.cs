@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyCar.Service.Interfaces;
-using MyCar.Service.ViewModels;
+using MyCar.Service.ViewModels.Manufacturers;
 
 namespace MyCar.Server.Controllers;
 

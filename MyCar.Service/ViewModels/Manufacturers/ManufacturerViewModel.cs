@@ -1,4 +1,4 @@
-﻿namespace MyCar.Service.ViewModels;
+﻿namespace MyCar.Service.ViewModels.Manufacturers;
 
 public class ManufacturerViewModel
 {

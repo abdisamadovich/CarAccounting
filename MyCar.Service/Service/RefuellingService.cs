@@ -1,6 +1,8 @@
 ﻿using MyCar.DataAccess.Models;
 using MyCar.Repository.Interfaces;
 using MyCar.Service.Interfaces;
+using MyCar.Service.ViewModels.FuelsTypesViewModel;
+using MyCar.Service.ViewModels.FuelsViewModel;
 using MyCar.Service.ViewModels.Refuellings;
 
 namespace MyCar.Service.Service;
@@ -21,7 +23,6 @@ public class RefuellingService : IRefuellingService
             Date = DateTime.Now,
             Odometer = refuelling.Odometer,
             FuelId = refuelling.FuelId,
-            Fuel = refuelling.Fuel,
             Price = refuelling.Price,
             TotalCost = refuelling.TotalCost,
             Quantity = refuelling.Quantity,
@@ -52,6 +53,17 @@ public class RefuellingService : IRefuellingService
             Date = x.Date,
             Odometer = x.Odometer,
             FuelId = x.FuelId,
+            Fuel = new FuelViewModel
+            {
+                FuelType = new FuelTypeViewModel
+                {
+                    Id = x.Fuel.FuelType.Id,
+                    Name = x.Fuel.FuelType.Name
+                },
+                Name = x.Fuel.Name,
+                Id = x.Fuel.Id,
+                FuelTypeId = x.Fuel.FuelTypeId
+            },
             Price = x.Price,
             TotalCost = x.TotalCost,
             Quantity = x.Quantity,

@@ -1,6 +1,6 @@
 ﻿using MyCar.DataAccess.Models;
 
-namespace MyCar.Service.ViewModels;
+namespace MyCar.Service.ViewModels.FuelsViewModel;
 
 public class FuelPostViewModel
 {
