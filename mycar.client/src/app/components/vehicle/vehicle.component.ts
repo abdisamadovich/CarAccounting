@@ -11,7 +11,7 @@ import { VehicleService } from '@@services/services/vehicle/vehicle.service';
 @Component({
   selector: 'app-vehicle',
   templateUrl: './vehicle.component.html',
-  styleUrl: './vehicle.component.css',
+  styleUrl: './vehicle.component.less',
 })
 export class VehicleComponent implements OnInit {
   // Inject

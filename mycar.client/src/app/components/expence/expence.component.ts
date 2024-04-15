@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-expence',
   templateUrl: './expence.component.html',
-  styleUrl: './expence.component.css'
+  styleUrl: './expence.component.less'
 })
 export class ExpenceComponent {
 

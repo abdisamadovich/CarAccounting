@@ -18,11 +18,7 @@ import { HistoryComponent } from './components/history/history.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SettingComponent } from './components/setting/setting.component';
 import { Interceptor } from './interceptor/interceptor';
-import { FuelTypeApiService } from '@api/service/fuelType/fuelType.api-service';
-import { ManufacturerApiService } from '@api/service/manufacturers/manufacturer.api-service';
-import { VehicleApiService } from '@api/service/vehicles/vehicle.api-service';
 
 @NgModule({
   declarations: [
@@ -37,7 +33,6 @@ import { VehicleApiService } from '@api/service/vehicles/vehicle.api-service';
     ExpenceComponent,
     HistoryComponent,
     ReportsComponent,
-    SettingComponent,
   ],
   imports: [
     BrowserModule,

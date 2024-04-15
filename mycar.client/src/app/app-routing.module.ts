@@ -10,57 +10,54 @@ import { ServiceComponent } from './components/service/service.component';
 import { ExpenceComponent } from './components/expence/expence.component';
 import { HistoryComponent } from './components/history/history.component';
 import { ReportsComponent } from './components/reports/reports.component';
-import { SettingComponent } from './components/setting/setting.component';
-const routes: Routes = [{
-  path:"",
-  component:LayoutComponent,
-  children:[
-    {
-      path:"home",
-      component:HomeComponent
-    },
-    {
-      path: "footer",
-      component:FooterComponent
-    },
-    {
-      path:"vehicle",
-      component:VehicleComponent
-    },
-    {
-      path:"refueling",
-      component:RefuelingComponent
-    },
-    {
-      path:"service",
-      component:ServiceComponent
-    },
-    {
-      path:"expence",
-      component:ExpenceComponent
-    },
-    {
-      path:"history",
-      component:HistoryComponent
-    },
-    {
-      path:"reports",
-      component:ReportsComponent
-    },
-    {
-      path:"setting",
-      component:SettingComponent
-    },
-    {
-      path:"",
-      redirectTo:"/history",
-      pathMatch:"full"
-    },
-  ]
-}];
+const routes: Routes = [
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'home',
+        component: HomeComponent,
+      },
+      {
+        path: 'footer',
+        component: FooterComponent,
+      },
+      {
+        path: 'vehicle',
+        component: VehicleComponent,
+      },
+      {
+        path: 'refueling',
+        component: RefuelingComponent,
+      },
+      {
+        path: 'service',
+        component: ServiceComponent,
+      },
+      {
+        path: 'expence',
+        component: ExpenceComponent,
+      },
+      {
+        path: 'history',
+        component: HistoryComponent,
+      },
+      {
+        path: 'reports',
+        component: ReportsComponent,
+      },
+      {
+        path: '',
+        redirectTo: '/history',
+        pathMatch: 'full',
+      },
+    ],
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
