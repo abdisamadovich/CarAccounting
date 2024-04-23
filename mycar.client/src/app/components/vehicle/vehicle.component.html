@@ -1,5 +1,5 @@
 <div>
-	<div style="display: flex; justify-content: space-between">
+	<div>
 		<button type="button" (click)="showModalCarCreate()" class="btn btn-outline-info">+</button>
 		<button type="button" class="btn btn-outline-info">Settings</button>
 	</div>
@@ -15,7 +15,7 @@
 		</div>
 	</div>
 
-	<div id="vehicle" *ngIf="modalCarCreate" class="modal" tabindex="-1" style="display: block" role="dialog">
+	<div id="vehicle" *ngIf="modalCarCreate" class="modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -31,8 +31,8 @@
 						</div>
 	
 						<div id="manufacturers" class="drowdown">
-							<label for="name">Manufacturers: </label>
-							<select [(ngModel)]="manufacturerId" name="manufacturer" (change)="manufacturers" class="form=control">
+							<label for="manufacturer">Manufacturers: </label>
+							<select [(ngModel)]="manufacturerId" name="manufacturer" (change)="manufacturers" class="form-control">
 								<option [value] = "manufacturer.id" *ngFor="let manufacturer of manufacturers">
 									{{manufacturer.name}}
 								</option>
@@ -47,7 +47,7 @@
 	
 						<div class="drowdown form-group">
 							<label for="name">FeulTypes:</label>
-							<select [(ngModel)] = "fuelTypeId" name="feulType" (change)="fuelTypes" class="form=control">
+							<select [(ngModel)] = "fuelTypeId" name="feulType" (change)="fuelTypes" class="form-control">
 								<option [value] = "feulType.id" *ngFor="let feulType of fuelTypes">
 									{{feulType.name}}
 								</option>	

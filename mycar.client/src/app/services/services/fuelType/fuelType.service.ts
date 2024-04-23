@@ -7,7 +7,7 @@ import { FuelTypeGetAll } from '@@services/models/fuelType/fuelTypeGetAll';
 export class FuelTypeService {
   constructor(private fuelType: FuelTypeApiService) {}
 
-  // GetAll Manufacturer
+  // GetAll FuelTypes
   public getFuelTypes(): Observable<FuelTypeGetAll[]> {
     return this.fuelType.getFuelTypes();
   }
