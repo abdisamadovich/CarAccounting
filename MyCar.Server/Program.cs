@@ -34,6 +34,8 @@ builder.Services.AddScoped<IFuelService, FuelService>();
 builder.Services.AddScoped<IManufacturerService, ManufacturerService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IRefuellingService, RefuellingService>();
+builder.Services.AddScoped<IServiceTypeService, ServiceTypeService>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
 
 builder.Services.AddDbContext<MainContext>(options =>
 {

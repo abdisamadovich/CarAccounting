@@ -4,9 +4,8 @@ namespace MyCar.Repository.Interfaces;
 
 public interface IFuelTypeRepository
 {
-    public void Insert(FuelType fuelType);
-    //public void Update(FuelType fuelType);
-    public void Delete(FuelType fuelType);
-    public IQueryable<FuelType> GetAll();
-    public int SaveChanges();
+    void Insert(FuelType fuelType);
+    void Delete(FuelType fuelType);
+    IQueryable<FuelType> GetAll();
+    int SaveChanges();
 }

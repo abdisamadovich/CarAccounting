@@ -4,8 +4,8 @@ namespace MyCar.Repository.Interfaces;
 
 public interface IVehicleRepository
 {
-    public void Insert(Vehicle vehicle);
-    public void Delete(Vehicle vehicle);
-    public IQueryable<Vehicle> GetAll();
-    public int SaveChanges();
+    void Insert(Vehicle vehicle);
+    void Delete(Vehicle vehicle);
+    IQueryable<Vehicle> GetAll();
+    int SaveChanges();
 }

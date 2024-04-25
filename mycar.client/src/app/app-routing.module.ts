@@ -5,11 +5,11 @@ import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { VehicleComponent } from './components/vehicle/vehicle.component';
-import { RefuelingComponent } from '@@components/refueling/refuelingComponent';
 import { ServiceComponent } from './components/service/service.component';
 import { ExpenceComponent } from './components/expence/expence.component';
 import { HistoryComponent } from './components/history/history.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { RefuelingComponent } from '@@components/refueling/refuelingComponent';
 const routes: Routes = [
   {
     path: '',

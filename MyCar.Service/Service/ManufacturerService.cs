@@ -25,6 +25,11 @@ public class ManufacturerService : IManufacturerService
             throw new ParameterInvalidException("Name cannot be empty");
         }
 
+        if (_repository.GetAll().Any(st => st.Name == manufacturer.Name))
+        {
+            throw new ParameterInvalidException("Manufacturer with the same name already exists");
+        }
+
         var entity = new Manufacturer 
         { 
             Name = manufacturer.Name 

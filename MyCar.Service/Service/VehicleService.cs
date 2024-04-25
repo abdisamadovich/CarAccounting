@@ -20,10 +20,12 @@ public class VehicleService : IVehicleService
         {
             throw new ArgumentNullException(nameof(vehicle));
         }
+
         if (string.IsNullOrEmpty(vehicle.Name))
         {
             throw new ParameterInvalidException("Name cannot be empty");
         }
+
         var entity = new Vehicle 
         { 
             Name = vehicle.Name,

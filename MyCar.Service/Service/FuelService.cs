@@ -1,7 +1,6 @@
-﻿using MyCar.Errors;
-using MyCar.DataAccess.Models;
+﻿using MyCar.DataAccess.Models;
+using MyCar.Errors;
 using MyCar.Repository.Interfaces;
-using MyCar.Repository.Repository;
 using MyCar.Service.Interfaces;
 using MyCar.Service.ViewModels.FuelsViewModel;
 
@@ -16,14 +15,21 @@ public class FuelService : IFuelService
     }
     public void CreateNew(FuelPostViewModel fuel)
     {
-        if(fuel == null)
+        if (fuel == null)
         {
             throw new ArgumentNullException(nameof(fuel));
         }
+
         if (string.IsNullOrEmpty(fuel.Name))
         {
             throw new ParameterInvalidException("Name cannot be empty");
         }
+
+        if (_repository.GetAll().Any(st => st.Name == fuel.Name))
+        {
+            throw new ParameterInvalidException("Fuel with the same name already exists");
+        }
+
         var entity = new Fuel
         {
             Name = fuel.Name,

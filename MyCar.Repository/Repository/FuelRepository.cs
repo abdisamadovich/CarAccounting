@@ -13,15 +13,17 @@ public class FuelRepository : IFuelRepository
     {
         MainContext = mainContext;
     }
+
     public void Insert(Fuel fuel)
     {
         var res = MainContext.FuelTypes.FirstOrDefault(x => x.Id == fuel.FuelTypeId);
         if (res == null)
         {
-            throw new EntryNotFoundException(nameof(FuelType));
+            throw new EntryNotFoundException(nameof(fuel.FuelTypeId));
         }
         MainContext.Fuels.Add(fuel);
     }
+
     public void Delete(Fuel fuel)
     {
         if (MainContext.Entry(fuel).State != EntityState.Deleted)
@@ -29,10 +31,12 @@ public class FuelRepository : IFuelRepository
             MainContext.Fuels.Remove(fuel);
         }
     }
+
     public IQueryable<Fuel> GetAll()
     {
         return MainContext.Fuels;
     }
+
     public int SaveChanges()
     {
         return MainContext.SaveChanges();

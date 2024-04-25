@@ -4,9 +4,9 @@ namespace MyCar.Repository.Interfaces;
 
 public interface IRefuellingRepository
 {
-    public void Insert(Refuelling refuelling);
-    public void Delete(Refuelling refuelling);
-    public IQueryable<Refuelling> GetAll();
-    public void Update(Refuelling refuelling);
-    public int SaveChanges();
+    void Insert(Refuelling refuelling);
+    void Delete(Refuelling refuelling);
+    IQueryable<Refuelling> GetAll();
+    void Update(Refuelling refuelling);
+    int SaveChanges();
 }

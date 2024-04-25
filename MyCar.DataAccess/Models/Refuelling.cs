@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace MyCar.DataAccess.Models;
+﻿namespace MyCar.DataAccess.Models;
 
 public class Refuelling
 {
@@ -13,5 +11,5 @@ public class Refuelling
     public int TotalCost { get; set; }
     public int Quantity { get; set; }
     public bool IsFilled { get; set; }
-    public string Station {  get; set; }
+    public string Station { get; set; }
 }

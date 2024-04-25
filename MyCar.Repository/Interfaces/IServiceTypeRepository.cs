@@ -4,8 +4,8 @@ namespace MyCar.Repository.Interfaces;
 
 public interface IServiceTypeRepository
 {
-    public void Insert(ServiceType serviceType);
-    public void Delete(ServiceType serviceType);
-    public IQueryable<ServiceType> GetAll();
-    public int SaveChanges();
+    void Insert(ServiceType serviceType);
+    void Delete(ServiceType serviceType);
+    IQueryable<ServiceType> GetAll();
+    int SaveChanges();
 }

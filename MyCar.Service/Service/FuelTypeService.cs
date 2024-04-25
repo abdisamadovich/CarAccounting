@@ -1,8 +1,7 @@
 ﻿using MyCar.DataAccess.Models;
-using MyCar.Repository.Interfaces;
-using MyCar.Repository.Repository;
-using MyCar.Service.Interfaces;
 using MyCar.Errors;
+using MyCar.Repository.Interfaces;
+using MyCar.Service.Interfaces;
 using MyCar.Service.ViewModels.FuelsTypesViewModel;
 
 namespace MyCar.Service.Service;
@@ -16,13 +15,19 @@ public class FuelTypeService : IFuelTypeService
     }
     public void CreateNew(FuelTypeViewModel fuelType)
     {
-        if(fuelType == null)
+        if (fuelType == null)
         {
             throw new ArgumentNullException(nameof(fuelType));
         }
+
         if (string.IsNullOrEmpty(fuelType.Name))
         {
             throw new ParameterInvalidException("Name cannot be empty");
+        }
+
+        if (_repository.GetAll().Any(st => st.Name == fuelType.Name))
+        {
+            throw new ParameterInvalidException("Fuel type with the same name already exists");
         }
 
         var entity = new FuelType
@@ -38,7 +43,7 @@ public class FuelTypeService : IFuelTypeService
     public void Delete(int id)
     {
         var result = _repository.GetAll().Where(x => x.Id == id).FirstOrDefault();
-        if(result == null)
+        if (result == null)
         {
             throw new ArgumentNullException(nameof(FuelType));
         }
@@ -48,10 +53,10 @@ public class FuelTypeService : IFuelTypeService
 
     public List<FuelTypeViewModel> GetAllFuelType()
     {
-        var result = _repository.GetAll().Select(x => new FuelTypeViewModel 
-        { 
-            Id = x.Id, 
-            Name = x.Name, 
+        var result = _repository.GetAll().Select(x => new FuelTypeViewModel
+        {
+            Id = x.Id,
+            Name = x.Name,
         }).ToList();
 
         return result;

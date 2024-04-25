@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace MyCar.DataAccess.Models;
+﻿namespace MyCar.DataAccess.Models;
 
 public class Expense
 {

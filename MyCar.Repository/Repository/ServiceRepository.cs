@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyCar.DataAccess;
 using MyCar.DataAccess.Models;
+using MyCar.Errors;
 using MyCar.Repository.Interfaces;
 
 namespace MyCar.Repository.Repository;
@@ -27,6 +28,11 @@ public class ServiceRepository : IServiceRepository
 
     public void Insert(Service service)
     {
+        var res = MainContext.ServiceTypes.FirstOrDefault(x => x.Id == service.ServiceTypeId);
+        if (res == null)
+        {
+            throw new EntryNotFoundException(nameof(service.ServiceTypeId));
+        }
         MainContext.Services.Add(service);
     }
 

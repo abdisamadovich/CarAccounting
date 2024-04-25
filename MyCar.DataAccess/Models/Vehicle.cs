@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace MyCar.DataAccess.Models;
+﻿namespace MyCar.DataAccess.Models;
 
 public class Vehicle
 {
@@ -8,7 +6,7 @@ public class Vehicle
     public string Name { get; set; }
     public int ManufacturerId { get; set; }
     public Manufacturer Manufacturer { get; set; }
-    public string Model {  get; set; }
+    public string Model { get; set; }
     public int FuelTypeId { get; set; }
     public FuelType FuelType { get; set; }
     public int FuelCapacity { get; set; }

@@ -1,0 +1,15 @@
+import { ServiceCreate } from '@@services/models/service/serviceCreate';
+import { Injectable } from '@angular/core';
+import { ServiceApiService } from '@api/service/service/service.api-service';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class ServiceService {
+  constructor(private service: ServiceApiService) {}
+
+  public postService(
+    serviceCreate: ServiceCreate
+  ): Observable<ServiceCreate> {
+    return this.service.addService(serviceCreate);
+  }
+}

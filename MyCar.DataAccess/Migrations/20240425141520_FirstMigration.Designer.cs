@@ -12,7 +12,7 @@ using MyCar.DataAccess;
 namespace MyCar.DataAccess.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20240403165050_FirstMigration")]
+    [Migration("20240425141520_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MyCar.DataAccess.Models;
+﻿namespace MyCar.DataAccess.Models;
 
 public class FuelType
 {

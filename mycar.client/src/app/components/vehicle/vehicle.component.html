@@ -5,7 +5,7 @@
 	</div>
 
 	<div>
-		<div id="manufacturers" class="drowdown">
+		<div id="vehicles" class="drowdown">
 			<label for="name">Vehicles: </label>
 			<select [(ngModel)]="id" name="vehicle" (change)="vehicles" class="form=control">
 				<option [value] = "vehicle.id" *ngFor="let vehicle of vehicles">
