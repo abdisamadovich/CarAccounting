@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { FuelTypeGetAllModel } from '@api/models/fuelType/fuelType-get-all.model';
+import { FuelTypeGetAllModel } from '@api/models/fuel-type/fuel-type.get-all.model';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

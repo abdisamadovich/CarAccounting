@@ -1,8 +1,8 @@
-import { ServiceCreate } from '@@services/models/service/serviceCreate';
-import { ServiceTypeCreate } from '@@services/models/serviceType/serviceTypeCreate';
-import { ServiceTypeGetAll } from '@@services/models/serviceType/serviceTypeGetAll';
+import { ServiceCreate } from '@@services/models/service/service-create.view-model';
+import { ServiceTypeCreate } from '@@services/models/service-type/service-type.create.view-model';
+import { ServiceTypeGetAll } from '@@services/models/service-type/service-type.get-all.view-model';
 import { ServiceService } from '@@services/services/service/service.service';
-import { ServiceTypeService } from '@@services/services/serviceType/serviceType.service';
+import { ServiceTypeService } from '@@services/services/service-type/service-type.service';
 import { Component } from '@angular/core';
 
 @Component({

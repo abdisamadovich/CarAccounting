@@ -1,7 +1,7 @@
-import { ServiceTypeCreate } from '@@services/models/serviceType/serviceTypeCreate';
-import { ServiceTypeGetAll } from '@@services/models/serviceType/serviceTypeGetAll';
+import { ServiceTypeCreate } from '@@services/models/service-type/service-type.create.view-model';
+import { ServiceTypeGetAll } from '@@services/models/service-type/service-type.get-all.view-model';
 import { Injectable } from '@angular/core';
-import { ServiceTypeApiService } from '@api/service/serviceType/serviceType.api-service';
+import { ServiceTypeApiService } from '@api/service/service-type/service-type.api-service';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

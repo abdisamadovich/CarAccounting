@@ -1,5 +1,5 @@
-import { FuelGetAll } from '@@services/models/fuel/fuelGetAll';
-import { RefuellingCreate } from '@@services/models/refuelling/refuellingCreate';
+import { FuelGetAll } from '@@services/models/fuel/fuel.get-all.view-model';
+import { RefuellingCreate } from '@@services/models/refuelling/refuelling.create.view-model';
 import { FuelService } from '@@services/services/fuel/fuel.service';
 import { RefuellingService } from '@@services/services/refuelling/refuelling.service';
 import { Component, OnInit } from '@angular/core';

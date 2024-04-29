@@ -1,4 +1,4 @@
-import { RefuellingCreate } from '@@services/models/refuelling/refuellingCreate';
+import { RefuellingCreate } from '@@services/models/refuelling/refuelling.create.view-model';
 import { Injectable } from '@angular/core';
 import { RefuellingApiService } from '@api/service/refuelling/refuelling.api-service';
 import { Observable } from 'rxjs';

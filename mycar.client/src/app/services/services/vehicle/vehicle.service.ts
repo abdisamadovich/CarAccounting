@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { VehicleApiService } from '@api/service/vehicles/vehicle.api-service';
-import { VehicleGetAll } from '@@services/models/vehicle/vehicleGet';
-import { VehicleDelete } from '@@services/models/vehicle/vehicleDelete';
-import { VehicleCreate } from '@@services/models/vehicle/vehicleCreate';
+import { VehicleGetAll } from '@@services/models/vehicle/vehicle.get-all.view-model';
+import { VehicleDelete } from '@@services/models/vehicle/vehicle.delete.view-model';
+import { VehicleCreate } from '@@services/models/vehicle/vehicle.create.view-model';
 
 @Injectable({ providedIn: 'root' })
 export class VehicleService {

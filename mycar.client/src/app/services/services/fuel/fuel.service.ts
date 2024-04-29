@@ -1,4 +1,4 @@
-import { FuelGetAll } from '@@services/models/fuel/fuelGetAll';
+import { FuelGetAll } from '@@services/models/fuel/fuel.get-all.view-model';
 import { Injectable } from '@angular/core';
 import { FuelApiService } from '@api/service/fuel/fuel.api-service';
 import { Observable } from 'rxjs';

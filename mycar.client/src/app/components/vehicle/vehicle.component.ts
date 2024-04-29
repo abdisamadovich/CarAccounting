@@ -1,10 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FuelTypeGetAll } from '@@services/models/fuelType/fuelTypeGetAll';
-import { ManufacturerGetAll } from '@@services/models/manufacturer/manufacturerGetAll';
-import { VehicleCreate } from '@@services/models/vehicle/vehicleCreate';
-import { VehicleDelete } from '@@services/models/vehicle/vehicleDelete';
-import { VehicleGetAll } from '@@services/models/vehicle/vehicleGet';
-import { FuelTypeService } from '@@services/services/fuelType/fuelType.service';
+import { FuelTypeGetAll } from '@@services/models/fuel-type/fuel-type.get-all.view-model';
+import { ManufacturerGetAll } from '@@services/models/manufacturer/manufacturer.get-all.view-model';
+import { VehicleCreate } from '@@services/models/vehicle/vehicle.create.view-model';
+import { VehicleDelete } from '@@services/models/vehicle/vehicle.delete.view-model';
+import { VehicleGetAll } from '@@services/models/vehicle/vehicle.get-all.view-model';
+import { FuelTypeService } from '@@services/services/fuel-type/fuel-type.service';
 import { ManufacturerService } from '@@services/services/manufacturer/manufacturer.service';
 import { VehicleService } from '@@services/services/vehicle/vehicle.service';
 

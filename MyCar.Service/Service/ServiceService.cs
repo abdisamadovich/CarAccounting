@@ -13,10 +13,7 @@ public class ServiceService : IServiceService
     }
     public void CreateNew(ServicePostViewModel service)
     {
-        if (service == null)
-        {
-            throw new ArgumentNullException(nameof(service));
-        }
+        if (service == null) throw new ArgumentNullException(nameof(service));
 
         var entity = new DataAccess.Models.Service
         {

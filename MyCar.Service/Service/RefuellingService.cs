@@ -18,9 +18,10 @@ public class RefuellingService : IRefuellingService
     public void CreateNew(RefuellingPostViewModel refuelling)
     {
         if (refuelling == null) throw new ArgumentNullException(nameof(refuelling));
+
         var entity = new Refuelling()
         {
-            Date = DateTime.Now,
+            Date = refuelling.Date,
             Odometer = refuelling.Odometer,
             FuelId = refuelling.FuelId,
             Price = refuelling.Price,

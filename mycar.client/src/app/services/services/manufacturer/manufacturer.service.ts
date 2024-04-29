@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { ManufacturerApiService } from '@api/service/manufacturers/manufacturer.api-service';
-import { ManufacturerGetAll } from '@@services/models/manufacturer/manufacturerGetAll';
+import { ManufacturerApiService } from '@api/service/manufacturer/manufacturer.api-service';
+import { ManufacturerGetAll } from '@@services/models/manufacturer/manufacturer.get-all.view-model';
 import { Observable, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

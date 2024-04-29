@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
-import { ManufacturerGetAllModel } from '@api/models/manufacturer/manufacturer-get-all.model';
+import { ManufacturerGetAllModel } from '@api/models/manufacturer/manufacturer.get-all.model';
 
 @Injectable({ providedIn: 'root' })
 export class ManufacturerApiService {
