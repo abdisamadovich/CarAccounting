@@ -1,4 +1,3 @@
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MyCar.DataAccess;
 using MyCar.Repository.Interfaces;
@@ -39,9 +38,8 @@ builder.Services.AddScoped<IServiceService, ServiceService>();
 
 builder.Services.AddDbContext<MainContext>(options =>
 {
-    options.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=MyCar;Trusted_Connection=True;TrustServerCertificate=True;");
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ServerDatabase"));
 });
-        
 
 var app = builder.Build();
 
@@ -49,7 +47,7 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -59,5 +57,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.UseCors("AllowSpecificOrigin");
-app.MapFallbackToFile("/index.html");
+app.MapFallbackToFile("index.html");
 app.Run();

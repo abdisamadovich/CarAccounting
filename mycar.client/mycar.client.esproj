@@ -5,6 +5,7 @@
     <!-- Allows the build (or compile) script located on package.json to run on Build -->
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
     <!-- Folder where production build objects will be placed -->
-    <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist\mycar.client\</PublishAssetsDirectory>
+    <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist\mycar.client\browser</PublishAssetsDirectory>
+    <BuilOutputFolder>$(MSBuildProjectDirectory)\dist\mycar.client\browser</BuilOutputFolder>
   </PropertyGroup>
 </Project>
