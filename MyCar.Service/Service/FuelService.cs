@@ -2,6 +2,7 @@
 using MyCar.Errors;
 using MyCar.Repository.Interfaces;
 using MyCar.Service.Interfaces;
+using MyCar.Service.ViewModels.FuelsTypesViewModel;
 using MyCar.Service.ViewModels.FuelsViewModel;
 
 namespace MyCar.Service.Service;
@@ -57,7 +58,11 @@ public class FuelService : IFuelService
             Id = x.Id,
             Name = x.Name,
             FuelTypeId = x.FuelTypeId,
-            FuelType = x.FuelType,
+            FuelType = new FuelTypeViewModel
+            {
+                Id = x.FuelType.Id,
+                Name = x.FuelType.Name,
+            }
         }).ToList();
 
         return result;

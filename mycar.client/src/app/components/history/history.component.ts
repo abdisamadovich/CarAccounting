@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './history.component.less'
 })
 export class HistoryComponent {
-
+  
 }

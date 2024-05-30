@@ -21,6 +21,7 @@ export class ServiceComponent {
     this.getServiceType();
   }
 
+  public vehicleId: number = 0;
   // Service
   public id: number = 0;
   public date: Date = new Date();

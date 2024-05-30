@@ -1,6 +1,10 @@
 ﻿using MyCar.Repository.Interfaces;
 using MyCar.Service.Interfaces;
+using MyCar.Service.ViewModels.FuelsTypesViewModel;
+using MyCar.Service.ViewModels.Manufacturers;
 using MyCar.Service.ViewModels.Services;
+using MyCar.Service.ViewModels.ServiceTypeViewModel;
+using MyCar.Service.ViewModels.Vehicles;
 
 namespace MyCar.Service.Service;
 
@@ -17,6 +21,7 @@ public class ServiceService : IServiceService
 
         var entity = new DataAccess.Models.Service
         {
+            VehicleId = service.VehicleId,
             Date = service.Date,
             Odometer = service.Odometer,
             ServiceTypeId = service.ServiceTypeId,
@@ -45,10 +50,36 @@ public class ServiceService : IServiceService
         var result = _repository.GetAll().Select(x => new ServiceGetViewModel
         {
             Id = x.Id,
+            VehicleId = x.VehicleId,
+            Vehicle = new VehicleGetViewModel
+            {
+                Id = x.VehicleId,
+                Name = x.Vehicle.Name,
+                ManufacturerId = x.Vehicle.ManufacturerId,
+                Manufacturer = new ManufacturerViewModel
+                {
+                    Id = x.Vehicle.Manufacturer.Id,
+                    Name = x.Vehicle.Manufacturer.Name,
+                },
+                Model = x.Vehicle.Model,
+                FuelTypeId = x.Vehicle.FuelTypeId,
+                FuelType = new FuelTypeViewModel
+                {
+                    Id = x.Vehicle.FuelType.Id,
+                    Name = x.Vehicle.FuelType.Name,
+                },
+                FuelCapacity = x.Vehicle.FuelCapacity,
+                Description = x.Vehicle.Description,
+            },
             Date = x.Date,
             Odometer = x.Odometer,
             ServiceTypeId = x.ServiceTypeId,
-            ServiceType = x.ServiceType,
+
+            ServiceType = new ServicesTypeViewModel
+            {
+                Id = x.ServiceType.Id,
+                Name = x.ServiceType.Name,
+            },
             Place = x.Place,
             Price = x.Price,
             Notes = x.Notes,

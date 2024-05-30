@@ -12,7 +12,7 @@ using MyCar.DataAccess;
 namespace MyCar.DataAccess.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20240425141520_FirstMigration")]
+    [Migration("20240516162404_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -53,9 +53,14 @@ namespace MyCar.DataAccess.Migrations
                     b.Property<int>("Value")
                         .HasColumnType("int");
 
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ExpenseTypeId");
+
+                    b.HasIndex("VehicleId");
 
                     b.ToTable("Expense", (string)null);
                 });
@@ -196,9 +201,14 @@ namespace MyCar.DataAccess.Migrations
                     b.Property<int>("TotalCost")
                         .HasColumnType("int");
 
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FuelId");
+
+                    b.HasIndex("VehicleId");
 
                     b.ToTable("Refuelling", (string)null);
                 });
@@ -230,9 +240,14 @@ namespace MyCar.DataAccess.Migrations
                     b.Property<int>("ServiceTypeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ServiceTypeId");
+
+                    b.HasIndex("VehicleId");
 
                     b.ToTable("Service", (string)null);
                 });
@@ -299,7 +314,15 @@ namespace MyCar.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MyCar.DataAccess.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ExpenseType");
+
+                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("MyCar.DataAccess.Models.Fuel", b =>
@@ -321,7 +344,15 @@ namespace MyCar.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MyCar.DataAccess.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Fuel");
+
+                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("MyCar.DataAccess.Models.Service", b =>
@@ -332,7 +363,15 @@ namespace MyCar.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MyCar.DataAccess.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ServiceType");
+
+                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("MyCar.DataAccess.Models.Vehicle", b =>

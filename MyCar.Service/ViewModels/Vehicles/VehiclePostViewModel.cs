@@ -1,6 +1,4 @@
-﻿using MyCar.DataAccess.Models;
-
-namespace MyCar.Service.ViewModels.Vehicles;
+﻿namespace MyCar.Service.ViewModels.Vehicles;
 
 public class VehiclePostViewModel
 {

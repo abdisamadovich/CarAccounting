@@ -1,15 +1,14 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './components/layout/layout.component';
 import { HomeComponent } from './components/home/home.component';
-import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { VehicleComponent } from './components/vehicle/vehicle.component';
 import { ServiceComponent } from './components/service/service.component';
-import { ExpenceComponent } from './components/expence/expence.component';
 import { HistoryComponent } from './components/history/history.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { RefuelingComponent } from '@@components/refueling/refuelingComponent';
+import { ExpenseComponent } from '@@components/expense/expense.component';
 const routes: Routes = [
   {
     path: '',
@@ -28,19 +27,19 @@ const routes: Routes = [
         component: VehicleComponent,
       },
       {
-        path: 'refueling',
+        path: 'vehicle/:id/refueling',
         component: RefuelingComponent,
       },
       {
-        path: 'service',
+        path: 'vehicle/:id/service',
         component: ServiceComponent,
       },
       {
-        path: 'expence',
-        component: ExpenceComponent,
+        path: 'vehicle/:id/expense',
+        component: ExpenseComponent,
       },
       {
-        path: 'history',
+        path: 'vehicle/:id/history',
         component: HistoryComponent,
       },
       {
@@ -49,10 +48,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/history',
+        redirectTo: '/vehicle',
         pathMatch: 'full',
       },
     ],
+  },
+  {
+    path: '**',
+    component: HistoryComponent,
   },
 ];
 

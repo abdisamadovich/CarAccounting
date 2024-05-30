@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -81,30 +80,6 @@ namespace MyCar.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Expense",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Odometer = table.Column<int>(type: "int", nullable: false),
-                    ExpenseTypeId = table.Column<int>(type: "int", nullable: false),
-                    Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Value = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Expense", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Expense_ExpenseType_ExpenseTypeId",
-                        column: x => x.ExpenseTypeId,
-                        principalTable: "ExpenseType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Fuel",
                 columns: table => new
                 {
@@ -155,25 +130,32 @@ namespace MyCar.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Service",
+                name: "Expense",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    VehicleId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Odometer = table.Column<int>(type: "int", nullable: false),
-                    ServiceTypeId = table.Column<int>(type: "int", nullable: false),
+                    ExpenseTypeId = table.Column<int>(type: "int", nullable: false),
                     Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<int>(type: "int", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Value = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Service", x => x.Id);
+                    table.PrimaryKey("PK_Expense", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Service_ServiceType_ServiceTypeId",
-                        column: x => x.ServiceTypeId,
-                        principalTable: "ServiceType",
+                        name: "FK_Expense_ExpenseType_ExpenseTypeId",
+                        column: x => x.ExpenseTypeId,
+                        principalTable: "ExpenseType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Expense_Vehicle_VehicleId",
+                        column: x => x.VehicleId,
+                        principalTable: "Vehicle",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -184,6 +166,7 @@ namespace MyCar.DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    VehicleId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Odometer = table.Column<int>(type: "int", nullable: false),
                     FuelId = table.Column<int>(type: "int", nullable: false),
@@ -202,12 +185,54 @@ namespace MyCar.DataAccess.Migrations
                         principalTable: "Fuel",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Refuelling_Vehicle_VehicleId",
+                        column: x => x.VehicleId,
+                        principalTable: "Vehicle",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Service",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VehicleId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Odometer = table.Column<int>(type: "int", nullable: false),
+                    ServiceTypeId = table.Column<int>(type: "int", nullable: false),
+                    Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Service", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Service_ServiceType_ServiceTypeId",
+                        column: x => x.ServiceTypeId,
+                        principalTable: "ServiceType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Service_Vehicle_VehicleId",
+                        column: x => x.VehicleId,
+                        principalTable: "Vehicle",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Expense_ExpenseTypeId",
                 table: "Expense",
                 column: "ExpenseTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Expense_VehicleId",
+                table: "Expense",
+                column: "VehicleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Fuel_FuelTypeId",
@@ -220,9 +245,19 @@ namespace MyCar.DataAccess.Migrations
                 column: "FuelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Refuelling_VehicleId",
+                table: "Refuelling",
+                column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Service_ServiceTypeId",
                 table: "Service",
                 column: "ServiceTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Service_VehicleId",
+                table: "Service",
+                column: "VehicleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehicle_FuelTypeId",
@@ -251,9 +286,6 @@ namespace MyCar.DataAccess.Migrations
                 name: "Service");
 
             migrationBuilder.DropTable(
-                name: "Vehicle");
-
-            migrationBuilder.DropTable(
                 name: "ExpenseType");
 
             migrationBuilder.DropTable(
@@ -263,10 +295,13 @@ namespace MyCar.DataAccess.Migrations
                 name: "ServiceType");
 
             migrationBuilder.DropTable(
-                name: "Manufacturer");
+                name: "Vehicle");
 
             migrationBuilder.DropTable(
                 name: "FuelType");
+
+            migrationBuilder.DropTable(
+                name: "Manufacturer");
         }
     }
 }

@@ -1,13 +1,12 @@
 <div>
 	<div>
 		<button type="button" (click)="showModalCarCreate()" class="btn btn-outline-info">+</button>
-		<button type="button" class="btn btn-outline-info">Settings</button>
 	</div>
 
 	<div>
 		<div id="vehicles" class="drowdown">
 			<label for="name">Vehicles: </label>
-			<select [(ngModel)]="id" name="vehicle" (change)="vehicles" class="form=control">
+			<select [(ngModel)]="id" name="vehicle" (change)="onVehicleChange($event)" class="form=control">
 				<option [value] = "vehicle.id" *ngFor="let vehicle of vehicles">
 					{{vehicle.name}}
 				</option>

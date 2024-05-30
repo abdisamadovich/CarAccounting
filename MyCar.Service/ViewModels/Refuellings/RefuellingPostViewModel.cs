@@ -1,9 +1,8 @@
-﻿using MyCar.DataAccess.Models;
-
-namespace MyCar.Service.ViewModels.Refuellings;
+﻿namespace MyCar.Service.ViewModels.Refuellings;
 
 public class RefuellingPostViewModel
 {
+    public int VehicleId { get; set; }
     public DateTime Date { get; set; }
     public int Odometer { get; set; }
     public int FuelId { get; set; }

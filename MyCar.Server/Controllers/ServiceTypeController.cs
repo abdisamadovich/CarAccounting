@@ -16,14 +16,14 @@ public class ServiceTypeController : ControllerBase
     }
 
     [HttpPost]
-    public ServiceTypeViewModel CreateNew(ServiceTypeViewModel model)
+    public ServicesTypeViewModel CreateNew(ServicesTypeViewModel model)
     {
         _service.CreateNew(model);
         return model;
     }
 
     [HttpGet]
-    public List<ServiceTypeViewModel> GetAll()
+    public List<ServicesTypeViewModel> GetAll()
     {
         return _service.GetAllServiceType();
     }

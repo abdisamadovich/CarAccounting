@@ -2,6 +2,7 @@
 
 public class ServicePostViewModel
 {
+    public int VehicleId { get; set; }
     public DateTime Date { get; set; }
     public int Odometer { get; set; }
     public int ServiceTypeId { get; set; }

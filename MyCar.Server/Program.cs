@@ -26,6 +26,8 @@ builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 builder.Services.AddScoped<IExpenseTypeRepository, ExpenseTypeRepository>();
 builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+builder.Services.AddScoped<IExpenseRepository,ExpenseRepository>();
+builder.Services.AddScoped<IExpenseTypeRepository,ExpenseTypeRepository>();
 
 // Service
 builder.Services.AddScoped<IFuelTypeService, FuelTypeService>();
@@ -35,10 +37,12 @@ builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IRefuellingService, RefuellingService>();
 builder.Services.AddScoped<IServiceTypeService, ServiceTypeService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<IExpenseTypeService, ExpenseTypeService>();
 
 builder.Services.AddDbContext<MainContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ServerDatabase"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDatabase"));
 });
 
 var app = builder.Build();

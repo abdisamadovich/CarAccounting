@@ -14,7 +14,7 @@ public class ServiceTypeService : IServiceTypeService
         _repository = repository;
     }
 
-    public void CreateNew(ServiceTypeViewModel serviceType)
+    public void CreateNew(ServicesTypeViewModel serviceType)
     {
         if (serviceType == null)
         {
@@ -51,9 +51,9 @@ public class ServiceTypeService : IServiceTypeService
         _repository.SaveChanges();
     }
 
-    public List<ServiceTypeViewModel> GetAllServiceType()
+    public List<ServicesTypeViewModel> GetAllServiceType()
     {
-        var result = _repository.GetAll().Select(x => new ServiceTypeViewModel
+        var result = _repository.GetAll().Select(x => new ServicesTypeViewModel
         {
             Id = x.Id,
             Name = x.Name,

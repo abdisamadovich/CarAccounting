@@ -3,6 +3,8 @@
 public class Service
 {
     public int Id { get; set; }
+    public int VehicleId { get; set; }
+    public Vehicle Vehicle { get; set; }
     public DateTime Date { get; set; }
     public int Odometer { get; set; }
     public int ServiceTypeId { get; set; }

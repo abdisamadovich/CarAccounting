@@ -16,5 +16,6 @@ public class ServiceMap : IEntityTypeConfiguration<Service>
         builder.Property(x => x.Price).IsRequired();
 
         builder.HasOne(x => x.ServiceType).WithMany().HasForeignKey(x => x.ServiceTypeId);
+        builder.HasOne(x => x.Vehicle).WithMany().HasForeignKey(x => x.VehicleId);
     }
 }

@@ -10,4 +10,8 @@
     <ProjectReference Include="..\MyCar.Repository\MyCar.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\FuelsTypesViewModel\" />
+  </ItemGroup>
+
 </Project>

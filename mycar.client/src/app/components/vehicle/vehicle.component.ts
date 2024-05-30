@@ -7,6 +7,7 @@ import { VehicleGetAll } from '@@services/models/vehicle/vehicle.get-all.view-mo
 import { FuelTypeService } from '@@services/services/fuel-type/fuel-type.service';
 import { ManufacturerService } from '@@services/services/manufacturer/manufacturer.service';
 import { VehicleService } from '@@services/services/vehicle/vehicle.service';
+import { Router, RouterModule, Routes } from '@angular/router';
 
 @Component({
   selector: 'app-vehicle',
@@ -18,7 +19,8 @@ export class VehicleComponent implements OnInit {
   constructor(
     private vehicleService: VehicleService,
     private manufacturerService: ManufacturerService,
-    private fuelTypeService: FuelTypeService
+    private fuelTypeService: FuelTypeService,
+    private router: Router
   ) {}
 
   // ngOnInit
@@ -110,5 +112,11 @@ export class VehicleComponent implements OnInit {
     this.fuelTypeService.getFuelTypes().subscribe((res) => {
       this.fuelTypes = res;
     });
+  }
+
+  public onVehicleChange(event: Event): void {
+    const element = <HTMLSelectElement>event.target;
+    this.id = parseInt(element.value, 10);
+    this.router.navigate([`/vehicle/${this.id}/history`]);
   }
 }

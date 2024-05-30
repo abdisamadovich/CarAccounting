@@ -3,6 +3,7 @@ import { RefuellingCreate } from '@@services/models/refuelling/refuelling.create
 import { FuelService } from '@@services/services/fuel/fuel.service';
 import { RefuellingService } from '@@services/services/refuelling/refuelling.service';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-refueling',
@@ -13,13 +14,15 @@ export class RefuelingComponent implements OnInit {
   //Inject
   constructor(
     private refuellingService: RefuellingService,
-    private fuelService: FuelService
+    private fuelService: FuelService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.getFuel();
   }
 
+  public vehicleId: number = 0;
   // Refuelling
   public id: number = 0;
   public date: Date = new Date();

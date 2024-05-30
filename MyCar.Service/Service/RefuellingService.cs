@@ -3,7 +3,9 @@ using MyCar.Repository.Interfaces;
 using MyCar.Service.Interfaces;
 using MyCar.Service.ViewModels.FuelsTypesViewModel;
 using MyCar.Service.ViewModels.FuelsViewModel;
+using MyCar.Service.ViewModels.Manufacturers;
 using MyCar.Service.ViewModels.Refuellings;
+using MyCar.Service.ViewModels.Vehicles;
 
 namespace MyCar.Service.Service;
 
@@ -21,6 +23,7 @@ public class RefuellingService : IRefuellingService
 
         var entity = new Refuelling()
         {
+            VehicleId = refuelling.VehicleId,
             Date = refuelling.Date,
             Odometer = refuelling.Odometer,
             FuelId = refuelling.FuelId,
@@ -51,19 +54,40 @@ public class RefuellingService : IRefuellingService
         var result = _repository.GetAll().Select(x => new RefuellingGetViewModel
         {
             Id = x.Id,
+            VehicleId = x.VehicleId,
+            Vehicle = new VehicleGetViewModel
+            {
+                Id = x.Vehicle.Id,
+                Name = x.Vehicle.Name,
+                ManufacturerId = x.Vehicle.ManufacturerId,
+                Manufacturer = new ManufacturerViewModel
+                {
+                    Id = x.Vehicle.Manufacturer.Id,
+                    Name = x.Vehicle.Manufacturer.Name
+                },
+                Model = x.Vehicle.Model,
+                FuelTypeId = x.Vehicle.FuelTypeId,
+                FuelType = new FuelTypeViewModel
+                {
+                    Id = x.Vehicle.FuelType.Id,
+                    Name = x.Vehicle.FuelType.Name,
+                },
+                FuelCapacity = x.Vehicle.FuelCapacity,
+                Description = x.Vehicle.Description,
+            },
             Date = x.Date,
             Odometer = x.Odometer,
             FuelId = x.FuelId,
-            Fuel = new FuelViewModel
+            Fuel = new FuelGetViewModel
             {
+                Id = x.Fuel.Id,
+                Name = x.Fuel.Name,
+                FuelTypeId = x.Fuel.FuelTypeId,
                 FuelType = new FuelTypeViewModel
                 {
                     Id = x.Fuel.FuelType.Id,
-                    Name = x.Fuel.FuelType.Name
-                },
-                Name = x.Fuel.Name,
-                Id = x.Fuel.Id,
-                FuelTypeId = x.Fuel.FuelTypeId
+                    Name = x.Fuel.FuelType.Name,
+                }
             },
             Price = x.Price,
             TotalCost = x.TotalCost,

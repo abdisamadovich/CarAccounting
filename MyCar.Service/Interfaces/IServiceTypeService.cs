@@ -4,7 +4,7 @@ namespace MyCar.Service.Interfaces;
 
 public interface IServiceTypeService
 {
-    void CreateNew(ServiceTypeViewModel serviceType);
+    void CreateNew(ServicesTypeViewModel serviceType);
     public void Delete(int id);
-    List<ServiceTypeViewModel> GetAllServiceType();
+    List<ServicesTypeViewModel> GetAllServiceType();
 }

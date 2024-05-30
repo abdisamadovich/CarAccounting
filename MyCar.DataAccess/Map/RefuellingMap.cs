@@ -19,5 +19,6 @@ public class RefuellingMap : IEntityTypeConfiguration<Refuelling>
         builder.Property(x => x.Station).IsRequired();
 
         builder.HasOne(x => x.Fuel).WithMany().HasForeignKey(x => x.FuelId);
+        builder.HasOne(x => x.Vehicle).WithMany().HasForeignKey(x => x.VehicleId).OnDelete(DeleteBehavior.Restrict);
     }
 }

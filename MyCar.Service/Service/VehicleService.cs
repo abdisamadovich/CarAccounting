@@ -1,8 +1,10 @@
 ﻿using MyCar.DataAccess.Models;
+using MyCar.Errors;
 using MyCar.Repository.Interfaces;
 using MyCar.Service.Interfaces;
+using MyCar.Service.ViewModels.FuelsTypesViewModel;
+using MyCar.Service.ViewModels.Manufacturers;
 using MyCar.Service.ViewModels.Vehicles;
-using MyCar.Errors;
 
 namespace MyCar.Service.Service;
 
@@ -16,7 +18,7 @@ public class VehicleService : IVehicleService
     }
     public void CreateNew(VehiclePostViewModel vehicle)
     {
-        if(vehicle == null )
+        if (vehicle == null)
         {
             throw new ArgumentNullException(nameof(vehicle));
         }
@@ -26,8 +28,8 @@ public class VehicleService : IVehicleService
             throw new ParameterInvalidException("Name cannot be empty");
         }
 
-        var entity = new Vehicle 
-        { 
+        var entity = new Vehicle
+        {
             Name = vehicle.Name,
             ManufacturerId = vehicle.ManufacturerId,
             Model = vehicle.Model,
@@ -43,7 +45,7 @@ public class VehicleService : IVehicleService
     public void Delete(int id)
     {
         var result = _repository.GetAll().Where(x => x.Id == id).FirstOrDefault();
-        if(result == null)
+        if (result == null)
         {
             throw new ArgumentNullException(nameof(Vehicle));
         }
@@ -57,11 +59,19 @@ public class VehicleService : IVehicleService
         {
             Id = x.Id,
             Name = x.Name,
-            Manufacturer = x.Manufacturer,
+            Manufacturer = new ManufacturerViewModel
+            {
+                Id = x.Manufacturer.Id,
+                Name = x.Manufacturer.Name,
+            },
             ManufacturerId = x.ManufacturerId,
             Model = x.Model,
             FuelTypeId = x.FuelTypeId,
-            FuelType = x.FuelType,
+            FuelType = new FuelTypeViewModel
+            {
+                Id = x.FuelType.Id,
+                Name = x.FuelType.Name,
+            },
             FuelCapacity = x.FuelCapacity,
             Description = x.Description,
         }).ToList();

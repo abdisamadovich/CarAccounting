@@ -1,19 +1,10 @@
 <div class="container">
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
       <ul class="nav nav-pills">
-        <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/refueling']">Refueling</a></li>
-        <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/service']">Service</a></li>
-        <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/expence']">Expence</a></li>
-        <!-- Default dropright button -->
-        <div class="btn-group dropright">
-            <button type="button" [routerLink]="['/vehicle']" class="btn btn-secondary dropdown-toggle" 
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              MyCar
-            </button>
-            <div class="dropdown-menu">
-            <!-- Dropdown menu links -->
-            </div>
-        </div>
+        <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle', 'id','refueling']">Refueling</a></li>
+        <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle','id','service']">Service</a></li>
+        <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle','id','expense']">Expence</a></li>
+        <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle']">Vehicle</a></li>
       </ul>
     </header>
 </div>
