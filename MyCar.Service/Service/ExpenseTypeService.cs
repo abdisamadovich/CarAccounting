@@ -13,26 +13,27 @@ public class ExpenseTypeService : IExpenseTypeService
     {
         _service = service;
     }
-    public void CreateNew(ExpenseTypeViewModel service)
+
+    public void CreateNew(ExpenseTypeViewModel expenseType)
     {
-        if (service == null)
+        if (expenseType == null)
         {
-            throw new ArgumentNullException(nameof(service));
+            throw new ArgumentNullException(nameof(expenseType));
         }
 
-        if (string.IsNullOrEmpty(service.Name))
+        if (string.IsNullOrEmpty(expenseType.Name))
         {
             throw new ParameterInvalidException("Name cannot be empty");
         }
 
-        if (_service.GetAll().Any(st => st.Name == service.Name))
+        if (_service.GetAll().Any(st => st.Name == expenseType.Name))
         {
             throw new ParameterInvalidException("Expense type with the same name already exists");
         }
 
         var entity = new ExpenseType
         {
-            Name = service.Name,
+            Name = expenseType.Name,
         };
 
         _service.Insert(entity);
@@ -44,7 +45,7 @@ public class ExpenseTypeService : IExpenseTypeService
         var result = _service.GetAll().Where(x => x.Id == id).FirstOrDefault();
         if (result == null)
         {
-            throw new ArgumentNullException(nameof(ExpenseType));
+            throw new NotFoundException(nameof(ExpenseType));
         }
         _service.Delete(result);
         _service.SaveChanges();

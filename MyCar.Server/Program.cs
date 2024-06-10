@@ -42,7 +42,7 @@ builder.Services.AddScoped<IExpenseTypeService, ExpenseTypeService>();
 
 builder.Services.AddDbContext<MainContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDatabase"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ServerDatabase"));
 });
 
 var app = builder.Build();

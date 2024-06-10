@@ -1,4 +1,5 @@
 ﻿using MyCar.DataAccess.Models;
+using MyCar.Errors;
 using MyCar.Repository.Interfaces;
 using MyCar.Service.Interfaces;
 using MyCar.Service.ViewModels.Expense;
@@ -16,19 +17,20 @@ public class ExpenseService : IExpenseService
     {
         _repository = repository;
     }
-    public void CreateNew(ExpensePostViewModel service)
+
+    public void CreateNew(ExpensePostViewModel expense)
     {
-        if (service == null) throw new ArgumentNullException(nameof(service));
+        if (expense == null) throw new ArgumentNullException(nameof(expense));
 
         var entity = new Expense
         {
-            VehicleId = service.VehicleId,
-            ExpenseTypeId = service.ExpenseTypeId,
-            Date = service.Date,
-            Odometer = service.Odometer,
-            Place = service.Place,
-            Description = service.Description,
-            Value = service.Value,
+            VehicleId = expense.VehicleId,
+            ExpenseTypeId = expense.ExpenseTypeId,
+            Date = expense.Date,
+            Odometer = expense.Odometer,
+            Place = expense.Place,
+            Description = expense.Description,
+            Value = expense.Value,
         };
 
         _repository.Insert(entity);
@@ -40,7 +42,7 @@ public class ExpenseService : IExpenseService
         var result = _repository.GetAll().Where(x => x.Id == id).FirstOrDefault();
         if (result == null)
         {
-            throw new ArgumentNullException(nameof(Expense));
+            throw new NotFoundException(nameof(Expense));
         }
         _repository.Delete(result);
         _repository.SaveChanges();

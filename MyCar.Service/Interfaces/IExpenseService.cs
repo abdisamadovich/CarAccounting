@@ -4,7 +4,7 @@ namespace MyCar.Service.Interfaces;
 
 public interface IExpenseService
 {
-    void CreateNew(ExpensePostViewModel service);
+    void CreateNew(ExpensePostViewModel expense);
     void Delete(int id);
     List<ExpenseGetViewModel> GetAllExpense();
 }
