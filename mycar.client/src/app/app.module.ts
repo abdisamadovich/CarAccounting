@@ -19,7 +19,6 @@ import { HistoryComponent } from './components/history/history.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ExpenseComponent } from './components/expense/expense.component';
 
 @NgModule({
@@ -34,7 +33,6 @@ import { ExpenseComponent } from './components/expense/expense.component';
     ServiceComponent,
     HistoryComponent,
     ReportsComponent,
-    PageNotFoundComponent,
     ExpenseComponent,
   ],
   imports: [
