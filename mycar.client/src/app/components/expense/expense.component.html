@@ -1,7 +1,7 @@
 <div id="baseExpense">
-    <div id="expense" class="modal" tabindex="-1" role="dialog">
+    <div id="expense" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content blue-border">
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
@@ -48,7 +48,7 @@
                                 required="price" />
                         </div>
 
-                        <br>
+                        <br />
 
                         <button class="btn btn-success" type="submit" (click)="saveAddExpenseChanges()">Save</button>
                     </form>
@@ -58,9 +58,9 @@
     </div>
 </div>
 
-<div id="expenseType" *ngIf="modalExpenseTypeCreate" class="modal" tabindex="-1" role="dialog">
+<div id="expenseType" *ngIf="modalExpenseTypeCreate" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content blue-border">
             <div class="modal-header">
                 <h5 class="modal-title" id="myModalLabel">Create Expense Type</h5>
                 <button type="button" (click)="hideModalExpenseTypeCreate()" class="btn-close"
@@ -73,6 +73,8 @@
                         <input type="text" [(ngModel)]="name" class="form-control" id="Name" placeholder="Name"
                             name="Name" required="Name" />
                     </div>
+
+                    <br />
 
                     <button type="button" class="m-1 btn btn-primary" data-dismiss="modal"
                         (click)="hideModalExpenseTypeCreate()">

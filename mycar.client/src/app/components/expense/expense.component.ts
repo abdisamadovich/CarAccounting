@@ -12,13 +12,13 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './expense.component.less',
 })
 export class ExpenseComponent {
-  constructor(
+  public constructor(
     private expenseService: ExpenseService,
     private expenseTypeService: ExpenseTypeService,
     private toastr: ToastrService
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getExpenseType();
   }
 
@@ -65,7 +65,7 @@ export class ExpenseComponent {
       (expenseCreateModel.value = this.value),
       this.expenseService.postExpense(expenseCreateModel).subscribe({
         next: (response) => {
-          this.toastr.success("Succes add Expense!")
+          this.toastr.success("Succes add Expense!");
           this.resetExpense();
         },
         error: (err) => {
@@ -80,7 +80,7 @@ export class ExpenseComponent {
     expenseTypeCreateModel.name = this.name;
     this.expenseTypeService.postExpenseType(expenseTypeCreateModel).subscribe({
       next: (response) => {
-        this.toastr.success("Succes add ExpenseType!")
+        this.toastr.success("Succes add ExpenseType!");
         this.resetExpenseType();
         this.getExpenseType();
       },

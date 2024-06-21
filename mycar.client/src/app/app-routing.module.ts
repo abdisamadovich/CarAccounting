@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './components/layout/layout.component';
 import { HomeComponent } from './components/home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { VehicleComponent } from './components/vehicle/vehicle.component';
 import { ServiceComponent } from './components/service/service.component';
 import { HistoryComponent } from './components/history/history.component';
 import { ReportsComponent } from './components/reports/reports.component';
-import { RefuelingComponent } from '@@components/refueling/refuelingComponent';
 import { ExpenseComponent } from '@@components/expense/expense.component';
+import { RefuelingComponent } from '@@components/refueling/refueling.component';
+import { HeaderComponent } from '@@components/header/header.component';
 const routes: Routes = [
   {
     path: '',
@@ -21,10 +21,6 @@ const routes: Routes = [
       {
         path: 'footer',
         component: FooterComponent,
-      },
-      {
-        path: 'vehicle',
-        component: VehicleComponent,
       },
       {
         path: 'vehicle/:id/refueling',
@@ -55,7 +51,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: HistoryComponent,
+    component: HeaderComponent,
   },
 ];
 
