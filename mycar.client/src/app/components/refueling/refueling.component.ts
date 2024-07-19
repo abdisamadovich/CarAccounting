@@ -4,6 +4,7 @@ import { FuelService } from '@@services/services/fuel/fuel.service';
 import { RefuellingService } from '@@services/services/refuelling/refuelling.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-refueling',
@@ -15,10 +16,14 @@ export class RefuelingComponent implements OnInit {
   constructor(
     private refuellingService: RefuellingService,
     private fuelService: FuelService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      this.vehicleId = +params.get('vehicleId')!;
+    });
     this.getFuel();
   }
 
@@ -73,7 +78,8 @@ export class RefuelingComponent implements OnInit {
 
   public saveAddChanges(): void {
     const refuellingCreateModel = new RefuellingCreate();
-    (refuellingCreateModel.date = this.date),
+    (refuellingCreateModel.vehicleId = this.vehicleId),
+      (refuellingCreateModel.date = this.date),
       (refuellingCreateModel.odometer = this.odometer),
       (refuellingCreateModel.fuelId = this.fuelId),
       (refuellingCreateModel.price = this.price),
@@ -83,9 +89,11 @@ export class RefuelingComponent implements OnInit {
       (refuellingCreateModel.station = this.station),
       this.refuellingService.postRefuelling(refuellingCreateModel).subscribe({
         next: (response) => {
+          this.toastr.success('Succes add Refueling!');
           this.resetRefuelling();
         },
         error: (err) => {
+          this.toastr.warning('Error during add!');
           this.resetRefuelling();
         },
       });

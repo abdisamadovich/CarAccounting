@@ -1,4 +1,5 @@
-export interface ServiceCreateModel {
+export interface ServiceGetAllModel {
+  id: number;
   vehicleId: number;
   date: Date;
   odometer: number;

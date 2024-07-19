@@ -1,4 +1,5 @@
 import { RefuellingCreate } from '@@services/models/refuelling/refuelling.create.view-model';
+import { RefuellingGetAll } from '@@services/models/refuelling/refuelling.get-all.view-model';
 import { Injectable } from '@angular/core';
 import { RefuellingApiService } from '@api/service/refuelling/refuelling.api-service';
 import { Observable } from 'rxjs';
@@ -9,5 +10,9 @@ export class RefuellingService {
 
   public postRefuelling(refuellingCreate: RefuellingCreate): Observable<RefuellingCreate> {
     return this.refuelling.addRefuelling(refuellingCreate);
+  }
+
+  public getRefuellings(): Observable<RefuellingGetAll[]> {
+    return this.refuelling.getRefuelling();
   }
 }

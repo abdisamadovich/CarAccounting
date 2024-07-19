@@ -1,3 +1,3 @@
 export interface VehicleDeleteModel {
-  id: number;
+  vehicleId: number;
 }

@@ -1,2 +1,29 @@
-<p>history works!</p>
-<p>Ishladi</p>
+<div class="container">
+    <div *ngIf="records.length > 0; else noRecords">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Odometer</th>
+                    <th>Place</th>
+                    <th>Description</th>
+                    <th>Cost</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let record of records">
+                    <td>{{ record.date | date: 'long' }}</td>
+                    <td>{{ record.odometer }}</td>
+                    <td>{{ record.place }}</td>
+                    <td>{{ record.description }}</td>
+                    <td>{{ record.cost | currency }}</td>
+                    <td>{{ record.recordType }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <ng-template #noRecords>
+        <p class="text-muted">No records found.</p>
+    </ng-template>
+</div>

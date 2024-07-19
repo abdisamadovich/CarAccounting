@@ -1,12 +1,12 @@
 <div class="container">
   <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
     <ul class="nav nav-pills">
-      <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle', 'id','refueling']">Refueling</a></li>
-      <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle','id','service']">Service</a></li>
-      <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle','id','expense']">Expence</a></li>
+      <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle',vehicleId,'refueling']">Refueling</a></li>
+      <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle',vehicleId,'service']">Service</a></li>
+      <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle',vehicleId,'expense']">Expence</a></li>
       <div>
         <div id="vehicles" class="drowdown">
-          <select [(ngModel)]="id" name="vehicle" (change)="onVehicleChange($event)" class="form=control">
+          <select [(ngModel)]="vehicleId" name="vehicle" (change)="onVehicleChange($event)" class="form=control">
             <option [value]="vehicle.id" *ngFor="let vehicle of vehicles">
               {{vehicle.name}}
             </option>

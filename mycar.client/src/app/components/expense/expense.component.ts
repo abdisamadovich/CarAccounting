@@ -4,6 +4,7 @@ import { ExpenseCreate } from '@@services/models/expense/expense.create.view-mod
 import { ExpenseTypeService } from '@@services/services/expense-type/expense-type.service';
 import { ExpenseService } from '@@services/services/expense/expense.service';
 import { Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -15,10 +16,14 @@ export class ExpenseComponent {
   public constructor(
     private expenseService: ExpenseService,
     private expenseTypeService: ExpenseTypeService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute
   ) {}
 
   public ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      this.vehicleId = +params.get('vehicleId')!;
+    });
     this.getExpenseType();
   }
 

@@ -4,6 +4,8 @@ import { ServiceTypeGetAll } from '@@services/models/service-type/service-type.g
 import { ServiceService } from '@@services/services/service/service.service';
 import { ServiceTypeService } from '@@services/services/service-type/service-type.service';
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-service',
@@ -14,10 +16,15 @@ export class ServiceComponent {
   //Inject
   constructor(
     private serviceService: ServiceService,
-    private serviceTypeService: ServiceTypeService
+    private serviceTypeService: ServiceTypeService,
+    private toastr: ToastrService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      this.vehicleId = +params.get('vehicleId')!;
+    });
     this.getServiceType();
   }
 
@@ -53,7 +60,8 @@ export class ServiceComponent {
 
   public saveAddServiceChanges(): void {
     const serviceCreateModel = new ServiceCreate();
-    (serviceCreateModel.date = this.date),
+    (serviceCreateModel.vehicleId = this.vehicleId),
+      (serviceCreateModel.date = this.date),
       (serviceCreateModel.odometer = this.odometer),
       (serviceCreateModel.serviceTypeId = this.serviceTypeId),
       (serviceCreateModel.price = this.price),
@@ -61,9 +69,11 @@ export class ServiceComponent {
       (serviceCreateModel.notes = this.notes),
       this.serviceService.postService(serviceCreateModel).subscribe({
         next: (response) => {
+          this.toastr.success('Succes add Service!');
           this.resetService();
         },
         error: (err) => {
+          this.toastr.warning('Error during add!');
           this.resetService();
         },
       });

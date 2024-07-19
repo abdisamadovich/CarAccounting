@@ -1,4 +1,5 @@
-export interface RefuellingCreateModel {
+export interface RefuellingGetAllModel {
+  id: number;
   vehicleId: number;
   date: Date;
   odometer: number;

@@ -22,6 +22,8 @@ export class VehicleApiService {
   public deleteVehicle(
     vehicleDeleteModel: VehicleDeleteModel
   ): Observable<any> {
-    return this.client.delete(`${this.apiUrl}?id=${vehicleDeleteModel.id}`);
+    return this.client.delete(
+      `${this.apiUrl}?id=${vehicleDeleteModel.vehicleId}`
+    );
   }
 }

@@ -7,7 +7,7 @@ import { FuelTypeService } from '@@services/services/fuel-type/fuel-type.service
 import { ManufacturerService } from '@@services/services/manufacturer/manufacturer.service';
 import { VehicleService } from '@@services/services/vehicle/vehicle.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -20,17 +20,29 @@ export class HeaderComponent implements OnInit {
     private vehicleService: VehicleService,
     private manufacturerService: ManufacturerService,
     private fuelTypeService: FuelTypeService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      if (params['vehicleId']) {
+        this.vehicleId = +params['vehicleId'];
+      } else {
+        const savedVehicleId = localStorage.getItem('selectedVehicleId');
+        if (savedVehicleId) {
+          this.vehicleId = +savedVehicleId;
+          this.router.navigate(['/vehicle', this.vehicleId, 'history']);
+        }
+      }
+    });
     this.getVehicle();
     this.getFuelType();
     this.getManufacturer();
   }
 
   // Vehicle
-  public id: number = 0;
+  public vehicleId: number = 0;
   public name: string = '';
   public manufacturerId: number = 0;
   public model: string = '';
@@ -46,11 +58,9 @@ export class HeaderComponent implements OnInit {
   public modalCarCreate: boolean = false;
 
   public showModalCarCreate(): void {
-    debugger
     this.modalCarCreate = true;
   }
   public hideModalCarCreate(): void {
-    debugger
     this.modalCarCreate = false;
   }
 
@@ -77,7 +87,7 @@ export class HeaderComponent implements OnInit {
 
   public deleteVehicle(): void {
     const vehicleDeleteModel = new VehicleDelete();
-    vehicleDeleteModel.id = this.id;
+    vehicleDeleteModel.vehicleId = this.vehicleId;
 
     this.vehicleService.deleteVehicle(vehicleDeleteModel).subscribe({
       next: (response) => {
@@ -90,6 +100,11 @@ export class HeaderComponent implements OnInit {
   public getVehicle(): void {
     this.vehicleService.getVehicle().subscribe((res) => {
       this.vehicles = res;
+      if (this.vehicles.length > 0 && !this.vehicleId) {
+        this.vehicleId = this.vehicles[0].id; // Default select the first vehicle
+        localStorage.setItem('selectedVehicleId', this.vehicleId.toString());
+        this.router.navigate(['/vehicle', this.vehicleId, 'history']);
+      }
     });
   }
 
@@ -109,14 +124,14 @@ export class HeaderComponent implements OnInit {
 
   public onVehicleChange(event: Event): void {
     const element = <HTMLSelectElement>event.target;
-    this.id = parseInt(element.value, 10);
+    this.vehicleId = parseInt(element.value, 10);
 
-    if (isNaN(this.id)) {
+    if (isNaN(this.vehicleId)) {
       this.showModalCarCreate();
       return;
     }
-
-    this.router.navigate([`/vehicle/${this.id}/history`]);
+    localStorage.setItem('selectedVehicleId', this.vehicleId.toString());
+    this.router.navigate(['/vehicle', this.vehicleId, 'history']);
   }
 
   private resetVehicle(): void {

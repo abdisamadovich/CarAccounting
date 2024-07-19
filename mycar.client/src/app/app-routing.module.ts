@@ -23,19 +23,19 @@ const routes: Routes = [
         component: FooterComponent,
       },
       {
-        path: 'vehicle/:id/refueling',
+        path: 'vehicle/:vehicleId/refueling',
         component: RefuelingComponent,
       },
       {
-        path: 'vehicle/:id/service',
+        path: 'vehicle/:vehicleId/service',
         component: ServiceComponent,
       },
       {
-        path: 'vehicle/:id/expense',
+        path: 'vehicle/:vehicleId/expense',
         component: ExpenseComponent,
       },
       {
-        path: 'vehicle/:id/history',
+        path: 'vehicle/:vehicleId/history',
         component: HistoryComponent,
       },
       {

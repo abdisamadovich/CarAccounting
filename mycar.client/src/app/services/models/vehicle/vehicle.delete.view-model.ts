@@ -1,3 +1,3 @@
 export class VehicleDelete {
-  public id: number = 0;
+  public vehicleId: number = 0;
 }
