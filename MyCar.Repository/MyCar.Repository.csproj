@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MyCar.Core\MyCar.Core.csproj" />
     <ProjectReference Include="..\MyCar.DataAccess\MyCar.DataAccess.csproj" />
   </ItemGroup>
