@@ -74,8 +74,13 @@ export class HeaderComponent implements OnInit {
       (vehicleCreateModel.description = this.description);
 
     this.vehicleService.postVehicle(vehicleCreateModel).subscribe({
-      next: (response) => {
+      next: (response: VehicleGetAll) => {
         this.resetVehicle();
+        this.vehicleId = response.id;
+        localStorage.setItem('selectedVehicleId', this.vehicleId.toString());
+        this.getVehicle();
+        this.router.navigate(['/vehicle', this.vehicleId, 'history']);
+        this.getVehicle();
       },
       error: (err) => {
         this.resetVehicle();

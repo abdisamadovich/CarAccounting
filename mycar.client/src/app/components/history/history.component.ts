@@ -1,6 +1,7 @@
 import { RecordService } from '@@services/services/record/record.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { RecordTypeGetAllModel } from '@api/models/record/record-type';
 import { RecordGetAllModel } from '@api/models/record/record.get-all.model';
 import { ToastrService } from 'ngx-toastr';
 
@@ -23,8 +24,17 @@ export class HistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.vehicleId = +params.get('vehicleId')!;
-      this.getRecords();
+      const vehicleIdParam = +params.get('vehicleId')!;
+      if (vehicleIdParam) {
+        this.vehicleId = vehicleIdParam;
+      } else {
+        this.vehicleId = +localStorage.getItem('vehicleId')! || 0;
+      }
+      if (this.vehicleId) {
+        this.getRecords();
+      } else {
+        this.toastr.warning('Vehicle ID is not set!');
+      }
     });
   }
 
@@ -34,4 +44,18 @@ export class HistoryComponent implements OnInit {
       (error) => this.toastr.warning('No records!')
     );
   }
+
+  public getRecordTypeName(type: number): string {
+    switch (type) {
+      case RecordTypeGetAllModel.expense:
+        return 'Expense';
+      case RecordTypeGetAllModel.service:
+        return 'Service';
+      case RecordTypeGetAllModel.refueling:
+        return 'Refueling';
+      default:
+        return 'Unknown';
+    }
+  }
+
 }

@@ -18,7 +18,7 @@
                     <td>{{ record.place }}</td>
                     <td>{{ record.description }}</td>
                     <td>{{ record.cost | currency }}</td>
-                    <td>{{ record.recordType }}</td>
+                    <td>{{ getRecordTypeName(record.recordType) }}</td>
                 </tr>
             </tbody>
         </table>
