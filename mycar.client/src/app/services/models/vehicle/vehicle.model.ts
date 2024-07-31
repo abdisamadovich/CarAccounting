@@ -1,4 +1,5 @@
-export class VehicleCreate {
+export class Vehicle {
+  public id: number | null = null;
   public name: string = '';
   public manufacturerId: number = 0;
   public model: string = '';

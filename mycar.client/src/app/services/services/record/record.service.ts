@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { RecordGetAllModel } from '@api/models/record/record.get-all.model';
-import { RecordApiService } from '@api/service/record/record.api-service';
+import { RecordModel } from '@api/models';
+import { RecordApiService } from '@api/service';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -11,7 +11,7 @@ export class RecordService {
     vehicleId: number,
     offset: number = 0,
     limit: number = 10
-  ): Observable<RecordGetAllModel[]> {
+  ): Observable<RecordModel[]> {
     return this.record.getRecords(vehicleId, offset, limit);
   }
 }

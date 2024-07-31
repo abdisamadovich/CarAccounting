@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RefuellingCreateModel } from '@api/models/refuelling/refuelling.create.model';
-import { RefuellingGetAllModel } from '@api/models/refuelling/refuelling.get-all.model';
+import { RefuellingModel } from '@api/models';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -10,16 +9,16 @@ export class RefuellingApiService {
   constructor(private client: HttpClient) {}
 
   public addRefuelling(
-    refuellingCreateModel: RefuellingCreateModel
-  ): Observable<RefuellingCreateModel> {
-    return this.client.post<RefuellingCreateModel>(
+    refuelling: RefuellingModel
+  ): Observable<RefuellingModel> {
+    return this.client.post<RefuellingModel>(
       this.apiUrl,
-      refuellingCreateModel
+      refuelling
     );
   }
 
-  public getRefuelling(): Observable<RefuellingGetAllModel[]> {
+  public getRefuelling(): Observable<RefuellingModel[]> {
     const url = `${this.apiUrl}`;
-    return this.client.get<RefuellingGetAllModel[]>(url);
+    return this.client.get<RefuellingModel[]>(url);
   }
 }

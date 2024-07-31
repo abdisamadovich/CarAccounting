@@ -1,4 +1,5 @@
-export interface VehicleCreateModel {
+export interface VehicleModel {
+  id?: number;
   name: string;
   manufacturerId: number;
   model: string;

@@ -1,7 +1,5 @@
-import { FuelGetAll } from '@@services/models/fuel/fuel.get-all.view-model';
-import { RefuellingCreate } from '@@services/models/refuelling/refuelling.create.view-model';
-import { FuelService } from '@@services/services/fuel/fuel.service';
-import { RefuellingService } from '@@services/services/refuelling/refuelling.service';
+import { Fuel, Refuelling } from '@@services/models';
+import { FuelService, RefuellingService } from '@@services/services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -40,7 +38,7 @@ export class RefuelingComponent implements OnInit {
   public station: string = '';
   //For ModalWindow
   public modalRefuellingCreate: boolean = false;
-  public fuels: FuelGetAll[] = [];
+  public fuels: Fuel[] = [];
 
   public calculateQuantity(): void {
     if (this.price !== 0 && this.totalCost !== 0) {
@@ -64,7 +62,7 @@ export class RefuelingComponent implements OnInit {
 
   // Fuels
   public getFuel(): void {
-    this.fuelService.getFuels().subscribe((res) => {
+    this.fuelService.getFuel().subscribe((res) => {
       this.fuels = res;
     });
   }
@@ -77,7 +75,7 @@ export class RefuelingComponent implements OnInit {
   }
 
   public saveAddChanges(): void {
-    const refuellingCreateModel = new RefuellingCreate();
+    const refuellingCreateModel = new Refuelling();
     (refuellingCreateModel.vehicleId = this.vehicleId),
       (refuellingCreateModel.date = this.date),
       (refuellingCreateModel.odometer = this.odometer),

@@ -14,5 +14,5 @@ public class ExpenseGetViewModel
     public ExpenseTypeViewModel ExpenseType { get; set; }
     public string Place { get; set; }
     public string Description { get; set; }
-    public int Value { get; set; }
+    public int Cost { get; set; }
 }

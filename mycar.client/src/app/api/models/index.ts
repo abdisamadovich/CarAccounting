@@ -1,0 +1,11 @@
+export { ExpenseModel } from './expense/expense.model';
+export { ExpenseTypeModel } from './expense-type/expense-type.model';
+export { FuelModel } from './fuel/fuel.model';
+export { FuelTypeModel } from './fuel-type/fuel-type.model';
+export { ManufacturerModel } from './manufacturer/manufacturer.model';
+export { RecordModel } from './record/record.model';
+export { RecordType } from './record/record-type';
+export { RefuellingModel } from './refuelling/refuelling.model';
+export { ServiceModel } from './service/service.model';
+export { ServiceTypeModel } from './service-type/service-type.model';
+export { VehicleModel } from './vehicle/vehicle.model';

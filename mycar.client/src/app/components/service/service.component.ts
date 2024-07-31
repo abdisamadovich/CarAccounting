@@ -1,11 +1,8 @@
-import { ServiceCreate } from '@@services/models/service/service-create.view-model';
-import { ServiceTypeCreate } from '@@services/models/service-type/service-type.create.view-model';
-import { ServiceTypeGetAll } from '@@services/models/service-type/service-type.get-all.view-model';
-import { ServiceService } from '@@services/services/service/service.service';
-import { ServiceTypeService } from '@@services/services/service-type/service-type.service';
+import { ServiceService, ServiceTypeService } from '@@services/services';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Service, ServiceType } from '@@services/models';
 
 @Component({
   selector: 'app-service',
@@ -39,7 +36,7 @@ export class ServiceComponent {
   public notes: string = '';
   // Servicetype
   public name: string = '';
-  public serviceTypes: ServiceTypeGetAll[] = [];
+  public serviceTypes: ServiceType[] = [];
   //For ModalWindow
   public modalServiceTypeCreate: boolean = false;
 
@@ -59,7 +56,7 @@ export class ServiceComponent {
   }
 
   public saveAddServiceChanges(): void {
-    const serviceCreateModel = new ServiceCreate();
+    const serviceCreateModel = new Service();
     (serviceCreateModel.vehicleId = this.vehicleId),
       (serviceCreateModel.date = this.date),
       (serviceCreateModel.odometer = this.odometer),
@@ -80,14 +77,16 @@ export class ServiceComponent {
   }
 
   public saveAddServicetypeChanges(): void {
-    const servicetypeCreateModel = new ServiceTypeCreate();
+    const servicetypeCreateModel = new ServiceType();
     servicetypeCreateModel.name = this.name;
     this.serviceTypeService.postServiceType(servicetypeCreateModel).subscribe({
       next: (response) => {
+        this.toastr.success('Succes add ServiceType!');
         this.resetServiceType();
         this.getServiceType();
       },
       error: (err) => {
+        this.toastr.warning('Error during add!');
         this.resetServiceType();
         this.getServiceType();
       },

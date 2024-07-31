@@ -22,7 +22,7 @@ public class RecordRepository : IRecordRepository
             Place = x.Place,
             RecordId = x.Id,
             RecordType = RecordType.Expense,
-            Cost = x.Value
+            Cost = x.Cost
         });
     }
 

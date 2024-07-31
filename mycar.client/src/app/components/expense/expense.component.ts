@@ -1,9 +1,6 @@
-import { ExpenseTypeCreate } from '@@services/models/expense-type/expense-type.create.view-model';
-import { ExpenseTypeGetAll } from '@@services/models/expense-type/expense-type.get-all.view-model';
-import { ExpenseCreate } from '@@services/models/expense/expense.create.view-model';
-import { ExpenseTypeService } from '@@services/services/expense-type/expense-type.service';
-import { ExpenseService } from '@@services/services/expense/expense.service';
-import { Component, inject } from '@angular/core';
+import { ExpenseType, Expense } from '@@services/models';
+import { ExpenseTypeService, ExpenseService } from '@@services/services';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -39,7 +36,7 @@ export class ExpenseComponent {
 
   // ExpenseType
   public name: string = '';
-  public expenseTypes: ExpenseTypeGetAll[] = [];
+  public expenseTypes: ExpenseType[] = [];
 
   //For ModalWindow
   public modalExpenseTypeCreate: boolean = false;
@@ -60,14 +57,14 @@ export class ExpenseComponent {
   }
 
   public saveAddExpenseChanges(): void {
-    const expenseCreateModel = new ExpenseCreate();
+    const expenseCreateModel = new Expense();
     (expenseCreateModel.vehicleId = this.vehicleId),
       (expenseCreateModel.date = this.date),
       (expenseCreateModel.odometer = this.odometer),
       (expenseCreateModel.expenseTypeId = this.expenseTypeId),
       (expenseCreateModel.place = this.place),
       (expenseCreateModel.description = this.description),
-      (expenseCreateModel.value = this.value),
+      (expenseCreateModel.cost = this.value),
       this.expenseService.postExpense(expenseCreateModel).subscribe({
         next: (response) => {
           this.toastr.success("Succes add Expense!");
@@ -81,7 +78,7 @@ export class ExpenseComponent {
   }
 
   public saveAddExpenseTypeChanges(): void {
-    const expenseTypeCreateModel = new ExpenseTypeCreate();
+    const expenseTypeCreateModel = new ExpenseType();
     expenseTypeCreateModel.name = this.name;
     this.expenseTypeService.postExpenseType(expenseTypeCreateModel).subscribe({
       next: (response) => {

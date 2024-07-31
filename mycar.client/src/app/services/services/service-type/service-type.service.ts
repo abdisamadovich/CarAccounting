@@ -1,21 +1,44 @@
-import { ServiceTypeCreate } from '@@services/models/service-type/service-type.create.view-model';
-import { ServiceTypeGetAll } from '@@services/models/service-type/service-type.get-all.view-model';
+import { ServiceType } from '@@services/models';
 import { Injectable } from '@angular/core';
-import { ServiceTypeApiService } from '@api/service/service-type/service-type.api-service';
-import { Observable } from 'rxjs';
+import { ServiceTypeModel } from '@api/models';
+import { ServiceTypeApiService } from '@api/service';
+import { map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ServiceTypeService {
   constructor(private serviceType: ServiceTypeApiService) {}
 
-  // GetAll ServiceTypes
-  public getServiceTypes(): Observable<ServiceTypeGetAll[]> {
-    return this.serviceType.getServiceTypes();
+  public getServiceTypes(): Observable<ServiceType[]> {
+    return this.serviceType.getServiceTypes().pipe(
+      map((x) => {
+        const result: ServiceType[] = [];
+        for (let i = 0; i < x.length; i++) {
+          const model = this.toClass(x[i]);
+          result.push(model);
+        }
+
+        return result;
+      })
+    );
   }
 
-  public postServiceType(
-    serviceTypeCreate: ServiceTypeCreate
-  ): Observable<ServiceTypeCreate> {
-    return this.serviceType.addServiceType(serviceTypeCreate);
+  public postServiceType(expenseType: ServiceType): Observable<ServiceType> {
+    return this.serviceType
+      .addServiceType({
+        name: expenseType.name,
+      })
+      .pipe(
+        map((x) => {
+          const result = this.toClass(x);
+          return result;
+        })
+      );
+  }
+
+  private toClass(source: ServiceTypeModel): ServiceType {
+    const model = new ServiceType();
+    model.name = source.name;
+    model.id = source.id || null;
+    return model;
   }
 }

@@ -14,7 +14,7 @@ public class ExpenseMap : IEntityTypeConfiguration<Expense>
         builder.Property(x => x.Odometer).IsRequired();
         builder.Property(x => x.Place).IsRequired();
         builder.Property(x => x.Description).IsRequired();
-        builder.Property(x => x.Value).IsRequired();
+        builder.Property(x => x.Cost).IsRequired();
 
         builder.HasOne(x => x.ExpenseType).WithMany().HasForeignKey(x => x.ExpenseTypeId);
         builder.HasOne(x => x.Vehicle).WithMany().HasForeignKey(x => x.VehicleId);

@@ -1,21 +1,44 @@
-import { ExpenseTypeCreate } from '@@services/models/expense-type/expense-type.create.view-model';
-import { ExpenseTypeGetAll } from '@@services/models/expense-type/expense-type.get-all.view-model';
+import { ExpenseType } from '@@services/models';
 import { Injectable } from '@angular/core';
-import { ExpenseTypeApiService } from '@api/service/expense-type/expense-type.api-service';
-import { Observable } from 'rxjs';
+import { ExpenseTypeModel } from '@api/models';
+import { ExpenseTypeApiService } from '@api/service';
+import { map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ExpenseTypeService {
-  constructor(private serviceType: ExpenseTypeApiService) {}
+  constructor(private expenseType: ExpenseTypeApiService) {}
 
-  // GetAll ExpenseTypes
-  public getExpenseTypes(): Observable<ExpenseTypeGetAll[]> {
-    return this.serviceType.getExpenseTypes();
+  public postExpenseType(expenseType: ExpenseType): Observable<ExpenseType> {
+    return this.expenseType
+      .addExpenseType({
+        name: expenseType.name,
+      })
+      .pipe(
+        map((x) => {
+          const result = this.toClass(x);
+          return result;
+        })
+      );
   }
 
-  public postExpenseType(
-    expenseTypeCreate: ExpenseTypeCreate
-  ): Observable<ExpenseTypeCreate> {
-    return this.serviceType.addExpenseType(expenseTypeCreate);
+  public getExpenseTypes(): Observable<ExpenseType[]> {
+    return this.expenseType.getExpenseTypes().pipe(
+      map((x) => {
+        const result: ExpenseType[] = [];
+        for (let i = 0; i < x.length; i++) {
+          const model = this.toClass(x[i]);
+          result.push(model);
+        }
+
+        return result;
+      })
+    );
+  }
+
+  private toClass(source: ExpenseTypeModel): ExpenseType {
+    const model = new ExpenseType();
+    model.name = source.name;
+    model.id = source.id || null;
+    return model;
   }
 }

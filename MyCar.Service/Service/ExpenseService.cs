@@ -30,7 +30,7 @@ public class ExpenseService : IExpenseService
             Odometer = expense.Odometer,
             Place = expense.Place,
             Description = expense.Description,
-            Value = expense.Value,
+            Cost = expense.Cost,
         };
 
         _repository.Insert(entity);
@@ -85,7 +85,7 @@ public class ExpenseService : IExpenseService
             },
             Place = x.Place,
             Description = x.Description,
-            Value = x.Value,
+            Cost = x.Cost,
         }).ToList();
 
         return result;

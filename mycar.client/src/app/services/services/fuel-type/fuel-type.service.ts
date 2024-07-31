@@ -1,14 +1,31 @@
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { FuelTypeApiService } from '@api/service/fuel-type/fuel-type.api-service';
-import { FuelTypeGetAll } from '@@services/models/fuel-type/fuel-type.get-all.view-model';
+import { FuelTypeApiService } from '@api/service';
+import { FuelType } from '@@services/models';
+import { FuelTypeModel } from '@api/models';
 
 @Injectable({ providedIn: 'root' })
 export class FuelTypeService {
   constructor(private fuelType: FuelTypeApiService) {}
 
-  // GetAll FuelTypes
-  public getFuelTypes(): Observable<FuelTypeGetAll[]> {
-    return this.fuelType.getFuelTypes();
+  public getFuelTypes(): Observable<FuelType[]> {
+    return this.fuelType.getFuelTypes().pipe(
+      map((x) => {
+        const result: FuelType[] = [];
+        for (let i = 0; i < x.length; i++) {
+          const model = this.toClass(x[i]);
+          result.push(model);
+        }
+
+        return result;
+      })
+    );
+  }
+
+  private toClass(source: FuelTypeModel): FuelType {
+    const model = new FuelType();
+    model.name = source.name;
+    model.id = source.id || null;
+    return model;
   }
 }

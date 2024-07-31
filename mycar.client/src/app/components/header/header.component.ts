@@ -1,11 +1,5 @@
-import { FuelTypeGetAll } from '@@services/models/fuel-type/fuel-type.get-all.view-model';
-import { ManufacturerGetAll } from '@@services/models/manufacturer/manufacturer.get-all.view-model';
-import { VehicleCreate } from '@@services/models/vehicle/vehicle.create.view-model';
-import { VehicleDelete } from '@@services/models/vehicle/vehicle.delete.view-model';
-import { VehicleGetAll } from '@@services/models/vehicle/vehicle.get-all.view-model';
-import { FuelTypeService } from '@@services/services/fuel-type/fuel-type.service';
-import { ManufacturerService } from '@@services/services/manufacturer/manufacturer.service';
-import { VehicleService } from '@@services/services/vehicle/vehicle.service';
+import { Fuel, Manufacturer,Vehicle } from '@@services/models';
+import { FuelTypeService, ManufacturerService, VehicleService} from '@@services/services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -42,7 +36,7 @@ export class HeaderComponent implements OnInit {
   }
 
   // Vehicle
-  public vehicleId: number = 0;
+  public vehicleId: number | null = null;
   public name: string = '';
   public manufacturerId: number = 0;
   public model: string = '';
@@ -50,9 +44,9 @@ export class HeaderComponent implements OnInit {
   public fuelCapacity: number = 0;
   public description: string = '';
 
-  public fuelTypes: FuelTypeGetAll[] = [];
-  public vehicles: VehicleGetAll[] = [];
-  public manufacturers: ManufacturerGetAll[] = [];
+  public fuelTypes: Fuel[] = [];
+  public vehicles: Vehicle[] = [];
+  public manufacturers: Manufacturer[] = [];
 
   //For ModalWindow
   public modalCarCreate: boolean = false;
@@ -65,7 +59,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public saveAddChanges(): void {
-    const vehicleCreateModel = new VehicleCreate();
+    const vehicleCreateModel = new Vehicle();
     (vehicleCreateModel.name = this.name),
       (vehicleCreateModel.manufacturerId = this.manufacturerId),
       (vehicleCreateModel.model = this.model),
@@ -74,13 +68,14 @@ export class HeaderComponent implements OnInit {
       (vehicleCreateModel.description = this.description);
 
     this.vehicleService.postVehicle(vehicleCreateModel).subscribe({
-      next: (response: VehicleGetAll) => {
+      next: (response: Vehicle) => {
         this.resetVehicle();
         this.vehicleId = response.id;
-        localStorage.setItem('selectedVehicleId', this.vehicleId.toString());
-        this.getVehicle();
-        this.router.navigate(['/vehicle', this.vehicleId, 'history']);
-        this.getVehicle();
+        if (this.vehicleId !== null) {
+          localStorage.setItem('selectedVehicleId', this.vehicleId.toString());
+          this.router.navigate(['/vehicle', this.vehicleId, 'history']);
+          this.getVehicle();
+        }
       },
       error: (err) => {
         this.resetVehicle();
@@ -90,23 +85,12 @@ export class HeaderComponent implements OnInit {
     this.getVehicle();
   }
 
-  public deleteVehicle(): void {
-    const vehicleDeleteModel = new VehicleDelete();
-    vehicleDeleteModel.vehicleId = this.vehicleId;
-
-    this.vehicleService.deleteVehicle(vehicleDeleteModel).subscribe({
-      next: (response) => {
-        this.getVehicle();
-      },
-    });
-  }
-
   // Vehicle
   public getVehicle(): void {
     this.vehicleService.getVehicle().subscribe((res) => {
       this.vehicles = res;
       if (this.vehicles.length > 0 && !this.vehicleId) {
-        this.vehicleId = this.vehicles[0].id; // Default select the first vehicle
+        this.vehicleId = this.vehicles[0].id!; // Default select the first vehicle
         localStorage.setItem('selectedVehicleId', this.vehicleId.toString());
         this.router.navigate(['/vehicle', this.vehicleId, 'history']);
       }

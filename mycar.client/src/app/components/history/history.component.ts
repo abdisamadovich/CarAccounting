@@ -1,8 +1,7 @@
-import { RecordService } from '@@services/services/record/record.service';
+import { RecordService } from '@@services/services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RecordTypeGetAllModel } from '@api/models/record/record-type';
-import { RecordGetAllModel } from '@api/models/record/record.get-all.model';
+import { RecordModel, RecordType } from '@api/models';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -17,7 +16,7 @@ export class HistoryComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  public records: RecordGetAllModel[] = [];
+  public records: RecordModel[] = [];
   public vehicleId: number = 1;
   public offset: number = 0;
   public limit: number = 10;
@@ -47,15 +46,14 @@ export class HistoryComponent implements OnInit {
 
   public getRecordTypeName(type: number): string {
     switch (type) {
-      case RecordTypeGetAllModel.expense:
+      case RecordType.Expense:
         return 'Expense';
-      case RecordTypeGetAllModel.service:
+      case RecordType.Service:
         return 'Service';
-      case RecordTypeGetAllModel.refueling:
+      case RecordType.Refueling:
         return 'Refueling';
       default:
         return 'Unknown';
     }
   }
-
 }
