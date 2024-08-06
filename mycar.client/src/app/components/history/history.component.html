@@ -1,27 +1,47 @@
 <div class="container">
     <div *ngIf="records.length > 0; else noRecords">
-        <table class="table table-striped table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Date & Time</th>
-                    <th>Odometer</th>
-                    <th>Place</th>
-                    <th>Description</th>
-                    <th>Cost</th>
-                    <th>Type</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let record of records">
-                    <td>{{ record.date | date: 'long' }}</td>
-                    <td>{{ record.odometer }}</td>
-                    <td>{{ record.place }}</td>
-                    <td>{{ record.description }}</td>
-                    <td>{{ record.cost | currency }}</td>
-                    <td>{{ getRecordTypeName(record.recordType) }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div *ngFor="let record of records" class="record">
+            <div class="record-row record-info">
+                <div class="record-item">
+                    <ng-container class="record-img" [ngSwitch]="getRecordTypeName(record.recordType)">
+                        <img *ngSwitchCase="'Refueling'"
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABgUlEQVR4nO2Xy0oDMRiFP+lGcaNVi2i94jxJfQ5Bd1Z8Ad9CV64EF97eQRci7gQvIygiiNWFRRGZouCmlYFTCMNYZ2InKPTAgelpk/9LyCQpdPRP5QGPQOMH14AdIG9bqAAsRrJp4CFBcdNbtsV9dVBWNgncKzsEeiNtuoB1ff8BzOk5+E1xX5/HgTtlp8AY0B+xWbykvpqzkFhDwIUaXQHDQBG4TTjdYfFZo7/UAOXIyEeAG2XvwGsLV42RWwOghVfQ6K/VwQnQR3pZASCASzU+AwawkzWAr4bnwGCL/cDLCqAhh4syTj2C9PWcGcB3WjN+s+oaoATUgU+5HrP6MwPIGYtzRW6+tjkXAAvKwy25W64om3cBcKx8yciWlR25AKgpHzWyYotDp+0AL8pnjMxT9uwCYEP5vk7ICeBA2aYLgALwFHMKVnVEZw4QagrYA97kXV1WnO6ESdUBaNjOZBDzuqWVZ3spDbWd8urd9mt5Xn8qmjufjQMNJLwxd/Q39QXRCOiIgpZWwAAAAABJRU5ErkJggg==">
+                        <img *ngSwitchCase="'Expense'"
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABF0lEQVR4nO2VQWoCQRBFnzmFd3CVgKgXECUrwQPkGu41O72D4MJFLuTCoDPJBaKgKDJhoMSidabbHkUX/aEW/amqfjUU0xAUFBR0UuIZNaAELK6sO1PiEZFc3vCozQWIyNdI8oZyHhrnS4pdASKgldMonXgpufUL5yy1DYhMAJs+JG8pl9dVbddaXRCgChwyPn8ae+DtngBTh+2f3ArgE1gDA+X9qrwm8ALMDYDY0sMZYCXnP+VtVd6XeD0DYGPp4QwwkAZ95elpd0BZYqf8maVHoR2YGNOm0yNf4+iNLT0KAbwa036L31Re5Z4AqTrGMiLL6FpvBYjlr3VtIxvAO/Bzq7fAB8D5LUg8XzXfuucBCAoK4hH6ByKkA3hBNEu1AAAAAElFTkSuQmCC">
+                        <img *ngSwitchCase="'Service'"
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABuElEQVR4nO2XyUoDQRCGv4AGcbm533wA74KCJz2IYASJ4CvoMeCC4CmKr5CrF30DT+rFDXEBvQjqQYwBF3BDMKKRgT/QDDPjZGJaEH9oUkVXT33dqWpm4F9/UC1ACtgCXjS2gQkgbgOgGTgGCh7jAGiv5M6bPSBugTkgJ3+/UieRUlIvCOe3DbiUP14JgE0jmQlRPH5HY7KdmoikKmASOAXeXQ9/NnwTwoxplf0UNfmqT3E5upf9EBDTKPsuCsCsFl8DfUC1a35d84s+XeBoVPZaqck7gFfgE+j1iUnq4TmfVmsCzhQzEjZxnXa7oYVLAbExYEVxF8CQMZcAzjW3rFhPxYF+YF5VnTeO8FFFFKQaIOM6dgw/oxhPdRp9WhxOpe/qf+0ivPwAQvXxiRIOAA0lJC0bIK+g2ohJywYohAmyCTAMHKn9DlXJ1gAS6nmzID9drfXjADcet9ek7oIp+W8BV62ZJBJA0gOiXnMN3yQ1RywqgKkdLZgWxIz8nZAvE2UDDAIfrp196G7ABkARYk8vlXvysQlQjn4dIKuE3UCP7CubAAse3ZG2CRAXRFY7T9v6KPkXpeoL2Orioz0xPlAAAAAASUVORK5CYII=">
+                    </ng-container>
+                    <span class="record-type">{{ getRecordTypeName(record.recordType) }}</span>
+                </div>
+                <div class="record-item">
+                    <img class="cost-img"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFOklEQVR4nO2Ze2hWdRjHP7rzPOedM11u2UWKiqxcWUgXukhZSXSzG0RQNkq6mV0wIrOMpuYyCqcYkghG648gqLSMiqLCCpYuM4aSSyictOyilGVFhvHsfU6enc7mu73b3iPsCy/8zvs7v8v3nN/v+3x/z4FBDGIQA4kyhccFfg3hLaCagw0KVyi0C2wtg4sFXhP4XWAhIGQdOTha4SWFPxUei9cp1ATQovCTwI1kFBUCdT7JOqBK4SGFR4AwfqPCdQo/CHwlcBoZwRCFGwS+VXglB8fEK0M4QWCB3ZNoJyHUK+wRWAWMpFQI4EyFTxXWB3Ce/z1U4DaB+RUwOro3hEsEGgROTXRTJfCG7Z8Q5plADBiBcjhKYblAm8CdNnkndrbAkgDOsaWWsrQCgWkCTyYVLICzBL4WaC+Dy/udRAj3Kfzok6lwYmME6gVusaVWwNKytzBP4I7EGxgSwlMCe8N8Xf9BYHMA5/tltcIshTnA8O7apS0thZMFFoVwmT2UAF4W+DgHtQI/96tMGxGFcV5uU5jZk+YBTFd4Ajg0rmICm3JwQfRfAJtDmNvX808lovCFwK296GaUkQlhRn7OHW9sRtSvj3OGwG/AIWSYSNTXeFtuAUy07jzq/weFTwJY0RfzLpbIauB0L9vTn5Vv9r8+FwCVAjcHcG70fwjHK/xRAYeXmsgvwF5gGdAA7AMmpdx3mImGx6CGxHirPGCWnMi+xC+NiPX16DA4whTMVSyCKeMehbGlJrIOqAV2OJEtwJUp9450j2ZjLIqCrEFgue0XSkykycuV5DfzX07oPaAmfrPCg7YvPMrfFKsabgrmjqHkRCJY23ecjJGaFqsr941v4zwTd80h1FlsyRKRCJOBTcDS+J8B3CVwisKJFjzjQ1u0V5hSatWqSqk3KZ6QHMLfho01HxgRVYRwt0Jb0s/1BZGWAO7t5nZTqI2+jHZ1FUdSxphq+2EYHKnwcOLss71PDKUT6dikCrsUnj9Ak6EFqlanNlE8UZgdD4gK1wjsLPrcorDSLLuVQ3jVbHdC97vCAVUrMc7V5phdljvMYw4mCnym8Lf5taKI2NOx84gHKJPFZtf9Qi13d6rVCeLeS+EBgQ/CvOWptABZNBHveLald3ywuba8EgoT4XVgfBfd1DqZpd0QqfPxxtmBLjZ+3xBxp9oawqV2EcDnvtyqU1TrH6CR2PndcVIPiIw1Q9kfRKyz6+0wZDwsGSewOlrLBapWNogYBN4N4B4vf2jn+JQ8VVeqlR0iCjWSn6AFu+ME1iZteAxzEi64KTNEDArLBBZbOYDGEJ5WuJauiVj6aE2MUDaIAKMEvvfsiAawQeDZvOx3giUblrA/A3MV0JolIrjOv+/lmQovFJhdSfNapSNCXrlaImcqsM6CpLnYYjqVEhCJEnBbrRjCJIXdtmcU7i/EKGaGiEHgTcv3dlzA6DB/vd7EICUb31siIzRvbfqPiB2G7PuIWZhos4cwWaBJ4e0usvGp8IR4fYzIVLP0Ars1vx979ZZ7+sWqUWCb5ANhB+xNBbAxgBfTsvER7Axib0Lg9igB4S5ip8K2AC5kIBHCRQpfmmuV/Um6XAArFZotgxhPmbp0T4+fCsthjD+U7W4aiz8Z9hJ2QLLMertNKPbhxz41fOS/53zJLLYMiteXW8JOYIdb+f7J//YClg5daIHTM4oaWzLNCYs+ReAbE44QjiWLMDEQWCOwRRPHXYEJCmsVNgSxzwuZhj/1Vnvq9u1RYYXAd/ENfjBBTclsI3v6p3RfdQcxCArGv7J0NLKjeGKTAAAAAElFTkSuQmCC">
+                    <span class="cost">{{ record.cost | currency }}</span>
+                </div>
+                <div class="record-item">
+                    <img class="date-img"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAATUlEQVR4nGNgGO7gDpXUwMFbBgaG/xTiN/gsAClABpeJcNRlAmYQL0kkGAEW/KcCHuZBRCn4T7YkkWDUAoJgNIgGeRC9oXWFMwoY0AEAEZdWwBYWIEsAAAAASUVORK5CYII=">
+                    <span class="date">{{ record.date | date: 'dd MMMM' }}</span>
+                </div>
+            </div>
+            <div class="record-row record-details">
+                <div class="record-item">
+                    <img class="odometer-img"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB0UlEQVR4nO2WzSsGURTGf7EUGxEhoXws8G+QWFiREivysZA/QyxJ+QMkFr5XJLIWCx/Zoex8ZSPvi049b90m487My0LNU7fm3nvOc5575p4zAylS/DPUABPALnABvGrY8w4wDlT/ReAqYBF4Bz49IwusALW/FbwHeBH5G7AM9AFNQJGGPfdr70225tOdb/BJnehTp6oL7B8DR4G1emDVyYa9ssQnzwIZYEpr28CmY2PBD525uz8t32ySTFQ5ac8FN5wCJz/4BfenxfEMVMYRsOSk3UWBRhi+218Tl13iyKWW0WWqU1pPPYGD6AUu9ToaxPWuzHoxIcV2oxHJSUQBrcCeU5J2epRJm49FEbAjYyurqCgF5pU5870Hhh3RA1rfikJ2JeNGj10XcAdcAw9On5gBSgK2Tdq3junFi4yLQ+o8h9tAB9z+RnTOv9hpTrEEHAXqPEzATYhNzr/EKUcvLmTc7LHrlAgL3uGxbRHneZxLOMjvYSjOJRyT8brmSfpAIXDmtOVNcY5Gca5UOdloi9kHXAEmegNod74pFVEJFqV4X2RJYb4H4lqI41gOPMlxNg8Bc+J4BMriOndG/APyjYw+7YkwAnzkEfxDHClSpCAMX5atuFNg0cJXAAAAAElFTkSuQmCC">
+                    <span class="odometer">{{ record.odometer }} km</span>
+                </div>
+                <div class="record-item" *ngIf="record.place">
+                    <img class="place-img"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABt0lEQVR4nO2Wuy8EURjFf0sQr9omim1EVJ4tGpHsIqIQ/wLBX4DKq6dD9Kj8BWQlEiIKFLYSQTwKbyph5MaRTOzYnZ2ZXZHsSb5kcr9zzvfdO3fuHcjjH6ITWAISwIviGFgEOrJZuBaIA1aa2ARqgi7eDtypwDUwBjQA5YpGYFw5w7kFWoOc+Z2MV4CKFNxKYNXWRCArEbcVD7ngG86aNBtBbDhLS5tq5k4rcSOtr425JBPzzjPFhLQLfhpIyKTeIdcNXADnQMwh3yit+UQ940kmTst/bvv0zn55DZY8PONFJlUeGggr9+yngX2ZOC1xTE2Y4lGHfJe0e34amJHJsgftsrTTfg+hD+ARKMtAVwo8qIE6fGJLRsMZaEakMVrf6LNttGIX/CLgVJreIBoIAYcyHHTBHxL3wOXR7QoDMr1McySb3JW4/QSIELAt48kUvClxdoOc/TfaZP4KREhGRDkryH+Bn/i+69eTMl9jljhZQxi4V6Ee23hUY+a8qCbLGFWxE9sv2YnGTC7rKAB2VHAOmLed+YXkCC3AG/CuMM/N5BiztuvY14XjFSXAkcI8/wmaFHngFZ8Iv4WumFnlpQAAAABJRU5ErkJggg==">
+                    <span class="place">{{ record.place }}</span>
+                </div>
+
+                <div class="record-buttons">
+                    <button class="btn btn-edit">Edit</button>
+                    <button class="btn btn-delete">Delete</button>
+                </div>
+            </div>
+        </div>
     </div>
     <ng-template #noRecords>
         <p class="text-muted">No records found.</p>

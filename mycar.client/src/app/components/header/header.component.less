@@ -2,17 +2,31 @@
   width: 100px;
 
   select {
-    width: 100%;
     padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid #d4d9e2;
     border-radius: 5px;
     background-color: #f8f9fa;
-    color: #0c5f80;
+    color: #6482AD;
     outline: none;
+  }
+
+  option {
+    color: #6482AD;
+    font-size: 16px;
+    border-radius: 50px;
   }
 }
 
+.div-option {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  color: #0c1018;
+  outline: none;
+}
+
+//Modal window
 .modal {
   display: flex;
   justify-content: center;
@@ -43,4 +57,20 @@
   box-sizing: border-box;
   padding: 8px;
   margin: 5px 0;
+}
+//Modal window::end
+
+.nav-item {
+  display: inline-block;
+  font-size: 16px;
+  transition: transform 0.3s ease, font-size 0.3s ease;
+  color: #6482AD;
+}
+
+.nav-link {
+  color: #6482AD;
+}
+
+.nav-item:hover {
+  font-size: 17px;
 }

@@ -26,7 +26,7 @@ public class RecordRepository : IRecordRepository
         });
     }
 
-    public IQueryable<RecordViewModel> GetRefuellings(long vehicleId)
+    public IQueryable<RecordViewModel> GetServices(long vehicleId)
     {
         return MainContext.Services.Where(x => x.VehicleId == vehicleId).Select(x => new RecordViewModel
         {
@@ -40,7 +40,7 @@ public class RecordRepository : IRecordRepository
         });
     }
 
-    public IQueryable<RecordViewModel> GetServices(long vehicleId)
+    public IQueryable<RecordViewModel> GetRefuellings(long vehicleId)
     {
         return MainContext.Refuellings.Where(x => x.VehicleId == vehicleId).Select(x => new RecordViewModel
         {
