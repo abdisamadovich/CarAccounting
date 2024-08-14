@@ -1,4 +1,5 @@
-﻿using MyCar.Repository.Interfaces;
+﻿using MyCar.DataAccess.Models;
+using MyCar.Repository.Interfaces;
 using MyCar.Service.Interfaces;
 using MyCar.Service.ViewModels.FuelsTypesViewModel;
 using MyCar.Service.ViewModels.Manufacturers;
@@ -11,13 +12,25 @@ namespace MyCar.Service.Service;
 public class ServiceService : IServiceService
 {
     private readonly IServiceRepository _repository;
-    public ServiceService(IServiceRepository repository)
+    private readonly IRecordRepository _recordRepository;
+    public ServiceService(IServiceRepository repository, IRecordRepository recordRepository)
     {
         _repository = repository;
+        _recordRepository = recordRepository;
     }
     public void CreateNew(ServicePostViewModel service)
     {
+
         if (service == null) throw new ArgumentNullException(nameof(service));
+
+        var recordInfo = _recordRepository.GetPreviousAndNextRecord(service.VehicleId, service.Date);
+
+
+        if ((recordInfo.PreviousRecord != null && service.Odometer < recordInfo.PreviousRecord.Odometer) ||
+               (recordInfo.NextRecord != null && service.Odometer > recordInfo.NextRecord.Odometer))
+        {
+            throw new ArgumentException("Odometer reading must be between the previous and next readings.");
+        }
 
         var entity = new DataAccess.Models.Service
         {

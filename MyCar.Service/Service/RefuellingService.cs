@@ -12,16 +12,27 @@ namespace MyCar.Service.Service;
 public class RefuellingService : IRefuellingService
 {
     private readonly IRefuellingRepository _repository;
+    private readonly IRecordRepository _recordRepository;
 
-    public RefuellingService(IRefuellingRepository repository)
+    public RefuellingService(IRefuellingRepository repository, IRecordRepository recordRepository)
     {
         _repository = repository;
+        _recordRepository = recordRepository;
     }
+
     public void CreateNew(RefuellingPostViewModel refuelling)
     {
         if (refuelling == null) throw new ArgumentNullException(nameof(refuelling));
 
-        var entity = new Refuelling()
+        var recordInfo = _recordRepository.GetPreviousAndNextRecord(refuelling.VehicleId, refuelling.Date);
+
+        if ((recordInfo.PreviousRecord != null && refuelling.Odometer < recordInfo.PreviousRecord.Odometer) ||
+                (recordInfo.NextRecord != null && refuelling.Odometer > recordInfo.NextRecord.Odometer))
+        {
+            throw new ArgumentException("Odometer reading must be between the previous and next readings.");
+        }
+
+        var entity = new Refuelling
         {
             VehicleId = refuelling.VehicleId,
             Date = refuelling.Date,

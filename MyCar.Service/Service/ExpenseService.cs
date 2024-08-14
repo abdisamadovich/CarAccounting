@@ -13,14 +13,24 @@ namespace MyCar.Service.Service;
 public class ExpenseService : IExpenseService
 {
     private readonly IExpenseRepository _repository;
-    public ExpenseService(IExpenseRepository repository)
+    private readonly IRecordRepository _recordRepository;
+    public ExpenseService(IExpenseRepository repository, IRecordRepository recordRepository)
     {
         _repository = repository;
+        _recordRepository = recordRepository;
     }
 
     public void CreateNew(ExpensePostViewModel expense)
     {
         if (expense == null) throw new ArgumentNullException(nameof(expense));
+
+        var recordInfo = _recordRepository.GetPreviousAndNextRecord(expense.VehicleId, expense.Date);
+
+        if ((recordInfo.PreviousRecord != null && expense.Odometer < recordInfo.PreviousRecord.Odometer) ||
+                (recordInfo.NextRecord != null && expense.Odometer > recordInfo.NextRecord.Odometer))
+        {
+            throw new ArgumentException("Odometer reading must be between the previous and next readings.");
+        }
 
         var entity = new Expense
         {

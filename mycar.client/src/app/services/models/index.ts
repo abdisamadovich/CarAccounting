@@ -4,6 +4,7 @@ export { Fuel } from './fuel/fuel.model';
 export { FuelType } from './fuel-type/fuel-type.model';
 export { Manufacturer } from './manufacturer/manufacturer.model';
 export { Refuelling } from './refuelling/refuelling.model';
+export { Record } from './record/record.model';
 export { Service } from './service/service.model';
 export { ServiceType } from './service-type/service-type.model';
 export { Vehicle } from './vehicle/vehicle.model';

@@ -38,7 +38,7 @@ export class HistoryComponent implements OnInit {
   }
 
   public getRecords(): void {
-    this.record.getRecords(this.vehicleId, this.offset, this.limit).subscribe(
+    this.record.getRecords(this.vehicleId).subscribe(
       (data) => (this.records = data),
       (error) => this.toastr.warning('No records!')
     );

@@ -3,7 +3,7 @@ import { RecordType } from './record-type';
 export interface RecordModel {
   recordType: RecordType;
   recordId: number;
-  date: string;
+  date: Date;
   odometer: number;
   description: string;
   place: string;

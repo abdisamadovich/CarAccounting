@@ -74,6 +74,8 @@ export class ServiceComponent {
           this.resetService();
         },
       });
+
+    this.modalServiceTypeCreate = false;
   }
 
   public saveAddServicetypeChanges(): void {

@@ -53,4 +53,102 @@ public class RecordRepository : IRecordRepository
             Cost = x.TotalCost
         });
     }
+
+    public PreviousAndNextRecordViewModel GetPreviousAndNextRecord(long vehicleId, DateTime date)
+    {
+        var expensesBefore = MainContext.Expenses
+            .Where(x => x.VehicleId == vehicleId && x.Date < date)
+            .Select(x => new RecordViewModel
+            {
+                RecordType = RecordType.Expense,
+                RecordId = x.Id,
+                Date = x.Date,
+                Odometer = x.Odometer,
+                Place = x.Place,
+                Description = x.Description,
+                Cost = x.Cost
+            });
+
+        var servicesBefore = MainContext.Services
+             .Where(x => x.VehicleId == vehicleId && x.Date < date)
+             .Select(x => new RecordViewModel
+             {
+                 RecordType = RecordType.Service,
+                 RecordId = x.Id,
+                 Date = x.Date,
+                 Odometer = x.Odometer,
+                 Place = x.Place,
+                 Description = x.Notes,
+                 Cost = x.Price
+             });
+        var refuellingsBefore = MainContext.Refuellings
+             .Where(x => x.VehicleId == vehicleId && x.Date < date)
+             .Select(x => new RecordViewModel
+             {
+                 RecordType = RecordType.Refuelling,
+                 RecordId = x.Id,
+                 Date = x.Date,
+                 Odometer = x.Odometer,
+                 Place = x.Station,
+                 Description = "",
+                 Cost = x.TotalCost
+             });
+
+        var previousRecords = expensesBefore
+            .Union(servicesBefore)
+            .Union(refuellingsBefore)
+            .OrderByDescending(x => x.Date)
+            .FirstOrDefault();
+
+        var expensesAfter = MainContext.Expenses
+            .Where(x => x.VehicleId == vehicleId && x.Date > date)
+            .Select(x => new RecordViewModel
+            {
+                RecordType = RecordType.Expense,
+                RecordId = x.Id,
+                Date = x.Date,
+                Odometer = x.Odometer,
+                Place = x.Place,
+                Description = x.Description,
+                Cost = x.Cost
+            });
+
+        var servicesAfter = MainContext.Services
+            .Where(x => x.VehicleId == vehicleId && x.Date > date)
+            .Select(x => new RecordViewModel
+            {
+                RecordType = RecordType.Service,
+                RecordId = x.Id,
+                Date = x.Date,
+                Odometer = x.Odometer,
+                Place = x.Place,
+                Description = x.Notes,
+                Cost = x.Price
+            });
+
+        var refuellingsAfter = MainContext.Refuellings
+            .Where(x => x.VehicleId == vehicleId && x.Date > date)
+            .Select(x => new RecordViewModel
+            {
+                RecordType = RecordType.Refuelling,
+                RecordId = x.Id,
+                Date = x.Date,
+                Odometer = x.Odometer,
+                Place = x.Station,
+                Description = "",
+                Cost = x.TotalCost
+            });
+
+        var nextRecords = expensesAfter
+            .Union(servicesAfter)
+            .Union(refuellingsAfter)
+            .OrderBy(x => x.Date)
+            .FirstOrDefault();
+
+        return new PreviousAndNextRecordViewModel
+        {
+            PreviousRecord = previousRecords,
+            NextRecord = nextRecords
+        };
+    }
 }
