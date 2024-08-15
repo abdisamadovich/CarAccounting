@@ -1,65 +1,67 @@
-<div id="baseService">
-	<div id="service" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content blue-border">
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="date">Date:</label>
-							<input type="datetime-local" [(ngModel)]="date" class="form-control" id="date"
-								placeholder="date" name="date" required="date" />
-						</div>
-
-						<div class="form-group">
-							<label for="odometer">Odometer:</label>
-							<input type="number" [(ngModel)]="odometer" class="form-control" id="odometer"
-								placeholder="odometer" name="odometer" required="odometer" />
-						</div>
-
-						<div class="drowdown">
-							<label for="serviceType">Service: </label>
-							<div class="d-flex align-items-stretch">
-								<select [(ngModel)]="serviceTypeId" name="serviceType" (change)="serviceTypes"
-									class="form-control" id="serviceType">
-									<option [value]="serviceType.id" *ngFor="let serviceType of serviceTypes">
-										{{serviceType.name}}
-									</option>
-								</select>
-								<button type="button" (click)="showModalServiceTypeCreate()"
-									class="btn btn-outline-info ml-2">+</button>
+<div class="container">
+	<div class="baseService">
+		<div class="service" tabindex="-1" role="dialog">
+			<div>
+				<div class="content blue-border">
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label for="date">Date:</label>
+								<input type="datetime-local" [(ngModel)]="date" class="form-control" id="date"
+									placeholder="date" name="date" required="date" />
 							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="price">Price:</label>
-							<input type="number" [(ngModel)]="price" class="form-control" id="price" name="price"
-								required="price" />
-						</div>
-
-						<div class="form-group">
-							<label for="place">Place:</label>
-							<input type="text" [(ngModel)]="place" class="form-control" placeholder="place" name="place"
-								required="place" />
-						</div>
-
-						<div class="form-group">
-							<label for="notes">Notes:</label>
-							<input type="text" [(ngModel)]="notes" class="form-control" placeholder="notes" name="notes"
-								required="notes" />
-						</div>
-						
-						<br />
-
-						<button class="btn btn-success" type="submit" (click)="saveAddServiceChanges()">Save</button>
-					</form>
+	
+							<div class="form-group">
+								<label for="odometer">Odometer:</label>
+								<input type="number" [(ngModel)]="odometer" class="form-control" id="odometer"
+									placeholder="odometer" name="odometer" required="odometer" />
+							</div>
+	
+							<div class="drowdown">
+								<label for="serviceType">Service: </label>
+								<div class="d-flex align-items-stretch">
+									<select [(ngModel)]="serviceTypeId" name="serviceType" (change)="serviceTypes"
+										class="form-control">
+										<option [value]="serviceType.id" *ngFor="let serviceType of serviceTypes">
+											{{serviceType.name}}
+										</option>
+									</select>
+									<div class="service-type-create">
+										<button type="button" (click)="showModalServiceTypeCreate()"
+										class="btn btn-outline-info ml-2">+</button>
+									</div>
+								</div>
+							</div>
+	
+							<div class="form-group">
+								<label for="price">Price:</label>
+								<input type="number" [(ngModel)]="price" class="form-control" id="price" name="price"
+									required="price" />
+							</div>
+	
+							<div class="form-group">
+								<label for="place">Place:</label>
+								<input type="text" [(ngModel)]="place" class="form-control" placeholder="place" name="place"
+									required="place" />
+							</div>
+	
+							<div class="form-group">
+								<label for="notes">Notes:</label>
+								<input type="text" [(ngModel)]="notes" class="form-control" placeholder="notes" name="notes"
+									required="notes" />
+							</div>
+							
+							<div class="save-button">
+								<button class="btn btn-success" type="submit" (click)="saveAddServiceChanges()">Save</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
+	</div>	
 
-<div id="serviceType" *ngIf="modalServiceTypeCreate" tabindex="-1" role="dialog">
-	<div class="modal-dialog" role="document">
+	<div *ngIf="modalServiceTypeCreate" class="modal-container" tabindex="-1" role="dialog">
 		<div class="modal-content blue-border">
 			<div class="modal-header">
 				<h5 class="modal-title" id="myModalLabel">Create Service Type</h5>
@@ -74,8 +76,6 @@
 							name="carName" required="carName" />
 					</div>
 
-					<br />
-
 					<button type="button" class="m-1 btn btn-primary" data-dismiss="modal"
 						(click)="hideModalServiceTypeCreate()">
 						No
@@ -86,5 +86,5 @@
 				</form>
 			</div>
 		</div>
-	</div>
+</div>
 </div>

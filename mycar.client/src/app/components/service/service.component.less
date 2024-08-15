@@ -1,31 +1,57 @@
-#service {
-    position: relative;
-    max-width: 500px;
-    max-height: 600px;
-    display: block;
-    left: 100%;
-    right: 100%;
+.container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
 }
 
-#baseService {
-    max-width: 435px;
-    max-height: 10px;
+.service {
+    width: 435px;
+    margin: 0 auto;
+    background-color: #f8f9fa;
 }
 
-#serviceType {
-    position: relative;
-    max-width: 300px;
-    max-height: 300px;
-    display: block;
-    margin-right: 10px;
+.service-type-create {
+    margin-left: 10px;
+}
+
+.btn-close {
+    margin-left: auto;
+}
+
+.form-group, .drowdown {
+    color: #6482AD;
+}
+
+.save-button {
+    margin-top: 5px;
 }
 
 .blue-border {
-    border: 1px solid, #ccc;
+    border: 1px solid, #d4d9e2;
     border-radius: 5px;
     padding: 10px;
 }
 
-.btn-close {
-    margin-left: 70px;
+.modal-container {
+    position:absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.1);
+    top: 0;
+    left: 0;
+    z-index: 10;
+    padding-top: 200px;
+}
+
+.modal-content {
+    max-width: 300px;
+    background-color: white;
+    margin: 0 auto;
+}
+
+.content {
+    max-width: 435px;
+    background-color: white;
+    margin: 0 auto;
+    background-color: #f8f9fa;
 }

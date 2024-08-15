@@ -1,5 +1,5 @@
-<div id="baseRefuelling">
-	<div id="refuelling" tabindex="-1" role="dialog">
+<div class="baseRefuelling">
+	<div class="refuelling" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content blue-border">
 				<div class="modal-body">
@@ -17,7 +17,7 @@
 						</div>
 
 						<div id="fuels" class="drowdown">
-							<label for="fuel">Fuels: </label>
+							<label class="fuel-label" for="fuel">Fuels:</label>
 							<select [(ngModel)]="fuelId" name="fuel" (change)="fuels" class="form-control" id="fuel">
 								<option [value]="fuel.id" *ngFor="let fuel of fuels">
 									{{fuel.name}}
@@ -46,14 +46,15 @@
 								required="quantity" />
 						</div>
 
-						<br>
-
-						<div class="form-check form-switch">
-							<input class="form-check-input" [(ngModel)]="isFilled" type="checkbox" role="switch"
-								id="flexSwitchCheckDefault" name="isFilled">
-							<label class="form-check-label" for="flexSwitchCheckDefault">Are you filling the
-								tank?</label>
+						<div class="isFilled">
+							<div class="form-check form-switch">
+								<input class="form-check-input" [(ngModel)]="isFilled" type="checkbox" role="switch"
+									id="flexSwitchCheckDefault" name="isFilled">
+								<label class="form-check-label" for="flexSwitchCheckDefault">Are you filling the
+									tank?</label>
+							</div>
 						</div>
+						
 
 						<div class="form-group">
 							<label for="station">Station:</label>
@@ -61,9 +62,9 @@
 								name="station" required="station" />
 						</div>
 
-						<br />
-
-						<button class="btn btn-success" type="submit" (click)="saveAddChanges()">Save</button>
+						<div class="save-button">
+							<button class="btn btn-success" type="submit" (click)="saveAddChanges()">Save</button>
+						</div>
 					</form>
 				</div>
 			</div>
