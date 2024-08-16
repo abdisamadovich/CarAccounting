@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 // Declarations
 import { AppRoutingModule } from './app-routing.module';
@@ -36,6 +37,7 @@ import { RefuelingComponent } from '@@components/refueling/refueling.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    NgxSpinnerModule,
     HttpClientModule,
     AppRoutingModule,
     CommonModule,
