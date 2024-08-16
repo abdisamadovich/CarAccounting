@@ -41,7 +41,7 @@ export class HistoryComponent implements OnInit {
 
     setTimeout(() => {
       this.spinner.hide();
-    }, 3000);
+    }, 500);
   }
 
   public getRecords(): void {

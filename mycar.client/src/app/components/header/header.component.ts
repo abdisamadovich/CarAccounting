@@ -2,6 +2,7 @@ import { Fuel, Manufacturer,Vehicle } from '@@services/models';
 import { FuelTypeService, ManufacturerService, VehicleService} from '@@services/services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +16,8 @@ export class HeaderComponent implements OnInit {
     private manufacturerService: ManufacturerService,
     private fuelTypeService: FuelTypeService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +35,16 @@ export class HeaderComponent implements OnInit {
     this.getVehicle();
     this.getFuelType();
     this.getManufacturer();
+  }
+
+  // History
+  public setVehicleId(id: number): void {
+    this.vehicleId = id;
+    localStorage.setItem('vehicleId', id.toString());
+  }
+  
+  public goToHistory(): void {
+    this.router.navigate(['/vehicle', this.vehicleId, 'history']);
   }
 
   // Vehicle
@@ -112,6 +124,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public onVehicleChange(event: Event): void {
+    this.spinner.show();
     const element = <HTMLSelectElement>event.target;
     this.vehicleId = parseInt(element.value, 10);
 
@@ -121,6 +134,9 @@ export class HeaderComponent implements OnInit {
     }
     localStorage.setItem('selectedVehicleId', this.vehicleId.toString());
     this.router.navigate(['/vehicle', this.vehicleId, 'history']);
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 500);
   }
 
   private resetVehicle(): void {
