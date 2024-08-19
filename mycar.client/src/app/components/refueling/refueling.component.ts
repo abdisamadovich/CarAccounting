@@ -24,11 +24,12 @@ export class RefuelingComponent implements OnInit {
     });
     this.getFuel();
   }
-
+  
   public vehicleId: number = 0;
   // Refuelling
   public id: number = 0;
   public date: Date = new Date();
+  public format = "MM/dd/yyyy HH:mm";
   public odometer: number = 0;
   public fuelId: number = 0;
   public price: number = 0;

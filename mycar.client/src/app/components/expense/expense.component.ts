@@ -28,6 +28,7 @@ export class ExpenseComponent {
   public id: number = 0;
   public vehicleId: number = 0;
   public date: Date = new Date();
+  public format = "MM/dd/yyyy HH:mm";
   public odometer: number = 0;
   public expenseTypeId: number = 0;
   public place: string = '';

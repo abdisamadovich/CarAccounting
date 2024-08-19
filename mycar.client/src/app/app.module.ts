@@ -5,6 +5,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { IntlModule } from "@progress/kendo-angular-intl";
+import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
+import { LabelModule } from "@progress/kendo-angular-label";
+import { FormFieldModule } from "@progress/kendo-angular-inputs";
+import { ButtonsModule } from "@progress/kendo-angular-buttons";
+import { IconsModule } from "@progress/kendo-angular-icons";
 
 // Declarations
 import { AppRoutingModule } from './app-routing.module';
@@ -42,6 +48,12 @@ import { RefuelingComponent } from '@@components/refueling/refueling.component';
     AppRoutingModule,
     CommonModule,
     FormsModule,
+    DateInputsModule,
+    IntlModule,
+    LabelModule,
+    FormFieldModule,
+    ButtonsModule,
+    IconsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       // Add ToastrModule with forRoot method

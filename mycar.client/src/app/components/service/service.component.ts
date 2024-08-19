@@ -29,6 +29,7 @@ export class ServiceComponent {
   // Service
   public id: number = 0;
   public date: Date = new Date();
+  public format = "MM/dd/yyyy HH:mm";
   public odometer: number = 0;
   public serviceTypeId: number = 0;
   public place: string = '';
