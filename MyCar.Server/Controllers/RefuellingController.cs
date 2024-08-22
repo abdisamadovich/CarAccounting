@@ -27,10 +27,4 @@ public class RefuellingController : ControllerBase
     {
         return _service.GetAll();
     }
-
-    [HttpDelete]
-    public void Delete(int id)
-    {
-        _service.Delete(id);
-    }
 }

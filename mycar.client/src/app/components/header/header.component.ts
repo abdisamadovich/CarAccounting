@@ -130,6 +130,7 @@ export class HeaderComponent implements OnInit {
 
     if (isNaN(this.vehicleId)) {
       this.showModalCarCreate();
+      this.spinner.hide();
       return;
     }
     localStorage.setItem('selectedVehicleId', this.vehicleId.toString());

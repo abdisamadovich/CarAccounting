@@ -1,0 +1,13 @@
+<div class="container">
+    <div *ngIf="vehicles.length > 0; else noVehicles" class="vehicles-container">
+        <div *ngFor="let vehicle of vehicles" class="vehicle">
+            <p class="vehicle-name">{{ vehicle.name }}</p>
+            <button class="btn btn-delete" (click)="deleteVehicle(vehicle.id)">
+                Delete
+            </button>
+        </div>
+    </div>
+    <ng-template #noVehicles>
+        <p class="text-muted">No records found.</p>
+    </ng-template>
+</div>

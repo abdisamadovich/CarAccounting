@@ -40,6 +40,10 @@ export class VehicleService {
     );
   }
 
+  public deleteVehicle(id: number): Observable<void> {
+    return this.vehicle.deleteVehicle(id);
+  }
+
   private toClass(source: VehicleModel): Vehicle {
     const model = new Vehicle();
     model.id = source.id || null;

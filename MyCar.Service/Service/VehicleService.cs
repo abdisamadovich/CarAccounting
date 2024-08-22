@@ -10,11 +10,22 @@ namespace MyCar.Service.Service;
 
 public class VehicleService : IVehicleService
 {
-    private IVehicleRepository _repository;
+    private readonly IVehicleRepository _vehicleRepository;
+    private readonly IExpenseRepository _expenseRepository;
+    private readonly IRefuellingRepository _refuellingRepository;
+    private readonly IServiceRepository _serviceRepository;
 
-    public VehicleService(IVehicleRepository repository)
+    public VehicleService(
+        IVehicleRepository vehicleRepository,
+        IExpenseRepository expenseRepository,
+        IRefuellingRepository refuellingRepository,
+        IServiceRepository serviceRepository
+    )
     {
-        _repository = repository;
+        _vehicleRepository = vehicleRepository;
+        _expenseRepository = expenseRepository;
+        _refuellingRepository = refuellingRepository;
+        _serviceRepository = serviceRepository;
     }
     public void CreateNew(VehiclePostViewModel vehicle)
     {
@@ -38,24 +49,23 @@ public class VehicleService : IVehicleService
             Description = vehicle.Description,
         };
 
-        _repository.Insert(entity);
-        _repository.SaveChanges();
+        _vehicleRepository.Insert(entity);
+        _vehicleRepository.SaveChanges();
     }
 
-    public void Delete(int id)
+    public async Task DeleteAsync(int id)
     {
-        var result = _repository.GetAll().Where(x => x.Id == id).FirstOrDefault();
-        if (result == null)
-        {
-            throw new ArgumentNullException(nameof(Vehicle));
-        }
-        _repository.Delete(result);
-        _repository.SaveChanges();
+        _expenseRepository.DeleteByCriteria(x => x.VehicleId == id);
+        _refuellingRepository.DeleteByCriteria(x => x.VehicleId == id);
+        _serviceRepository.DeleteByCriteria(x => x.VehicleId == id);
+        await _vehicleRepository.DeleteAsync(v => v.Id == id);
+
+        _vehicleRepository.SaveChanges();
     }
 
     public List<VehicleGetViewModel> GetAll()
     {
-        var result = _repository.GetAll().Select(x => new VehicleGetViewModel
+        var result = _vehicleRepository.GetAll().Select(x => new VehicleGetViewModel
         {
             Id = x.Id,
             Name = x.Name,

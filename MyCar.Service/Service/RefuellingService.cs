@@ -49,17 +49,6 @@ public class RefuellingService : IRefuellingService
         _repository.SaveChanges();
     }
 
-    public void Delete(int id)
-    {
-        var result = _repository.GetAll().Where(x => x.Id == id).FirstOrDefault();
-        if (result == null)
-        {
-            throw new ArgumentNullException(nameof(Refuelling));
-        }
-        _repository.Delete(result);
-        _repository.SaveChanges();
-    }
-
     public List<RefuellingGetViewModel> GetAll()
     {
         var result = _repository.GetAll().Select(x => new RefuellingGetViewModel

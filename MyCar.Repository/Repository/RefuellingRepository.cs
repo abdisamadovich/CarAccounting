@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyCar.DataAccess;
 using MyCar.DataAccess.Models;
-using MyCar.Repository.Interfaces;
 using MyCar.Errors;
+using MyCar.Repository.Interfaces;
+using System.Linq.Expressions;
 
 namespace MyCar.Repository.Repository;
 
@@ -13,12 +14,10 @@ public class RefuellingRepository : IRefuellingRepository
     {
         MainContext = mainContext;
     }
-    public void Delete(Refuelling refuelling)
+
+    public int DeleteByCriteria(Expression<Func<Refuelling, bool>> criteria)
     {
-        if (MainContext.Entry(refuelling).State != EntityState.Deleted)
-        {
-            MainContext.Refuellings.Remove(refuelling);
-        }
+        return MainContext.Refuellings.Where(criteria).ExecuteDelete();
     }
 
     public IQueryable<Refuelling> GetAll()

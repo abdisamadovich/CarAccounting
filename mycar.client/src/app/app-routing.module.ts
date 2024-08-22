@@ -9,6 +9,7 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { ExpenseComponent } from '@@components/expense/expense.component';
 import { RefuelingComponent } from '@@components/refueling/refueling.component';
 import { HeaderComponent } from '@@components/header/header.component';
+import { DeleteCarComponent } from '@@components/delete-car/delete-car.component';
 const routes: Routes = [
   {
     path: '',
@@ -41,6 +42,10 @@ const routes: Routes = [
       {
         path: 'reports',
         component: ReportsComponent,
+      },
+      {
+        path: 'delete-car',
+        component: DeleteCarComponent
       },
       {
         path: '',

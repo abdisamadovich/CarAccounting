@@ -3,6 +3,8 @@ using MyCar.DataAccess;
 using MyCar.DataAccess.Models;
 using MyCar.Errors;
 using MyCar.Repository.Interfaces;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace MyCar.Repository.Repository;
 
@@ -13,12 +15,10 @@ public class ServiceRepository : IServiceRepository
     {
         MainContext = mainContext;
     }
-    public void Delete(Service service)
+
+    public int DeleteByCriteria(Expression<Func<Service, bool>> criteria)
     {
-        if (MainContext.Entry(service).State != EntityState.Deleted)
-        {
-            MainContext.Services.Remove(service);
-        }
+        return MainContext.Services.Where(criteria).ExecuteDelete();
     }
 
     public IQueryable<Service> GetAll()

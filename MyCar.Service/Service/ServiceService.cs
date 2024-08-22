@@ -47,17 +47,6 @@ public class ServiceService : IServiceService
         _repository.SaveChanges();
     }
 
-    public void Delete(int id)
-    {
-        var result = _repository.GetAll().Where(x => x.Id == id).FirstOrDefault();
-        if (result == null)
-        {
-            throw new ArgumentNullException(nameof(DataAccess.Models.Service));
-        }
-        _repository.Delete(result);
-        _repository.SaveChanges();
-    }
-
     public List<ServiceGetViewModel> GetAll()
     {
         var result = _repository.GetAll().Select(x => new ServiceGetViewModel

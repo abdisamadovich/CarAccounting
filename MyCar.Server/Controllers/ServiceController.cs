@@ -23,12 +23,6 @@ public class ServiceController : ControllerBase
         return model;
     }
 
-    [HttpDelete]
-    public void Delete(int id)
-    {
-        _serviceService.Delete(id);
-    }
-
     [HttpGet]
     public List<ServiceGetViewModel> GetAll()
     {

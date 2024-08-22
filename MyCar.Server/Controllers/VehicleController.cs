@@ -23,9 +23,10 @@ public class VehicleController : ControllerBase
     }
 
     [HttpDelete]
-    public void Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        _service.Delete(id);
+        await _service.DeleteAsync(id);
+        return Ok(new { success = true, message = "Vehicle deleted successfully." });
     }
 
     [HttpGet]

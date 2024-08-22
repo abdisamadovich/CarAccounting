@@ -26,6 +26,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ExpenseComponent } from './components/expense/expense.component';
 import { RefuelingComponent } from '@@components/refueling/refueling.component';
+import { DeleteCarComponent } from '@@components/delete-car/delete-car.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { RefuelingComponent } from '@@components/refueling/refueling.component';
     HistoryComponent,
     ReportsComponent,
     ExpenseComponent,
+    DeleteCarComponent
   ],
   imports: [
     BrowserModule,
