@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyCar.DataAccess.Models;
 using MyCar.Service.Interfaces;
 using MyCar.Service.Service;
 using MyCar.Service.ViewModels.FuelsViewModel;
@@ -27,5 +28,11 @@ public class ServiceController : ControllerBase
     public List<ServiceGetViewModel> GetAll()
     {
         return _serviceService.GetAll();
+    }
+
+    [HttpDelete]
+    public void Delete(int id)
+    {
+        _serviceService.Delete(id);
     }
 }

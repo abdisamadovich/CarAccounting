@@ -15,9 +15,9 @@ public class VehicleRepository : IVehicleRepository
         MainContext = mainContext;
     }
 
-    public async Task DeleteAsync(Expression<Func<Vehicle, bool>> predicate)
+    public void Delete(Expression<Func<Vehicle, bool>> predicate)
     {
-        await MainContext.Vehicles.Where(predicate).ExecuteDeleteAsync();
+        MainContext.Vehicles.Where(predicate).ExecuteDelete();
     }
 
     public IQueryable<Vehicle> GetAll()

@@ -53,12 +53,12 @@ public class VehicleService : IVehicleService
         _vehicleRepository.SaveChanges();
     }
 
-    public async Task DeleteAsync(int id)
+    public void Delete(int id)
     {
         _expenseRepository.DeleteByCriteria(x => x.VehicleId == id);
         _refuellingRepository.DeleteByCriteria(x => x.VehicleId == id);
         _serviceRepository.DeleteByCriteria(x => x.VehicleId == id);
-        await _vehicleRepository.DeleteAsync(v => v.Id == id);
+        _vehicleRepository.Delete(v => v.Id == id);
 
         _vehicleRepository.SaveChanges();
     }

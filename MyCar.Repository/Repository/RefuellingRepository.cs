@@ -15,6 +15,14 @@ public class RefuellingRepository : IRefuellingRepository
         MainContext = mainContext;
     }
 
+    public void Delete(Refuelling refuelling)
+    {
+        if (MainContext.Entry(refuelling).State != EntityState.Deleted)
+        {
+            MainContext.Refuellings.Remove(refuelling);
+        }
+    }
+
     public int DeleteByCriteria(Expression<Func<Refuelling, bool>> criteria)
     {
         return MainContext.Refuellings.Where(criteria).ExecuteDelete();

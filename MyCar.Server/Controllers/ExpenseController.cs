@@ -27,4 +27,10 @@ public class ExpenseController : ControllerBase
     {
         return _service.GetAllExpense();
     }
+
+    [HttpDelete]
+    public void Delete(int id)
+    {
+        _service.Delete(id);
+    }
 }

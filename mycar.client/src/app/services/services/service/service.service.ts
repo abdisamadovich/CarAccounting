@@ -41,6 +41,10 @@ export class ServiceService {
       );
   }
 
+  public deleteService(id: number): Observable<void> {
+    return this.service.deleteService(id);
+  }
+
   private toClass(source: ServiceModel): Service {
     const model = new Service();
     model.id = source.id || null;

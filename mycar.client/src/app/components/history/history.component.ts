@@ -1,9 +1,10 @@
-import { RecordService } from '@@services/services';
+import { ExpenseService, RecordService, RefuellingService, ServiceService } from '@@services/services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RecordModel, RecordType } from '@api/models';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-history',
@@ -12,6 +13,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class HistoryComponent implements OnInit {
   constructor(
+    private expenseService: ExpenseService,
+    private refuellingService: RefuellingService,
+    private serviceService: ServiceService,
     private route: ActivatedRoute,
     private record: RecordService,
     private toastr: ToastrService,
@@ -24,7 +28,6 @@ export class HistoryComponent implements OnInit {
   public limit: number = 10;
 
   ngOnInit(): void {
-    this.spinner.show();
     this.route.paramMap.subscribe((params) => {
       const vehicleIdParam = +params.get('vehicleId')!;
       if (vehicleIdParam) {
@@ -38,17 +41,55 @@ export class HistoryComponent implements OnInit {
         this.toastr.warning('Vehicle ID is not set!');
       }
     });
+  }
 
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 500);
+  private deleteRecordById(recordType: RecordType, id: number): void {
+    let deleteObservable: Observable<void>;
+    switch (recordType) {
+      case RecordType.Expense:
+        deleteObservable = this.expenseService.deleteExpense(id);
+        break;
+      case RecordType.Refueling:
+        deleteObservable = this.refuellingService.deleteRefuelling(id);
+        break;
+      case RecordType.Service:
+        deleteObservable = this.serviceService.deleteService(id);
+        break;
+      default:
+        this.toastr.error('Unknown record type');
+        return;
+    }
+
+    this.spinner.show();
+    deleteObservable.subscribe({
+      next: () => {
+        this.toastr.success(`${this.getRecordTypeName(recordType)} deleted`);
+        this.records = this.records.filter(record => record.recordId !== id);
+        this.spinner.hide();
+      },
+      error: () => {
+        this.toastr.error(`Failed to delete ${this.getRecordTypeName(recordType)}`);
+        this.spinner.hide();
+      }
+    });
+  }
+
+  public deleteRecord(record: RecordModel): void {
+    this.deleteRecordById(record.recordType, record.recordId);
   }
 
   public getRecords(): void {
-    this.record.getRecords(this.vehicleId).subscribe(
-      (data) => (this.records = data),
-      (error) => this.toastr.warning('No records!')
-    );
+    this.spinner.show();
+    this.record.getRecords(this.vehicleId).subscribe({
+      next: data => {
+        this.records = data;
+        this.spinner.hide();
+      },
+      error: () => {
+        this.toastr.warning('No records!');
+        this.spinner.hide();
+      }
+    });
   }
 
   public getRecordTypeName(type: number): string {

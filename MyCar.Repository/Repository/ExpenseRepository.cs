@@ -14,6 +14,14 @@ public class ExpenseRepository : IExpenseRepository
         MainContext = mainContext;
     }
 
+    public void Delete(Expense expense)
+    {
+        if (MainContext.Entry(expense).State != EntityState.Deleted)
+        {
+            MainContext.Expenses.Remove(expense);
+        }
+    }
+
     public int DeleteByCriteria(Expression<Func<Expense, bool>> criteria)
     {
         return MainContext.Expenses.Where(criteria).ExecuteDelete();

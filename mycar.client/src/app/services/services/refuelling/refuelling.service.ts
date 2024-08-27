@@ -43,6 +43,10 @@ export class RefuellingService {
     );
   }
 
+  public deleteRefuelling(id: number): Observable<void> {
+    return this.refuelling.deleteRefuelling(id);
+  }
+
   private toClass(source: RefuellingModel): Refuelling {
     const model = new Refuelling();
     model.date = source.date;

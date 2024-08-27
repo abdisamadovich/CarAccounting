@@ -47,6 +47,17 @@ public class ExpenseService : IExpenseService
         _repository.SaveChanges();
     }
 
+    public void Delete(int id)
+    {
+        var result = _repository.GetAll().Where(x => x.Id == id).FirstOrDefault();
+        if (result == null)
+        {
+            throw new NotFoundException(nameof(Expense));
+        }
+        _repository.Delete(result);
+        _repository.SaveChanges();
+    }
+
     public List<ExpenseGetViewModel> GetAllExpense()
     {
         var result = _repository.GetAll().Select(x => new ExpenseGetViewModel

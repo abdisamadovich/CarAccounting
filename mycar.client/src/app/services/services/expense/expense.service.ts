@@ -41,6 +41,10 @@ export class ExpenseService {
     );
   }
 
+  public deleteExpense(id: number): Observable<void> {
+    return this.expense.deleteExpense(id);
+  }
+
   private toClass(source: ExpenseModel): Expense {
     const model = new Expense();
     model.date = source.date;

@@ -21,4 +21,9 @@ export class RefuellingApiService {
     const url = `${this.apiUrl}`;
     return this.client.get<RefuellingModel[]>(url);
   }
+
+  public deleteRefuelling(id: number): Observable<void> {
+    const url = `${this.apiUrl}?id=${id}`;
+    return this.client.delete<void>(url);
+  }
 }

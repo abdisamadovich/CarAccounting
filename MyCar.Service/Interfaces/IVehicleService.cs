@@ -5,6 +5,6 @@ namespace MyCar.Service.Interfaces;
 public interface IVehicleService
 {
     void CreateNew(VehiclePostViewModel vehicle);
-    Task DeleteAsync(int id);
+    void Delete(int id);
     List<VehicleGetViewModel> GetAll();
 }

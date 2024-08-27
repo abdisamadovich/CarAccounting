@@ -16,6 +16,14 @@ public class ServiceRepository : IServiceRepository
         MainContext = mainContext;
     }
 
+    public void Delete(Service service)
+    {
+        if (MainContext.Entry(service).State != EntityState.Deleted)
+        {
+            MainContext.Services.Remove(service);
+        }
+    }
+
     public int DeleteByCriteria(Expression<Func<Service, bool>> criteria)
     {
         return MainContext.Services.Where(criteria).ExecuteDelete();
