@@ -1,4 +1,5 @@
-﻿using MyCar.Repository.Dto;
+﻿
+using MyCar.Repository.Dto;
 using MyCar.Repository.Interfaces;
 using MyCar.Service.Interfaces;
 
@@ -20,11 +21,24 @@ public class RecordService : IRecordService
 
         var unifiedQuery = expenseQuery.Union(serviceQuery).Union(refuellingQuery).OrderByDescending(x => x.Date).AsQueryable();
 
-        if (offset > 0)
-        {
-            unifiedQuery = unifiedQuery.Skip(offset);
-        }
+        var records = unifiedQuery
+            .Skip(offset)
+            .Take(limit)
+            .Select(record => new RecordViewModel
+            {
+                VehicleId = record.VehicleId,
+                RecordId = record.RecordId,
+                RecordType = record.RecordType,
+                Date = record.Date,
+                Odometer = record.Odometer,
+                Place = record.Place,
+                Description = record.Description,
+                Cost = record.Cost
+            })
+            .ToList();
 
-        return unifiedQuery.Take(limit).ToList();
+        records.ForEach(r => r.Date = DateTime.SpecifyKind(r.Date, DateTimeKind.Utc));
+
+        return records;
     }
 }

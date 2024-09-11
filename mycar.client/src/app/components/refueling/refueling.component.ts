@@ -1,7 +1,7 @@
 import { Fuel, Refuelling } from '@@services/models';
 import { FuelService, RefuellingService } from '@@services/services';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -15,7 +15,8 @@ export class RefuelingComponent implements OnInit {
     private refuellingService: RefuellingService,
     private fuelService: FuelService,
     private route: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -89,24 +90,16 @@ export class RefuelingComponent implements OnInit {
       this.refuellingService.postRefuelling(refuellingCreateModel).subscribe({
         next: (response) => {
           this.toastr.success('Succes add Refueling!');
-          this.resetRefuelling();
+          this.router.navigate(['/vehicle', this.vehicleId, 'history']);
         },
         error: (err) => {
           this.toastr.warning('Error during add!');
-          this.resetRefuelling();
         },
       });
     this.modalRefuellingCreate = false;
   }
 
-  private resetRefuelling(): void {
-    this.date = new Date();
-    this.odometer = 0;
-    this.fuelId = 0;
-    this.price = 0;
-    this.totalCost = 0;
-    this.quantity = 0;
-    this.isFilled = true;
-    this.station = '';
+  public cancel(): void {
+    this.router.navigate(['/vehicle', this.vehicleId, 'history']);
   }
 }

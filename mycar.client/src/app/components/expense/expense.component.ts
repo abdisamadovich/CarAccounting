@@ -1,7 +1,7 @@
 import { ExpenseType, Expense } from '@@services/models';
 import { ExpenseTypeService, ExpenseService } from '@@services/services';
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -14,7 +14,8 @@ export class ExpenseComponent {
     private expenseService: ExpenseService,
     private expenseTypeService: ExpenseTypeService,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   public ngOnInit(): void {
@@ -69,13 +70,16 @@ export class ExpenseComponent {
       this.expenseService.postExpense(expenseCreateModel).subscribe({
         next: (response) => {
           this.toastr.success("Succes add Expense!");
-          this.resetExpense();
+          this.router.navigate(['/vehicle', this.vehicleId, 'history']);
         },
         error: (err) => {
           this.toastr.warning("Error during add!");
-          this.resetExpense();
         },
       });
+  }
+
+  public cancel(): void {
+    this.router.navigate(['/vehicle', this.vehicleId, 'history']);
   }
 
   public saveAddExpenseTypeChanges(): void {
@@ -93,16 +97,6 @@ export class ExpenseComponent {
         this.getExpenseType();
       },
     });
-  }
-
-  private resetExpense(): void {
-    this.vehicleId = 0;
-    this.date = new Date();
-    this.odometer = 0;
-    this.expenseTypeId = 0;
-    this.place = '';
-    this.description = '';
-    this.value = 0;
   }
 
   private resetExpenseType(): void {

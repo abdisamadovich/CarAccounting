@@ -1,6 +1,6 @@
 import { ServiceService, ServiceTypeService } from '@@services/services';
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Service, ServiceType } from '@@services/models';
 
@@ -15,7 +15,8 @@ export class ServiceComponent {
     private serviceService: ServiceService,
     private serviceTypeService: ServiceTypeService,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -68,15 +69,18 @@ export class ServiceComponent {
       this.serviceService.postService(serviceCreateModel).subscribe({
         next: (response) => {
           this.toastr.success('Succes add Service!');
-          this.resetService();
+          this.router.navigate(['/vehicle', this.vehicleId, 'history']);
         },
         error: (err) => {
           this.toastr.warning('Error during add!');
-          this.resetService();
         },
       });
 
     this.modalServiceTypeCreate = false;
+  }
+
+  public cancel(): void {
+    this.router.navigate(['/vehicle', this.vehicleId, 'history']);
   }
 
   public saveAddServicetypeChanges(): void {
@@ -94,15 +98,6 @@ export class ServiceComponent {
         this.getServiceType();
       },
     });
-  }
-
-  private resetService(): void {
-    this.date = new Date();
-    this.odometer = 0;
-    this.serviceTypeId = 0;
-    this.price = 0;
-    this.place = '';
-    this.notes = '';
   }
 
   private resetServiceType(): void {

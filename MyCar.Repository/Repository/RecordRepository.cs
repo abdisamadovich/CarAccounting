@@ -17,6 +17,7 @@ public class RecordRepository : IRecordRepository
         return MainContext.Expenses.Where(x => x.VehicleId == vehicleId).Select(x => new RecordViewModel
         {
             Date = x.Date,
+            VehicleId = x.VehicleId,
             Odometer = x.Odometer,
             Description = x.Description,
             Place = x.Place,
@@ -31,6 +32,7 @@ public class RecordRepository : IRecordRepository
         return MainContext.Services.Where(x => x.VehicleId == vehicleId).Select(x => new RecordViewModel
         {
             Date = x.Date,
+            VehicleId = x.VehicleId,
             Odometer = x.Odometer,
             Description = x.Notes,
             Place = x.Place,
@@ -45,6 +47,7 @@ public class RecordRepository : IRecordRepository
         return MainContext.Refuellings.Where(x => x.VehicleId == vehicleId).Select(x => new RecordViewModel
         {
             Date = x.Date,
+            VehicleId = x.VehicleId,
             Odometer = x.Odometer,
             Description = "",
             Place = x.Station,
@@ -60,6 +63,7 @@ public class RecordRepository : IRecordRepository
             .Where(x => x.VehicleId == vehicleId && x.Date < date)
             .Select(x => new RecordViewModel
             {
+                VehicleId = x.VehicleId,
                 RecordType = RecordType.Expense,
                 RecordId = x.Id,
                 Date = x.Date,
@@ -73,6 +77,7 @@ public class RecordRepository : IRecordRepository
              .Where(x => x.VehicleId == vehicleId && x.Date < date)
              .Select(x => new RecordViewModel
              {
+                 VehicleId = x.VehicleId,
                  RecordType = RecordType.Service,
                  RecordId = x.Id,
                  Date = x.Date,
@@ -85,6 +90,7 @@ public class RecordRepository : IRecordRepository
              .Where(x => x.VehicleId == vehicleId && x.Date < date)
              .Select(x => new RecordViewModel
              {
+                 VehicleId = x.VehicleId,
                  RecordType = RecordType.Refuelling,
                  RecordId = x.Id,
                  Date = x.Date,
@@ -104,6 +110,7 @@ public class RecordRepository : IRecordRepository
             .Where(x => x.VehicleId == vehicleId && x.Date > date)
             .Select(x => new RecordViewModel
             {
+                VehicleId = x.VehicleId,
                 RecordType = RecordType.Expense,
                 RecordId = x.Id,
                 Date = x.Date,
@@ -117,6 +124,7 @@ public class RecordRepository : IRecordRepository
             .Where(x => x.VehicleId == vehicleId && x.Date > date)
             .Select(x => new RecordViewModel
             {
+                VehicleId = x.VehicleId,
                 RecordType = RecordType.Service,
                 RecordId = x.Id,
                 Date = x.Date,
@@ -130,6 +138,7 @@ public class RecordRepository : IRecordRepository
             .Where(x => x.VehicleId == vehicleId && x.Date > date)
             .Select(x => new RecordViewModel
             {
+                VehicleId = x.VehicleId,
                 RecordType = RecordType.Refuelling,
                 RecordId = x.Id,
                 Date = x.Date,
