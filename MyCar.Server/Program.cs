@@ -51,6 +51,9 @@ builder.Services.AddDbContext<MainContext>(options =>
 
 var app = builder.Build();
 
+var serviceScopeFactory = app.Services.GetRequiredKeyedService<IServiceScopeFactory>(null);
+serviceScopeFactory.MigrateAsync();
+
 // Get the logger instance
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 logger.LogInformation("Application started.");
