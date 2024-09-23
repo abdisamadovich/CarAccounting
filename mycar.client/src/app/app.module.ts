@@ -1,5 +1,5 @@
 // Imports
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ToastrModule } from 'ngx-toastr';
@@ -28,43 +28,36 @@ import { ExpenseComponent } from './components/expense/expense.component';
 import { RefuelingComponent } from '@@components/refueling/refueling.component';
 import { DeleteCarComponent } from '@@components/delete-car/delete-car.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    LayoutComponent,
-    HeaderComponent,
-    FooterComponent,
-    RefuelingComponent,
-    ServiceComponent,
-    HistoryComponent,
-    ReportsComponent,
-    ExpenseComponent,
-    DeleteCarComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    NgxSpinnerModule,
-    HttpClientModule,
-    AppRoutingModule,
-    CommonModule,
-    FormsModule,
-    DateInputsModule,
-    IntlModule,
-    LabelModule,
-    FormFieldModule,
-    ButtonsModule,
-    IconsModule,
-    ReactiveFormsModule,
-    ToastrModule.forRoot({
-      // Add ToastrModule with forRoot method
-      timeOut: 2000,
-      positionClass: 'toast-top-right',
-      preventDuplicates: true,
-    }),
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        HomeComponent,
+        LayoutComponent,
+        HeaderComponent,
+        FooterComponent,
+        RefuelingComponent,
+        ServiceComponent,
+        HistoryComponent,
+        ReportsComponent,
+        ExpenseComponent,
+        DeleteCarComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        BrowserAnimationsModule,
+        NgxSpinnerModule,
+        AppRoutingModule,
+        CommonModule,
+        FormsModule,
+        DateInputsModule,
+        IntlModule,
+        LabelModule,
+        FormFieldModule,
+        ButtonsModule,
+        IconsModule,
+        ReactiveFormsModule,
+        ToastrModule.forRoot({
+            // Add ToastrModule with forRoot method
+            timeOut: 2000,
+            positionClass: 'toast-top-right',
+            preventDuplicates: true,
+        })], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {}
