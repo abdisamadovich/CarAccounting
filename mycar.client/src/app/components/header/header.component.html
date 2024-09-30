@@ -22,21 +22,20 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="myModalLabel">Create Car</h5>
-          <button type="button" (click)="hideModalCarCreate()" class="btn-close" aria-label="Close"></button>
+          <h5 class="modal-title" id="myModalLabel">Add a vehicle</h5>
+          <button type="button" (click)="hideModalCarCreate()" class="btn-close custom-close-btn" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form>
             <div class="form-group">
               <label for="name">Name:</label>
-              <input type="text" [(ngModel)]="name" class="form-control" id="carName" placeholder="Name" name="carName"
-                required="carName" />
+              <input type="text" [(ngModel)]="name" class="form-control" id="carName" name="carName" />
             </div>
 
             <div>
               <label for="manufacturer">Manufacturers:</label>
               <select id="manufacturer" [(ngModel)]="manufacturerId" name="manufacturerId"
-                class="form-control dropdown-select" required>
+                class="form-control dropdown-select">
                 <option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.id">
                   {{ manufacturer.name }}
                 </option>
@@ -44,15 +43,13 @@
             </div>
 
             <div class="form-group">
-              <label for="model">Model</label>
-              <input type="text" [(ngModel)]="model" class="form-control" placeholder="Model" name="name"
-                required="modelName" />
+              <label for="model">Model:</label>
+              <input type="text" [(ngModel)]="model" class="form-control" name="name" />
             </div>
 
             <div>
-              <label for="fuelType">FuelTypes:</label>
-              <select id="fuelType" [(ngModel)]="fuelTypeId" name="fuelTypeId" class="form-control dropdown-select"
-                required>
+              <label for="fuelType">Fuel types:</label>
+              <select id="fuelType" [(ngModel)]="fuelTypeId" name="fuelTypeId" class="form-control dropdown-select">
                 <option *ngFor="let fuelType of fuelTypes" [value]="fuelType.id">
                   {{ fuelType.name }}
                 </option>
@@ -61,23 +58,19 @@
 
             <div class="form-group">
               <label for="model">Fuel capacity:</label>
-              <input type="text" [(ngModel)]="fuelCapacity" class="form-control" name="modelName"
-                required="modelName" />
+              <input type="text" [(ngModel)]="fuelCapacity" class="form-control" name="modelName" />
             </div>
 
             <div class="form-group">
               <label for="model">Description:</label>
-              <input type="text" [(ngModel)]="description" class="form-control" placeholder="Notes"
-                name="descriptionName" required="descriptionName" />
+              <input type="text" [(ngModel)]="description" class="form-control" name="descriptionName" />
             </div>
-
-            <button type="button" class="m-1 btn btn-primary" data-dismiss="modal" (click)="hideModalCarCreate()">
-              No
-            </button>
-            <button class="btn btn-success" type="submit" (click)="saveAddChanges()">
-              Yes
-            </button>
           </form>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="m-1 btn btn-primary" (click)="hideModalCarCreate()">No</button>
+          <button class="btn btn-success" type="submit" (click)="saveAddChanges()">Yes</button>
         </div>
       </div>
     </div>
