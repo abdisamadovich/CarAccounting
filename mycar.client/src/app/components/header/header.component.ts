@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
     this.vehicleId = id;
     localStorage.setItem('vehicleId', id.toString());
   }
-  
+
   public goToHistory(): void {
     this.router.navigate(['/vehicle', this.vehicleId, 'history']);
   }
@@ -55,6 +55,13 @@ export class HeaderComponent implements OnInit {
   public fuelTypeId: number = 0;
   public fuelCapacity: number = 0;
   public description: string = '';
+
+  //Variables For Error
+  public nameError: string = '';
+  public manufacturerError: string = '';
+  public modelError: string = '';
+  public fuelTypeError: string = '';
+  public fuelCapacityError: string = '';
 
   public fuelTypes: Fuel[] = [];
   public vehicles: Vehicle[] = [];
@@ -71,6 +78,20 @@ export class HeaderComponent implements OnInit {
   }
 
   public saveAddChanges(): void {
+    this.name = this.name.trim();
+    this.model = this.model.trim();
+    this.description = this.description.trim();
+    if (
+      !this.validateForm(
+        this.name,
+        this.model,
+        this.manufacturerId,
+        this.fuelTypeId,
+        this.fuelCapacity
+      )
+    ) {
+      return;
+    }
     const vehicleCreateModel = new Vehicle();
     (vehicleCreateModel.name = this.name),
       (vehicleCreateModel.manufacturerId = this.manufacturerId),
@@ -140,6 +161,31 @@ export class HeaderComponent implements OnInit {
     }, 500);
   }
 
+  public onInputChange(field: string): void {
+    switch (field) {
+      case 'name':
+        if (this.name.trim()) {
+          this.nameError = '';
+        }
+        break;
+      case 'model':
+        if (this.model.trim()) {
+          this.modelError = '';
+        }
+        break;
+      case 'manufacturer':
+        if (this.manufacturerId && this.manufacturerId != 0) {
+          this.manufacturerError = ''; 
+        }
+        break;
+      case 'fuelType':
+        if (this.fuelTypeId && this.fuelTypeId != 0) {
+          this.fuelTypeError = ''; 
+        }
+        break;
+    }
+  }
+
   private resetVehicle(): void {
     this.name = '';
     this.manufacturerId = 0;
@@ -147,5 +193,53 @@ export class HeaderComponent implements OnInit {
     this.fuelTypeId = 0;
     this.fuelCapacity = 0;
     this.description = '';
+  }
+
+  // validateForm
+  private validateForm(
+    name: string,
+    model: string,
+    manufacturerId: number,
+    fuelTypeId: number,
+    fuelCapacity: number
+  ): boolean {
+    let isValid = true;
+
+    if (!name.trim()) {
+      this.nameError = 'Name is required and cannot be empty!';
+      isValid = false;
+    } else if (name.length > 20) {
+      this.nameError = 'Name cannot exceed 20 characters.';
+      isValid = false;
+    } else {
+      this.nameError = '';
+    }
+
+    if (!model.trim()) {
+      this.modelError = 'Model is required!';
+      isValid = false;
+    } else if (model.length > 20) {
+      this.modelError = 'Model cannot exceed 20 characters.';
+      isValid = false;
+    } else {
+      this.modelError = '';
+    }
+
+    if (!manufacturerId) {
+      this.manufacturerError = 'Manufacturer is required!';
+      isValid = false;
+    }
+
+    if (!fuelTypeId) {
+      this.fuelTypeError = 'Fuel type is required!';
+      isValid = false;
+    }
+
+    if (fuelCapacity < 0) {
+      this.fuelCapacityError = 'Fuel capacity cannot be negative.';
+      isValid = false;
+    }
+
+    return isValid;
   }
 }

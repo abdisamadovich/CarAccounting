@@ -53,6 +53,7 @@ import { DeleteCarComponent } from '@@components/delete-car/delete-car.component
         FormFieldModule,
         ButtonsModule,
         IconsModule,
+        FormsModule,
         ReactiveFormsModule,
         ToastrModule.forRoot({
             // Add ToastrModule with forRoot method

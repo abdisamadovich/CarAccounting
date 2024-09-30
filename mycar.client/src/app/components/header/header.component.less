@@ -42,11 +42,13 @@
 }
 
 .modal-content {
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
   width: 500px;
-  height: 600px;
+  height: auto;
   background-color: #fefefe;
   display: flex;
   flex-direction: column;
@@ -85,4 +87,9 @@
 
 .modal-footer {
   justify-content: flex-start;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8rem;
 }
