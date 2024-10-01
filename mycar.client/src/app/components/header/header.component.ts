@@ -235,9 +235,14 @@ export class HeaderComponent implements OnInit {
       isValid = false;
     }
 
-    if (fuelCapacity < 0) {
-      this.fuelCapacityError = 'Fuel capacity cannot be negative.';
+    if (!fuelCapacity) {
+      this.fuelCapacityError = 'Fuel capacity is required!';
       isValid = false;
+    } else if (fuelCapacity < 1) {
+      this.fuelCapacityError = 'Fuel capacity cannot be negative or zero.';
+      isValid = false;
+    } else {
+      this.fuelCapacityError = '';
     }
 
     return isValid;

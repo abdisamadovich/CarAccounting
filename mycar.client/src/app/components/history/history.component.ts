@@ -1,9 +1,10 @@
 import { ExpenseService, RecordService, RefuellingService, ServiceService } from '@@services/services';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RecordModel, RecordType } from '@api/models';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -12,6 +13,9 @@ import { Observable } from 'rxjs';
   styleUrl: './history.component.less',
 })
 export class HistoryComponent implements OnInit {
+  @ViewChild('deleteRecordModal') deleteRecordModal!: TemplateRef<any>;
+  private recordToDelete!: RecordModel;
+
   constructor(
     private expenseService: ExpenseService,
     private refuellingService: RefuellingService,
@@ -19,7 +23,8 @@ export class HistoryComponent implements OnInit {
     private route: ActivatedRoute,
     private record: RecordService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private modalService: NgbModal
   ) {}
 
   public records: RecordModel[] = [];
@@ -43,35 +48,18 @@ export class HistoryComponent implements OnInit {
     });
   }
 
-  private deleteRecordById(recordType: RecordType, id: number): void {
-    let deleteObservable: Observable<void>;
-    switch (recordType) {
-      case RecordType.Expense:
-        deleteObservable = this.expenseService.deleteExpense(id);
-        break;
-      case RecordType.Refueling:
-        deleteObservable = this.refuellingService.deleteRefuelling(id);
-        break;
-      case RecordType.Service:
-        deleteObservable = this.serviceService.deleteService(id);
-        break;
-      default:
-        this.toastr.error('Unknown record type');
-        return;
-    }
+  public showModalDeleteRecord(record: RecordModel): void {
+    this.recordToDelete = record;
+    this.modalService.open(this.deleteRecordModal);
+  }
+  
+  public hideModalDeleteRecord(): void {
+    this.modalService.dismissAll(); 
+  }
 
-    this.spinner.show();
-    deleteObservable.subscribe({
-      next: () => {
-        this.toastr.success(`${this.getRecordTypeName(recordType)} deleted`);
-        this.records = this.records.filter(record => record.recordId !== id);
-        this.spinner.hide();
-      },
-      error: () => {
-        this.toastr.error(`Failed to delete ${this.getRecordTypeName(recordType)}`);
-        this.spinner.hide();
-      }
-    });
+  public confirmDelete(): void {
+    this.deleteRecord(this.recordToDelete);
+    this.hideModalDeleteRecord();
   }
 
   public deleteRecord(record: RecordModel): void {
@@ -103,5 +91,36 @@ export class HistoryComponent implements OnInit {
       default:
         return 'Unknown';
     }
+  }
+
+  private deleteRecordById(recordType: RecordType, id: number): void {
+    let deleteObservable: Observable<void>;
+    switch (recordType) {
+      case RecordType.Expense:
+        deleteObservable = this.expenseService.deleteExpense(id);
+        break;
+      case RecordType.Refueling:
+        deleteObservable = this.refuellingService.deleteRefuelling(id);
+        break;
+      case RecordType.Service:
+        deleteObservable = this.serviceService.deleteService(id);
+        break;
+      default:
+        this.toastr.error('Unknown record type');
+        return;
+    }
+
+    this.spinner.show();
+    deleteObservable.subscribe({
+      next: () => {
+        this.toastr.success(`${this.getRecordTypeName(recordType)} deleted`);
+        this.records = this.records.filter(record => record.recordId !== id);
+        this.spinner.hide();
+      },
+      error: () => {
+        this.toastr.error(`Failed to delete ${this.getRecordTypeName(recordType)}`);
+        this.spinner.hide();
+      }
+    });
   }
 }
