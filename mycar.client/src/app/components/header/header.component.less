@@ -1,31 +1,3 @@
-.drowdown {
-  width: 100px;
-
-  select {
-    padding: 0.5rem;
-    border: 1px solid #d4d9e2;
-    border-radius: 5px;
-    background-color: #f8f9fa;
-    color: #6482AD;
-    outline: none;
-  }
-
-  option {
-    color: #6482AD;
-    font-size: 16px;
-    border-radius: 50px;
-  }
-}
-
-.div-option {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f8f9fa;
-  color: #0c1018;
-  outline: none;
-}
-
 //Modal window
 .modal {
   display: flex;
@@ -53,13 +25,6 @@
   display: flex;
   flex-direction: column;
 }
-
-.form-control.dropdown-select {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 8px;
-  margin: 5px 0;
-}
 //Modal window::end
 
 .nav-item {
@@ -73,4 +38,23 @@
   color: #6482AD;
 }
 
+.dropdown-menu {
+  max-width: 200px;
+  width: 100%;
+  z-index: 1050;
+}
 
+.dropdown-toggle {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-item {
+  max-width: 200px;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

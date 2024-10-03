@@ -144,21 +144,19 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  public onVehicleChange(event: Event): void {
+  public onVehicleChange(vehicleId: number | null): void {
+    if(vehicleId === null) {return}
     this.spinner.show();
-    const element = <HTMLSelectElement>event.target;
-    this.vehicleId = parseInt(element.value, 10);
 
-    if (isNaN(this.vehicleId)) {
-      this.showModalCarCreate();
-      this.spinner.hide();
-      return;
-    }
+    this.vehicleId = vehicleId;
     localStorage.setItem('selectedVehicleId', this.vehicleId.toString());
     this.router.navigate(['/vehicle', this.vehicleId, 'history']);
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 500);
+    this.spinner.hide();
+  }
+
+  public getSelectedVehicleName(): string {
+    const selectedVehicle = this.vehicles.find(v => v.id === this.vehicleId);
+    return selectedVehicle ? selectedVehicle.name : "Select Vehicle";
   }
 
   public onInputChange(field: string): void {

@@ -5,15 +5,21 @@
       <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle',vehicleId,'service']">Add Service</a></li>
       <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle',vehicleId,'expense']">Add Expence</a></li>
       <li class="nav-item"><a href="#" class="nav-link" (click)="goToHistory()">History</a></li>
-      <div>
-        <div id="vehicles" class="drowdown">
-          <select [(ngModel)]="vehicleId" name="vehicle" (change)="onVehicleChange($event)">
-            <option [value]="vehicle.id" *ngFor="let vehicle of vehicles">
-              {{vehicle.name}}
-            </option>
-            <option><button (click)="showModalCarCreate()" type="button" class="btn btn-outline-info">+ Add Car</button></option>
-          </select>
-        </div>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">  
+          {{ getSelectedVehicleName() }}  
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton"> 
+          <li *ngFor="let vehicle of vehicles">
+            <a class="dropdown-item" [attr.title]="vehicle.name" (click)="onVehicleChange(vehicle.id)">
+              {{ vehicle.name }}
+            </a>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <button class="dropdown-item" (click)="showModalCarCreate()" type="button">+ Add a vehicle</button>
+          </li>
+        </ul>
       </div>
     </ul>
   </header>

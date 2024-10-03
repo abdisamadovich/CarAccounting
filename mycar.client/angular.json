@@ -44,7 +44,9 @@
               "node_modules/ngx-spinner/animations/square-jelly-box.css",
               "src/styles.less"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -109,7 +111,9 @@
               },
               "src/styles.less"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ],
             "karmaConfig": "karma.conf.js"
           }
         }
