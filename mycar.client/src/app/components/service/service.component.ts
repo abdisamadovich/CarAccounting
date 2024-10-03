@@ -41,6 +41,13 @@ export class ServiceComponent {
   public serviceTypes: ServiceType[] = [];
   //For ModalWindow
   public modalServiceTypeCreate: boolean = false;
+  // Variables for error
+  public nameError: string = "";
+  public odometerError: string = "";
+  public serviceTypeError: string = "";
+  public priceError: string = "";
+  public placeError: string = "";
+  public notesError: string = "";
 
   public showModalServiceTypeCreate(): void {
     this.modalServiceTypeCreate = true;
@@ -58,6 +65,18 @@ export class ServiceComponent {
   }
 
   public saveAddServiceChanges(): void {
+    this.place = this.place.trim();
+    this.notes = this.notes.trim();
+    if (
+      !this.validatFormService(
+        this.odometer,
+        this.serviceTypeId,
+        this.price,
+        this.place
+      )
+    ) {
+      return;
+    }
     const serviceCreateModel = new Service();
     (serviceCreateModel.vehicleId = this.vehicleId),
       (serviceCreateModel.date = this.date),
@@ -83,7 +102,21 @@ export class ServiceComponent {
     this.router.navigate(['/vehicle', this.vehicleId, 'history']);
   }
 
-  public saveAddServicetypeChanges(): void {
+  public saveAddServiceTypeChanges(): void {
+    this.name = this.name.trim();
+    if (
+      this.serviceTypes.some(
+        (serviceType) =>
+          serviceType.name.toLowerCase() === this.name.toLowerCase()
+      )
+    ) {
+      this.toastr.warning("Service type with the same name already exists!");
+      return;
+    }
+
+    if (!this.validateFormServiceType(this.name)) {
+      return;
+    }
     const servicetypeCreateModel = new ServiceType();
     servicetypeCreateModel.name = this.name;
     this.serviceTypeService.postServiceType(servicetypeCreateModel).subscribe({
@@ -91,6 +124,7 @@ export class ServiceComponent {
         this.toastr.success('Succes add ServiceType!');
         this.resetServiceType();
         this.getServiceType();
+        this.hideModalServiceTypeCreate();
       },
       error: (err) => {
         this.toastr.warning('Error during add!');
@@ -100,7 +134,91 @@ export class ServiceComponent {
     });
   }
 
+  public onInputChangeService(field: string): void {
+    switch (field) {
+      case "odometer":
+        if (this.odometer >= 0) {
+          this.odometerError = "";
+        }
+        break;
+      case "service":
+        if (this.serviceTypeId && this.serviceTypeId != 0) {
+          this.serviceTypeError = "";
+        }
+        break;
+      case "price":
+        if (this.price >= 0) {
+          this.priceError = "";
+        }
+        break;
+      case "place":
+        if (this.place && this.place.trim() !== "") {
+          this.placeError = "";
+        }
+        break;
+    }
+  }
+
+  public onInputChangeServiceType(field: string): void {
+    switch (field) {
+      case "name":
+        if (this.name.trim()) {
+          this.nameError = "";
+        }
+        break;
+    }
+  }
+
   private resetServiceType(): void {
     this.name = '';
+  }
+
+  // ValidateForm
+  private validatFormService(
+    odometer: number,
+    serviceTypeId: number,
+    price: number,
+    place: string
+  ): boolean {
+    let isValid = true;
+
+    if (odometer < 0) {
+      this.odometerError = "Odometer cannot be a negative value!";
+      isValid = false;
+    }
+
+    if (!serviceTypeId) {
+      this.serviceTypeError = "Service is required!";
+      isValid = false;
+    }
+
+    if (price < 0) {
+      this.priceError = "Price cannot be a negative value!";
+      isValid = false;
+    }
+
+    if (!place || place.trim() === "") {
+      this.placeError = "Place is required!";
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  //Validate form service type
+  private validateFormServiceType(name: string): boolean {
+    let isValid = true;
+
+    if (!name.trim()) {
+      this.nameError = "Name is required and cannot be empty!";
+      isValid = false;
+    } else if (name.length > 30) {
+      this.nameError = "Name cannot exceed 30 characters";
+      isValid = false;
+    } else {
+      this.nameError = "";
+    }
+
+    return isValid;
   }
 }

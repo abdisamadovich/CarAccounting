@@ -25,7 +25,7 @@ export class RefuelingComponent implements OnInit {
     });
     this.getFuel();
   }
-  
+
   public vehicleId: number = 0;
   // Refuelling
   public id: number = 0;
@@ -41,6 +41,13 @@ export class RefuelingComponent implements OnInit {
   //For ModalWindow
   public modalRefuellingCreate: boolean = false;
   public fuels: Fuel[] = [];
+  //Variables For Error
+  public odometerError: string = "";
+  public fuelError: string = "";
+  public priceError: string = "";
+  public quantityError: string = "";
+  public totalCostError: string = "";
+  public stationError: string = "";
 
   public calculateQuantity(): void {
     if (this.price !== 0 && this.totalCost !== 0) {
@@ -77,6 +84,19 @@ export class RefuelingComponent implements OnInit {
   }
 
   public saveAddChanges(): void {
+    this.station = this.station.trim();
+    if (
+      !this.validatForm(
+        this.odometer,
+        this.fuelId,
+        this.price,
+        this.quantity,
+        this.totalCost,
+        this.station
+      )
+    ) {
+      return;
+    }
     const refuellingCreateModel = new Refuelling();
     (refuellingCreateModel.vehicleId = this.vehicleId),
       (refuellingCreateModel.date = this.date),
@@ -101,5 +121,86 @@ export class RefuelingComponent implements OnInit {
 
   public cancel(): void {
     this.router.navigate(['/vehicle', this.vehicleId, 'history']);
+  }
+
+  public onInputChange(field: string): void {
+    switch (field) {
+      case "odometer":
+        if (this.odometer >= 0) {
+          this.odometerError = "";
+        }
+        break;
+      case "fuel":
+        if (this.fuelId && this.fuelId != 0) {
+          this.fuelError = "";
+        }
+        break;
+
+      case "price":
+        if (this.price >= 0) {
+          this.priceError = "";
+        }
+        break;
+      case "quantity":
+        if (this.quantity >= 0) {
+          this.quantityError = "";
+        }
+        break;
+      case "totalCost":
+        if (this.totalCost >= 0) {
+          this.totalCostError = "";
+        }
+        break;
+
+      case "station":
+        if (this.station && this.station.trim() !== "") {
+          this.stationError = "";
+        }
+        break;
+    }
+  }
+
+  // Validate form
+  private validatForm(
+    odometer: number,
+    fuelId: number,
+    price: number,
+    quantity: number,
+    totalCost: number,
+    station: string
+  ): boolean {
+    let isValid = true;
+
+    if (odometer < 0) {
+      this.odometerError = "Odometer cannot be a negative value!";
+      isValid = false;
+    }
+
+    if (!fuelId) {
+      this.fuelError = "Fuel is required!";
+      isValid = false;
+    }
+
+    if (price < 0) {
+      this.priceError = "Price cannot be a negative value!";
+      isValid = false;
+    }
+
+    if (quantity < 0) {
+      this.quantityError = "Quantity cannot be a negative value!";
+      isValid = false;
+    }
+
+    if (totalCost < 0) {
+      this.totalCostError = "Totalcost cannot be a negative value!";
+      isValid = false;
+    }
+
+    if (!station || station.trim() === "") {
+      this.stationError = "Gas station is required!";
+      isValid = false;
+    }
+
+    return isValid;
   }
 }

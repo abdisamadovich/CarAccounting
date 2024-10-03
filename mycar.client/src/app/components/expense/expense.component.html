@@ -6,7 +6,7 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <kendo-label text="Date and Time">
+                                <kendo-label text="Date and Time:">
                                     <kendo-datetimepicker
                                       [format]="format"
                                       [(value)]="date"
@@ -16,49 +16,50 @@
     
                             <div class="form-group">
                                 <label for="odometer">Odometer:</label>
-                                <input type="number" [(ngModel)]="odometer" class="form-control" id="odometer"
-                                    placeholder="odometer" name="odometer" required="odometer" />
+                                <input type="number" [(ngModel)]="odometer" class="form-control" id="odometer" name="odometer" (change)="onInputChangeExpense('odometer')"/>
+                                <div class="text-danger error-message" *ngIf="odometerError">{{ odometerError }}</div>
                             </div>
     
-                            <div class="drowdown">
-                                <label for="expenseType">Expense: </label>
+                            <div class="dropdown">
+                                <label for="expenseType">Expense:</label>
                                 <div class="d-flex align-items-stretch">
-                                    <select [(ngModel)]="expenseTypeId" name="expenseType" (change)="expenseTypes"
-                                        class="form-control" id="expenseType">
+                                    <div class="flex-grow-1">
+                                        <select [(ngModel)]="expenseTypeId" name="expenseType" class="form-control" 
+                                        (change)="onInputChangeExpense('expense')">
                                         <option [value]="expenseType.id" *ngFor="let expenseType of expenseTypes">
                                             {{expenseType.name}}
                                         </option>
                                     </select>
+                                    </div>                                    
                                     <div class="expense-type-create">
                                         <button type="button" (click)="showModalExpenseTypeCreate()"
-                                        class="btn btn-outline-info ml-2">+</button>
+                                        class="btn btn-outline-info">+</button>
                                     </div>
                                 </div>
+                                <div class="text-danger error-message" *ngIf="expenseError">{{ expenseError }}</div>
                             </div>
-    
+
+                            <div class="form-group">
+                                <label for="value">Cost:</label>
+                                <input type="number" [(ngModel)]="cost" class="form-control" id="price" name="price" (change)="onInputChangeExpense('cost')"/>
+                                <div class="text-danger error-message" *ngIf="costError">{{ costError }}</div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="place">Place:</label>
-                                <input type="text" [(ngModel)]="place" class="form-control" placeholder="place" name="place"
-                                    required="place" />
+                                <input type="text" [(ngModel)]="place" class="form-control" name="place" (change)="onInputChangeExpense('place')"/>
+                                <div class="text-danger error-message" *ngIf="placeError">{{ placeError }}</div>
                             </div>
     
                             <div class="form-group">
                                 <label for="description">Description:</label>
-                                <input type="text" [(ngModel)]="description" class="form-control" placeholder="description"
-                                    name="description" required="description" />
-                            </div>
-    
-                            <div class="form-group">
-                                <label for="value">Value:</label>
-                                <input type="number" [(ngModel)]="value" class="form-control" id="price" name="price"
-                                    required="price" />
-                            </div>
-    
-                            <div class="operation-button">
-                                <button class="btn btn-success" type="submit" (click)="saveAddExpenseChanges()">Save</button>
-                                <button class="btn btn-danger" type="button"  (click)="cancel()">Cancel</button>
-                            </div>
+                                <input type="text" [(ngModel)]="description" class="form-control" name="description"/>
+                            </div>                            
                         </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" type="button"  (click)="cancel()">Cancel</button>
+                        <button class="btn btn-secondary" type="button" (click)="saveAddExpenseChanges()">Save</button>
                     </div>
                 </div>
             </div>
@@ -66,30 +67,25 @@
     </div>
     
     <div *ngIf="modalExpenseTypeCreate" class="modal-container" tabindex="-1" role="dialog">
-            <div class="modal-content blue-border">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Create Expense Type</h5>
-                    <button type="button" (click)="hideModalExpenseTypeCreate()" class="btn-close"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" [(ngModel)]="name" class="form-control" id="Name" placeholder="Name"
-                                name="Name" required="Name" />
-                        </div>
-
-                        <button type="button" class="m-1 btn btn-primary" data-dismiss="modal"
-                            (click)="hideModalExpenseTypeCreate()">
-                            No
-                        </button>
-                        <button class="btn btn-success" type="submit" (click)="saveAddExpenseTypeChanges()">
-                            Yes
-                        </button>
-                    </form>
-                </div>
+        <div class="modal-content blue-border">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Add expense type</h5>
+                <button type="button" (click)="hideModalExpenseTypeCreate()" class="btn-close custom-close-btn"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" [(ngModel)]="name" class="form-control" id="Name" name="Name" (change)="onInputChangeExpenseType('name')"/>
+                        <div class="text-danger error-message" *ngIf="nameError">{{ nameError }}</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" type="button" (click)="hideModalExpenseTypeCreate()">Cancel</button>
+                <button class="btn btn-secondary" type="button" (click)="saveAddExpenseTypeChanges()">Save</button>
             </div>
         </div>
+    </div>
 </div>
-

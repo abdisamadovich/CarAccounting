@@ -6,7 +6,7 @@
 					<div class="modal-body">
 						<form>
 							<div class="form-group">
-								<kendo-label text="Date and Time">
+								<kendo-label text="Date and Time:">
 									<kendo-datetimepicker
 									  [format]="format"
 									  [(value)]="date"
@@ -16,49 +16,51 @@
 	
 							<div class="form-group">
 								<label for="odometer">Odometer:</label>
-								<input type="number" [(ngModel)]="odometer" class="form-control" id="odometer"
-									placeholder="odometer" name="odometer" required="odometer" />
+								<input type="number" [(ngModel)]="odometer" class="form-control" id="odometer" name="odometer" (change)="onInputChangeService('odometer')"/>
+								<div class="text-danger error-message" *ngIf="odometerError">{{ odometerError }}</div>
 							</div>
 	
-							<div class="drowdown">
-								<label for="serviceType">Service: </label>
+							<div class="dropdown">
+								<label for="serviceType">Service:</label>
 								<div class="d-flex align-items-stretch">
-									<select [(ngModel)]="serviceTypeId" name="serviceType" (change)="serviceTypes"
-										class="form-control">
-										<option [value]="serviceType.id" *ngFor="let serviceType of serviceTypes">
-											{{serviceType.name}}
-										</option>
-									</select>
+									<div class="flex-grow-1">
+										<select [(ngModel)]="serviceTypeId" name="serviceType" class="form-control " 
+											(change)="onInputChangeService('service')">
+											<option [value]="serviceType.id" *ngFor="let serviceType of serviceTypes">
+												{{serviceType.name}}
+											</option>
+										</select>
+									</div>
+
 									<div class="service-type-create">
-										<button type="button" (click)="showModalServiceTypeCreate()"
-										class="btn btn-outline-info ml-2">+</button>
+										<button type="button" (click)="showModalServiceTypeCreate()" 
+											class="btn btn-outline-info">+</button>
 									</div>
 								</div>
+								<div class="text-danger error-message mt-1" *ngIf="serviceTypeError">{{ serviceTypeError }}</div>
 							</div>
-	
+							  
 							<div class="form-group">
 								<label for="price">Price:</label>
-								<input type="number" [(ngModel)]="price" class="form-control" id="price" name="price"
-									required="price" />
+								<input type="number" [(ngModel)]="price" class="form-control" id="price" name="price" (change)="onInputChangeService('price')"/>
+								<div class="text-danger error-message" *ngIf="priceError">{{ priceError }}</div>
 							</div>
 	
 							<div class="form-group">
 								<label for="place">Place:</label>
-								<input type="text" [(ngModel)]="place" class="form-control" placeholder="place" name="place"
-									required="place" />
+								<input type="text" [(ngModel)]="place" class="form-control" name="place" (change)="onInputChangeService('place')"/>
+								<div class="text-danger error-message" *ngIf="placeError">{{ placeError }}</div>
 							</div>
 	
 							<div class="form-group">
 								<label for="notes">Notes:</label>
-								<input type="text" [(ngModel)]="notes" class="form-control" placeholder="notes" name="notes"
-									required="notes" />
-							</div>
-							
-							<div class="operation-button">
-								<button class="btn btn-success" type="submit" (click)="saveAddServiceChanges()">Save</button>
-								<button class="btn btn-danger" type="button"  (click)="cancel()">Cancel</button>
+								<input type="text" [(ngModel)]="notes" class="form-control" name="notes" />
 							</div>
 						</form>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-danger" type="button" (click)="cancel()">Cancel</button>
+						<button class="btn btn-secondary" type="button" (click)="saveAddServiceChanges()">Save</button>
 					</div>
 				</div>
 			</div>
@@ -68,27 +70,23 @@
 	<div *ngIf="modalServiceTypeCreate" class="modal-container" tabindex="-1" role="dialog">
 		<div class="modal-content blue-border">
 			<div class="modal-header">
-				<h5 class="modal-title" id="myModalLabel">Create Service Type</h5>
-				<button type="button" (click)="hideModalServiceTypeCreate()" class="btn-close"
+				<h5 class="modal-title" id="myModalLabel">Add service type</h5>
+				<button type="button" (click)="hideModalServiceTypeCreate()" class="btn-close custom-close-btn"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<form>
 					<div class="form-group">
 						<label for="name">Name:</label>
-						<input type="text" [(ngModel)]="name" class="form-control" id="carName" placeholder="Name"
-							name="carName" required="carName" />
+						<input type="text" [(ngModel)]="name" class="form-control" id="carName" name="carName" (change)="onInputChangeServiceType('name')"/>
+						<div class="text-danger error-message" *ngIf="nameError">{{ nameError }}</div>
 					</div>
-
-					<button type="button" class="m-1 btn btn-primary" data-dismiss="modal"
-						(click)="hideModalServiceTypeCreate()">
-						No
-					</button>
-					<button class="btn btn-success" type="submit" (click)="saveAddServicetypeChanges()">
-						Yes
-					</button>
 				</form>
 			</div>
+			<div class="modal-footer">
+				<button class="btn btn-danger" type="button" (click)="hideModalServiceTypeCreate()">Cancel</button>
+				<button class="btn btn-secondary" type="button" (click)="saveAddServiceTypeChanges()">Save</button>
+			</div>
 		</div>
-</div>
+	</div>
 </div>

@@ -1,55 +1,58 @@
-<div class="baseRefuelling">
-	<div class="refuelling" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content blue-border">
+<div class="container">
+	<div class="baseRefuelling">
+		<div class="refuelling" tabindex="-1" role="dialog">
+			<div class="content blue-border">
 				<div class="modal-body">
 					<form>
 						<div class="form-group">
-							<kendo-label text="Date and Time">
-								<kendo-datetimepicker
-								  [format]="format"
-								  [(value)]="date"
-								></kendo-datetimepicker>
-							  </kendo-label>
+							<kendo-label text="Date and Time:">
+								<kendo-datetimepicker [format]="format" [(value)]="date"></kendo-datetimepicker>
+							</kendo-label>
 						</div>
-						
+
 						<div class="form-group">
 							<label for="odometer">Odometer:</label>
 							<input type="number" [(ngModel)]="odometer" class="form-control" id="odometer"
-								placeholder="odometer" name="odometer" required="odometer" />
+								name="odometer" (input)="onInputChange('odometer')" />
+							<div class="text-danger error-message" *ngIf="odometerError">{{ odometerError }}</div>
 						</div>
 
-						<div id="fuels" class="drowdown">
-							<label class="fuel-label" for="fuel">Fuels:</label>
-							<select [(ngModel)]="fuelId" name="fuel" (change)="fuels" class="form-control" id="fuel">
+						<div class="dropdown">
+							<label class="fuel-label">Fuel:</label>
+							<select [(ngModel)]="fuelId" name="fuel" (change)="fuels" class="form-control" id="fuel"
+								(change)="onInputChange('fuel')">
 								<option [value]="fuel.id" *ngFor="let fuel of fuels">
 									{{fuel.name}}
 								</option>
 							</select>
+							<div class="text-danger error-message" *ngIf="fuelError">{{ fuelError }}</div>
 						</div>
 
 						<div class="form-group">
 							<label for="price">Price:</label>
 							<input type="number" [(ngModel)]="price" (input)="calculateTotalCost()"
 								(input)="calculateQuantity()" class="form-control" id="price" name="price"
-								required="price" />
-						</div>
-
-						<div class="form-group">
-							<label for="totalCost">TotalCost:</label>
-							<input type="number" [(ngModel)]="totalCost" (input)="calculateQuantity()"
-								(input)="calculatePrice()" class="form-control" id="totalCost" name="totalCost"
-								required="totalCost" />
+								(input)="onInputChange('price')" />
+							<div class="text-danger error-message" *ngIf="priceError">{{ priceError }}</div>
 						</div>
 
 						<div class="form-group">
 							<label for="quantity">Quantity:</label>
 							<input type="number" [(ngModel)]="quantity" (input)="calculateTotalCost()"
-								(input)="calculatePrice()" class="form-control" id="quantity" name="quantity"
-								required="quantity" />
+								(input)="calculateQuantity()" class="form-control" id="quantity" name="quantity"
+								(input)="onInputChange('quantity')" />
+							<div class="text-danger error-message" *ngIf="quantityError">{{ quantityError }}</div>
 						</div>
 
-						<div class="isFilled">
+						<div class="form-group">
+							<label for="totalCost">Total cost:</label>
+							<input type="number" [(ngModel)]="totalCost" (input)="calculateQuantity()"
+								(input)="calculateTotalCost()" class="form-control" id="totalCost" name="totalCost"
+								(input)="onInputChange('totalCost')" />
+							<div class="text-danger error-message" *ngIf="totalCostError">{{ totalCostError }}</div>
+						</div>
+
+						<div class="form-group">
 							<div class="form-check form-switch">
 								<input class="form-check-input" [(ngModel)]="isFilled" type="checkbox" role="switch"
 									id="flexSwitchCheckDefault" name="isFilled">
@@ -57,19 +60,18 @@
 									tank?</label>
 							</div>
 						</div>
-						
 
 						<div class="form-group">
-							<label for="station">Station:</label>
-							<input type="text" [(ngModel)]="station" class="form-control" placeholder="Station"
-								name="station" required="station" />
-						</div>
-
-						<div class="operation-button">
-							<button class="btn btn-success" type="submit" (click)="saveAddChanges()">Save</button>
-							<button class="btn btn-danger" type="button"  (click)="cancel()">Cancel</button>
+							<label for="station">Gas station:</label>
+							<input type="text" [(ngModel)]="station" class="form-control" name="station"
+								(input)="onInputChange('station')" />
+							<div class="text-danger error-message" *ngIf="stationError">{{ stationError }}</div>
 						</div>
 					</form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-danger" type="button" (click)="cancel()">Cancel</button>
+					<button class="btn btn-secondary" type="button" (click)="saveAddChanges()">Save</button>
 				</div>
 			</div>
 		</div>

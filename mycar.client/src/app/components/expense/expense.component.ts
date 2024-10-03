@@ -34,13 +34,17 @@ export class ExpenseComponent {
   public expenseTypeId: number = 0;
   public place: string = '';
   public description: string = '';
-  public value: number = 0;
-
-  // ExpenseType
+  public cost: number = 0;
+  //Expense type
   public name: string = '';
   public expenseTypes: ExpenseType[] = [];
-
-  //For ModalWindow
+  //Variables for error
+  public nameError: string = "";
+  public odometerError: string = "";
+  public expenseError: string = "";
+  public placeError: string = "";
+  public costError: string = "";
+  //For modal windows
   public modalExpenseTypeCreate: boolean = false;
 
   public showModalExpenseTypeCreate(): void {
@@ -59,6 +63,18 @@ export class ExpenseComponent {
   }
 
   public saveAddExpenseChanges(): void {
+    this.place = this.place.trim();
+    this.description = this.description.trim();
+    if (
+      !this.validatForm(
+        this.odometer,
+        this.expenseTypeId,
+        this.cost,
+        this.place
+      )
+    ) {
+      return;
+    }
     const expenseCreateModel = new Expense();
     (expenseCreateModel.vehicleId = this.vehicleId),
       (expenseCreateModel.date = this.date),
@@ -66,7 +82,7 @@ export class ExpenseComponent {
       (expenseCreateModel.expenseTypeId = this.expenseTypeId),
       (expenseCreateModel.place = this.place),
       (expenseCreateModel.description = this.description),
-      (expenseCreateModel.cost = this.value),
+      (expenseCreateModel.cost = this.cost),
       this.expenseService.postExpense(expenseCreateModel).subscribe({
         next: (response) => {
           this.toastr.success("Succes add Expense!");
@@ -83,6 +99,20 @@ export class ExpenseComponent {
   }
 
   public saveAddExpenseTypeChanges(): void {
+    this.name = this.name.trim();
+    if (
+      this.expenseTypes.some(
+        (expenseType) =>
+          expenseType.name.toLowerCase() === this.name.toLowerCase()
+      )
+    ) {
+      this.toastr.warning("Service type with the same name already exists!");
+      return;
+    }
+
+    if (!this.validateFormServiceType(this.name)) {
+      return;
+    }
     const expenseTypeCreateModel = new ExpenseType();
     expenseTypeCreateModel.name = this.name;
     this.expenseTypeService.postExpenseType(expenseTypeCreateModel).subscribe({
@@ -90,6 +120,7 @@ export class ExpenseComponent {
         this.toastr.success("Succes add ExpenseType!");
         this.resetExpenseType();
         this.getExpenseType();
+        this.hideModalExpenseTypeCreate();
       },
       error: (err) => {
         this.toastr.warning("Error during add!");
@@ -99,7 +130,91 @@ export class ExpenseComponent {
     });
   }
 
+  public onInputChangeExpense(field: string): void {
+    switch (field) {
+      case "odometer":
+        if (this.odometer >= 0) {
+          this.odometerError = "";
+        }
+        break;
+      case "expense":
+        if (this.expenseTypeId && this.expenseTypeId != 0) {
+          this.expenseError = "";
+        }
+        break;
+      case "cost":
+        if (this.cost >= 0) {
+          this.costError = "";
+        }
+        break;
+      case "place":
+        if (this.place && this.place.trim() !== "") {
+          this.placeError = "";
+        }
+        break;
+    }
+  }
+
+  // Validate form
+  private validatForm(
+    odometer: number,
+    expenseTypeId: number,
+    cost: number,
+    place: string
+  ): boolean {
+    let isValid = true;
+
+    if (odometer < 0) {
+      this.odometerError = "Odometer cannot be a negative value!";
+      isValid = false;
+    }
+
+    if (!expenseTypeId) {
+      this.expenseError = "Expense is required!";
+      isValid = false;
+    }
+
+    if (cost < 0) {
+      this.costError = "Cost cannot be a negative value!";
+      isValid = false;
+    }
+
+    if (!place || place.trim() === "") {
+      this.placeError = "Place is required!";
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  public onInputChangeExpenseType(field: string): void {
+    switch (field) {
+      case "name":
+        if (this.name.trim()) {
+          this.nameError = "";
+        }
+        break;
+    }
+  }
+
   private resetExpenseType(): void {
     this.name = '';
+  }
+
+  //Validate form service type
+  private validateFormServiceType(name: string): boolean {
+    let isValid = true;
+
+    if (!name.trim()) {
+      this.nameError = "Name is required and cannot be empty!";
+      isValid = false;
+    } else if (name.length > 30) {
+      this.nameError = "Name cannot exceed 30 characters";
+      isValid = false;
+    } else {
+      this.nameError = "";
+    }
+
+    return isValid;
   }
 }
