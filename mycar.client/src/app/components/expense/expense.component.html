@@ -20,23 +20,25 @@
                                 <div class="text-danger error-message" *ngIf="odometerError">{{ odometerError }}</div>
                             </div>
     
-                            <div class="dropdown">
-                                <label for="expenseType">Expense:</label>
-                                <div class="d-flex align-items-stretch">
-                                    <div class="flex-grow-1">
-                                        <select [(ngModel)]="expenseTypeId" name="expenseType" class="form-control" 
-                                        (change)="onInputChangeExpense('expense')">
-                                        <option [value]="expenseType.id" *ngFor="let expenseType of expenseTypes">
-                                            {{expenseType.name}}
-                                        </option>
-                                    </select>
-                                    </div>                                    
-                                    <div class="expense-type-create">
-                                        <button type="button" (click)="showModalExpenseTypeCreate()"
-                                        class="btn btn-outline-info">+</button>
+                            <div class="form-group">
+                                <div class="dropdown">
+                                    <label for="expenseType">Expense:</label>
+                                    <div class="d-flex align-items-stretch">
+                                        <div class="flex-grow-1">
+                                            <select [(ngModel)]="expenseTypeId" name="expenseType" class="form-control" 
+                                            (change)="onInputChangeExpense('expense')">
+                                            <option [value]="expenseType.id" *ngFor="let expenseType of expenseTypes">
+                                                {{expenseType.name}}
+                                            </option>
+                                        </select>
+                                        </div>                                    
+                                        <div class="expense-type-create">
+                                            <button type="button" (click)="showModalExpenseTypeCreate()"
+                                            class="btn btn-outline-success">+</button>
+                                        </div>
                                     </div>
+                                    <div class="text-danger error-message" *ngIf="expenseError">{{ expenseError }}</div>
                                 </div>
-                                <div class="text-danger error-message" *ngIf="expenseError">{{ expenseError }}</div>
                             </div>
 
                             <div class="form-group">
@@ -58,8 +60,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-danger" type="button"  (click)="cancel()">Cancel</button>
-                        <button class="btn btn-secondary" type="button" (click)="saveAddExpenseChanges()">Save</button>
+                        <button class="btn btn-outline-danger" type="button"  (click)="cancel()">Cancel</button>
+                        <button class="btn btn-outline-success" type="button" (click)="saveAddExpenseChanges()">Save</button>
                     </div>
                 </div>
             </div>
@@ -83,8 +85,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger" type="button" (click)="hideModalExpenseTypeCreate()">Cancel</button>
-                <button class="btn btn-secondary" type="button" (click)="saveAddExpenseTypeChanges()">Save</button>
+                <button class="btn btn-outline-danger" type="button" (click)="hideModalExpenseTypeCreate()">Cancel</button>
+                <button class="btn btn-outline-success" type="button" (click)="saveAddExpenseTypeChanges()">Save</button>
             </div>
         </div>
     </div>

@@ -19,25 +19,27 @@
 								<input type="number" [(ngModel)]="odometer" class="form-control" id="odometer" name="odometer" (change)="onInputChangeService('odometer')"/>
 								<div class="text-danger error-message" *ngIf="odometerError">{{ odometerError }}</div>
 							</div>
+							
+							<div class="form-group">
+								<div class="dropdown">
+									<label for="serviceType">Service:</label>
+									<div class="d-flex align-items-stretch">
+										<div class="flex-grow-1">
+											<select [(ngModel)]="serviceTypeId" name="serviceType" class="form-control " 
+												(change)="onInputChangeService('service')">
+												<option [value]="serviceType.id" *ngFor="let serviceType of serviceTypes">
+													{{serviceType.name}}
+												</option>
+											</select>
+										</div>
 	
-							<div class="dropdown">
-								<label for="serviceType">Service:</label>
-								<div class="d-flex align-items-stretch">
-									<div class="flex-grow-1">
-										<select [(ngModel)]="serviceTypeId" name="serviceType" class="form-control " 
-											(change)="onInputChangeService('service')">
-											<option [value]="serviceType.id" *ngFor="let serviceType of serviceTypes">
-												{{serviceType.name}}
-											</option>
-										</select>
+										<div class="service-type-create">
+											<button type="button" (click)="showModalServiceTypeCreate()" 
+												class="btn btn-outline-success">+</button>
+										</div>
 									</div>
-
-									<div class="service-type-create">
-										<button type="button" (click)="showModalServiceTypeCreate()" 
-											class="btn btn-outline-info">+</button>
-									</div>
+									<div class="text-danger error-message mt-1" *ngIf="serviceTypeError">{{ serviceTypeError }}</div>
 								</div>
-								<div class="text-danger error-message mt-1" *ngIf="serviceTypeError">{{ serviceTypeError }}</div>
 							</div>
 							  
 							<div class="form-group">
@@ -59,8 +61,8 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button class="btn btn-danger" type="button" (click)="cancel()">Cancel</button>
-						<button class="btn btn-secondary" type="button" (click)="saveAddServiceChanges()">Save</button>
+						<button class="btn btn-outline-danger" type="button" (click)="cancel()">Cancel</button>
+						<button class="btn btn-outline-success" type="button" (click)="saveAddServiceChanges()">Save</button>
 					</div>
 				</div>
 			</div>
@@ -84,8 +86,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-danger" type="button" (click)="hideModalServiceTypeCreate()">Cancel</button>
-				<button class="btn btn-secondary" type="button" (click)="saveAddServiceTypeChanges()">Save</button>
+				<button class="btn btn-outline-danger" type="button" (click)="hideModalServiceTypeCreate()">Cancel</button>
+				<button class="btn btn-outline-success" type="button" (click)="saveAddServiceTypeChanges()">Save</button>
 			</div>
 		</div>
 	</div>

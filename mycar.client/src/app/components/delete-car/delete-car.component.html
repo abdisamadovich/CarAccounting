@@ -2,7 +2,7 @@
     <div *ngIf="vehicles.length > 0; else noVehicles" class="vehicles-container">
         <div *ngFor="let vehicle of vehicles" class="vehicle">
             <p class="vehicle-name">{{ vehicle.name }}</p>
-            <button class="btn btn-danger" (click)="showModalDeleteCar(vehicle.id, deleteCarModal)">
+            <button class="btn btn-outline-danger" (click)="showModalDeleteCar(vehicle.id, deleteCarModal)">
                 Delete
             </button>
         </div>
@@ -19,7 +19,7 @@
         <button type="button" (click)="hideModalDeleteCar()" class="btn-close custom-close-btn" aria-label="Close"></button>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="hideModalDeleteCar()">No</button>
-        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Yes</button>
+        <button type="button" class="btn btn-outline-danger" (click)="confirmDelete()">No</button>
+        <button type="button" class="btn btn-outline-success" (click)="hideModalDeleteCar()">Yes</button>
     </div>
 </ng-template>

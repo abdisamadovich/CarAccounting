@@ -6,8 +6,10 @@
       <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle',vehicleId,'expense']">Add Expence</a></li>
       <li class="nav-item"><a href="#" class="nav-link" (click)="goToHistory()">History</a></li>
       <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">  
-          {{ getSelectedVehicleName() }}  
+        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">  
+          <span>
+            {{ getSelectedVehicleName() }}  
+          </span>
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton"> 
           <li *ngFor="let vehicle of vehicles">
@@ -80,8 +82,8 @@
         </div>
         
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" (click)="hideModalCarCreate()">Cancel</button>
-          <button type="button" class="btn btn-secondary" (click)="saveAddChanges()">Save</button>
+          <button type="button" class="btn btn-outline-danger" (click)="hideModalCarCreate()">Cancel</button>
+          <button type="button" class="btn btn-outline-success" (click)="saveAddChanges()">Save</button>
         </div>
       </div>
     </div>

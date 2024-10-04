@@ -1,19 +1,17 @@
 .container {
-    width: 500px;
+    width: 510px;
     margin: 0 auto;
-    padding: 20px;
+    height: 100px;
 }
 
 .record {
-    padding: 0.5rem;
+    padding: 10px;
+    margin: 5px;
     border: 1px solid #d4d9e2;
     border-radius: 5px;
-    background-color: #f8f9fa;
     color: #6482AD;
     outline: none;
-    margin-bottom: 10px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
 }
 
 .record-row {
@@ -22,37 +20,20 @@
     align-items: center;
 }
 
-.record-info,
-.record-details {
-    display: flex;
-    align-items: center;
+.record-info, .record-details {
+    width: 100%;
+    padding: 5px;
+    margin: 5px;
+    box-sizing: border-box;
+    height: 40px;
 }
 
-.record-info .record-item,
-.record-details .record-item {
+.record-item {
     display: flex;
     align-items: center;
-    margin-right: 15px;
-    /* Space between elements */
     width: 118px;
-    /* Width of each item */
     height: 30px;
-    /* Height of each item */
     overflow: hidden;
-    /* Hide overflow content */
-}
-
-.record-item .place {
-    max-width: 100%;
-    /* Maximum width of the element */
-    white-space: nowrap;
-    /* Keep text in one line */
-    height: 100%;
-    /* Height of the element */
-    display: flex;
-    /* Flex container */
-    align-items: center;
-    /* Vertical alignment */
 }
 
 .record-item img {
@@ -61,22 +42,10 @@
     margin-right: 5px;
 }
 
-.record-info {
-    border-bottom: 1px solid #f8f9fa;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+.place-img {
+    margin-left: 5px;
 }
 
 .cost {
     font-weight: bold;
-    /* Make cost text bold */
-}
-
-.record-details {
-    justify-content: space-between;
-}
-
-.record-buttons {
-    display: flex;
-    gap: 10px;
 }
