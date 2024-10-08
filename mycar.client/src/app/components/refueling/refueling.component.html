@@ -19,12 +19,8 @@
 
 						<div class="form-group">
 							<label for="fuel" class="fuel-label">Fuel:</label>
-							<select [(ngModel)]="fuelId" name="fuel" class="form-control"
-								(change)="onInputChange('fuel')">
-								<option [value]="fuel.id" *ngFor="let fuel of fuels">
-									{{fuel.name}}
-								</option>
-							</select>
+							<app-select [options]="fuels" [(ngModel)]="fuelId" (selectionChange)="onInputChange('fuel')">
+							</app-select>
 							<div class="text-danger error-message" *ngIf="fuelError">{{ fuelError }}</div>
 						</div>
 

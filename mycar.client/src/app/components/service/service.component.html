@@ -21,25 +21,18 @@
 							</div>
 							
 							<div class="form-group">
-								<div class="dropdown">
-									<label for="serviceType">Service:</label>
-									<div class="d-flex align-items-stretch">
-										<div class="flex-grow-1">
-											<select [(ngModel)]="serviceTypeId" name="serviceType" class="form-control " 
-												(change)="onInputChangeService('service')">
-												<option [value]="serviceType.id" *ngFor="let serviceType of serviceTypes">
-													{{serviceType.name}}
-												</option>
-											</select>
-										</div>
-	
-										<div class="service-type-create">
-											<button type="button" (click)="showModalServiceTypeCreate()" 
-												class="btn btn-outline-success">+</button>
-										</div>
+								<label for="serviceType">Service:</label>
+								<div class="d-flex align-items-stretch">
+									<div class="flex-grow-1">
+										<app-select [options]="serviceTypes" [(ngModel)]="serviceTypeId"
+											(selectionChange)="onInputChangeService('serviceType')">
+										</app-select>
 									</div>
-									<div class="text-danger error-message mt-1" *ngIf="serviceTypeError">{{ serviceTypeError }}</div>
+									<div class="service-type-create">
+										<button type="button" (click)="showModalServiceTypeCreate()" class="btn btn-outline-success">+</button>
+									</div>
 								</div>
+								<div class="text-danger error-message" *ngIf="serviceTypeError">{{ serviceTypeError }}</div>
 							</div>
 							  
 							<div class="form-group">

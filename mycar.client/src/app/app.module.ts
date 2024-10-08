@@ -27,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ExpenseComponent } from './components/expense/expense.component';
 import { RefuelingComponent } from '@@components/refueling/refueling.component';
 import { DeleteCarComponent } from '@@components/delete-car/delete-car.component';
+import { SelectComponent } from './components/shared/select/select.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -39,7 +40,8 @@ import { DeleteCarComponent } from '@@components/delete-car/delete-car.component
         HistoryComponent,
         ReportsComponent,
         ExpenseComponent,
-        DeleteCarComponent
+        DeleteCarComponent,
+        SelectComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         BrowserAnimationsModule,

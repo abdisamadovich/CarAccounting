@@ -43,12 +43,8 @@
 
             <div class="form-group">
               <label for="manufacturer">Manufacturers:</label>
-              <select id="manufacturer" [(ngModel)]="manufacturerId" name="manufacturerId" (change)="onInputChange('manufacturer')"
-                class="form-control dropdown-select" >
-                <option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.id">
-                  {{ manufacturer.name }}
-                </option>
-              </select>
+              <app-select [options]="manufacturers" [(ngModel)]="manufacturerId" (selectionChange)="onInputChange('serviceType')">
+              </app-select>
               <div class="text-danger error-message" *ngIf="manufacturerError">{{ manufacturerError }}</div>
             </div>
 
