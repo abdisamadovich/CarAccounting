@@ -10,6 +10,6 @@ public class Service
     public int ServiceTypeId { get; set; }
     public ServiceType ServiceType { get; set; }
     public string Place { get; set; }
-    public int Price { get; set; }
+    public decimal Price { get; set; }
     public string Notes { get; set; }
 }

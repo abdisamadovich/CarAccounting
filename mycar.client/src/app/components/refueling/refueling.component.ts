@@ -49,23 +49,31 @@ export class RefuelingComponent implements OnInit {
   public totalCostError: string = "";
   public stationError: string = "";
 
-  public calculateQuantity(): void {
-    if (this.price !== 0 && this.totalCost !== 0) {
-      this.quantity = this.totalCost / this.price;
-    } else {
-      this.quantity = 0;
-    }
-  }
+  public updateValues(changedField: string): void {
+    switch (changedField) {
+      case "price":
+        if (this.price > 0 && this.quantity > 0) {
+          this.totalCost = this.price * this.quantity;
+        } else if (this.price > 0 && this.totalCost > 0) {
+          this.quantity = this.totalCost / this.price;
+        }
+        break;
 
-  public calculateTotalCost(): void {
-    this.totalCost = this.quantity * this.price;
-  }
+      case "quantity":
+        if (this.price > 0) {
+          this.totalCost = this.price * this.quantity;
+        } else if (this.totalCost > 0 && this.quantity > 0) {
+          this.price = this.totalCost / this.quantity;
+        }
+        break;
 
-  public calculatePrice(): void {
-    if (this.totalCost !== 0 && this.quantity !== 0) {
-      this.price = this.totalCost / this.quantity;
-    } else {
-      this.price = 0;
+      case "totalCost":
+        if (this.price > 0 && this.quantity === 0) {
+          this.quantity = this.totalCost / this.price;
+        } else if (this.quantity > 0) {
+          this.price = this.totalCost / this.quantity;
+        }
+        break;
     }
   }
 
@@ -109,7 +117,7 @@ export class RefuelingComponent implements OnInit {
       (refuellingCreateModel.station = this.station),
       this.refuellingService.postRefuelling(refuellingCreateModel).subscribe({
         next: (response) => {
-          this.toastr.success('Succes add Refueling!');
+          this.toastr.success("Success add Refueling!");
           this.router.navigate(['/vehicle', this.vehicleId, 'history']);
         },
         error: (err) => {
@@ -192,7 +200,7 @@ export class RefuelingComponent implements OnInit {
     }
 
     if (totalCost < 0) {
-      this.totalCostError = "Totalcost cannot be a negative value!";
+      this.totalCostError = "Total cost cannot be a negative value!";
       isValid = false;
     }
 

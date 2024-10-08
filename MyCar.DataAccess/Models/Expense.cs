@@ -11,5 +11,5 @@ public class Expense
     public ExpenseType ExpenseType { get; set; }
     public string Place { get; set; }
     public string Description { get; set; }
-    public int Cost { get; set; }
+    public decimal Cost { get; set; }
 }

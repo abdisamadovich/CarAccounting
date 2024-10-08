@@ -13,6 +13,6 @@ public class ServiceGetViewModel
     public int ServiceTypeId { get; set; }
     public ServicesTypeViewModel ServiceType { get; set; }
     public string Place { get; set; }
-    public int Price { get; set; }
+    public decimal Price { get; set; }
     public string Notes { get; set; }
 }

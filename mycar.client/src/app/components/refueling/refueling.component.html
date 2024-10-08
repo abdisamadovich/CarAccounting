@@ -18,38 +18,39 @@
 						</div>
 
 						<div class="form-group">
-							<div class="dropdown">
-								<label class="fuel-label">Fuel:</label>
-								<select [(ngModel)]="fuelId" name="fuel" (change)="fuels" class="form-control" id="fuel"
-									(change)="onInputChange('fuel')">
-									<option [value]="fuel.id" *ngFor="let fuel of fuels">
-										{{fuel.name}}
-									</option>
-								</select>
-								<div class="text-danger error-message" *ngIf="fuelError">{{ fuelError }}</div>
-							</div>
+							<label for="fuel" class="fuel-label">Fuel:</label>
+							<select [(ngModel)]="fuelId" name="fuel" class="form-control"
+								(change)="onInputChange('fuel')">
+								<option [value]="fuel.id" *ngFor="let fuel of fuels">
+									{{fuel.name}}
+								</option>
+							</select>
+							<div class="text-danger error-message" *ngIf="fuelError">{{ fuelError }}</div>
 						</div>
 
 						<div class="form-group">
 							<label for="price">Price:</label>
-							<input type="number" [(ngModel)]="price" (input)="calculateTotalCost()"
-								(input)="calculateQuantity()" class="form-control" id="price" name="price"
+							<input 
+								type="number" [(ngModel)]="price" class="form-control" id="price" 
+								name="price" (blur)="updateValues('price')"
 								(input)="onInputChange('price')" />
 							<div class="text-danger error-message" *ngIf="priceError">{{ priceError }}</div>
 						</div>
 
 						<div class="form-group">
 							<label for="quantity">Quantity:</label>
-							<input type="number" [(ngModel)]="quantity" (input)="calculateTotalCost()"
-								(input)="calculateQuantity()" class="form-control" id="quantity" name="quantity"
+							<input 
+								type="number" [(ngModel)]="quantity" class="form-control" id="quantity" name="quantity"
+								(blur)="updateValues('quantity')"
 								(input)="onInputChange('quantity')" />
 							<div class="text-danger error-message" *ngIf="quantityError">{{ quantityError }}</div>
 						</div>
 
 						<div class="form-group">
 							<label for="totalCost">Total cost:</label>
-							<input type="number" [(ngModel)]="totalCost" (input)="calculateQuantity()"
-								(input)="calculateTotalCost()" class="form-control" id="totalCost" name="totalCost"
+							<input 
+								type="number" [(ngModel)]="totalCost" class="form-control" id="totalCost" name="totalCost"
+								(blur)="updateValues('totalCost')"
 								(input)="onInputChange('totalCost')" />
 							<div class="text-danger error-message" *ngIf="totalCostError">{{ totalCostError }}</div>
 						</div>
