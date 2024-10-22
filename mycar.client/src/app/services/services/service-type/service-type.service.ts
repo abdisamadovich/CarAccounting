@@ -38,7 +38,7 @@ export class ServiceTypeService {
   private toClass(source: ServiceTypeModel): ServiceType {
     const model = new ServiceType();
     model.name = source.name;
-    model.id = source.id || null;
+    model.id = source.id ?? 0;
     return model;
   }
 }

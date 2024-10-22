@@ -1,87 +1,79 @@
-<div class="container">
-    <div class="baseExpense">
-        <div class="expense" tabindex="-1" role="dialog">
-            <div>
-                <div class="content blue-border">
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <kendo-label text="Date and Time:">
-                                    <kendo-datetimepicker
-                                      [format]="format"
-                                      [(value)]="date"
-                                    ></kendo-datetimepicker>
-                                  </kendo-label>
-                            </div>
-    
-                            <div class="form-group">
-                                <label for="odometer">Odometer:</label>
-                                <input type="number" [(ngModel)]="odometer" class="form-control" id="odometer" name="odometer" (change)="onInputChangeExpense('odometer')"/>
-                                <div class="text-danger error-message" *ngIf="odometerError">{{ odometerError }}</div>
-                            </div>
-    
-                            <div class="form-group">
-                                <label for="expenseType">Expense:</label>
-                                <div class="d-flex align-items-stretch">
-                                    <div class="flex-grow-1">
-                                        <app-select [options]="expenseTypes" [(ngModel)]="expenseTypeId"
-                                            (selectionChange)="onInputChangeExpense('expense')">
-                                        </app-select>
-                                    </div>
-                                    <div class="expense-type-create">
-                                        <button type="button" (click)="showModalExpenseTypeCreate()" class="btn btn-outline-success">+</button>
-                                    </div>
-                                </div>
-                                <div class="text-danger error-message" *ngIf="expenseError">{{ expenseError }}</div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="value">Cost:</label>
-                                <input type="number" [(ngModel)]="cost" class="form-control" id="price" name="price" (change)="onInputChangeExpense('cost')"/>
-                                <div class="text-danger error-message" *ngIf="costError">{{ costError }}</div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="place">Place:</label>
-                                <input type="text" [(ngModel)]="place" class="form-control" name="place" (change)="onInputChangeExpense('place')"/>
-                                <div class="text-danger error-message" *ngIf="placeError">{{ placeError }}</div>
-                            </div>
-    
-                            <div class="form-group">
-                                <label for="description">Description:</label>
-                                <input type="text" [(ngModel)]="description" class="form-control" name="description"/>
-                            </div>                            
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-outline-danger" type="button"  (click)="cancel()">Cancel</button>
-                        <button class="btn btn-outline-success" type="button" (click)="saveAddExpenseChanges()">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="card p-5">
+  <form [formGroup]="expenseForm" class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label" for="date">Date and Time:</label>
+      <kendo-datetimepicker class="kendo-datetime" formControlName="date" [format]="'yyyy-MM-dd HH:mm'"></kendo-datetimepicker>
     </div>
-    
-    <div *ngIf="modalExpenseTypeCreate" class="modal-container" tabindex="-1" role="dialog">
-        <div class="modal-content blue-border">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Add expense type</h5>
-                <button type="button" (click)="hideModalExpenseTypeCreate()" class="btn-close custom-close-btn"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" [(ngModel)]="name" class="form-control" id="Name" name="Name" (change)="onInputChangeExpenseType('name')"/>
-                        <div class="text-danger error-message" *ngIf="nameError">{{ nameError }}</div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline-danger" type="button" (click)="hideModalExpenseTypeCreate()">Cancel</button>
-                <button class="btn btn-outline-success" type="button" (click)="saveAddExpenseTypeChanges()">Save</button>
-            </div>
-        </div>
+
+    <div class="col-md-6">
+      <label class="form-label" for="odometer">Odometer:</label>
+      <input type="number" formControlName="odometer" class="form-control" id="odometer" />
+      <div class="text-danger error-message" *ngIf="expenseForm.get('odometer')?.invalid && expenseForm.get('odometer')?.touched">
+        Odometer cannot be negative!
+      </div>
     </div>
+
+    <div class="col-md-6">
+      <app-select [options]="selectModel" label="Expense type:" formControlName="expenseType"></app-select>
+      <div class="text-danger error-message" *ngIf="expenseForm.get('expenseType')?.invalid && expenseForm.get('expenseType')?.touched">
+        Expense type is required!
+      </div>
+      <button type="button" (click)="showModalExpenseTypeCreate()" class="btn btn-primary btn-sm mt-2">
+        + Add new expense type
+      </button>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label" for="cost">Price:</label>
+      <input type="number" formControlName="cost" class="form-control" id="cost" />
+      <div class="text-danger error-message" *ngIf="expenseForm.get('cost')?.invalid && expenseForm.get('cost')?.touched">
+        Price cannot be negative!
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label" for="place">Place:</label>
+      <input type="text" formControlName="place" class="form-control" id="place" />
+      <div class="text-danger error-message" *ngIf="expenseForm.get('place')?.invalid && expenseForm.get('place')?.touched">
+        Place is required!
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label" for="description">Description:</label>
+      <textarea formControlName="description" class="form-control" id="description" rows="3"></textarea>
+    </div>
+
+    <div class="col-12 d-flex justify-content-end mt-4">
+      <button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+      <button class="btn btn-primary ms-2" type="button" (click)="saveAddExpenseChanges()">Save</button>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="modalExpenseTypeCreate" class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add expense type</h5>
+        <button type="button" class="btn-close" (click)="hideModalExpenseTypeCreate()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="expenseTypeForm" (ngSubmit)="saveAddExpenseTypeChanges()">
+          <div class="mb-3">
+            <label class="form-label" for="expenseTypeName">Name:</label>
+            <input type="text" formControlName="name" class="form-control" id="expenseTypeName" />
+            <div class="text-danger error-message" *ngIf="expenseTypeForm.get('name')?.invalid && expenseTypeForm.get('name')?.touched">
+              Name is required and cannot exceed 30 characters.
+            </div>
+          </div>
+          
+        </form>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" (click)="hideModalExpenseTypeCreate()">Cancel</button>
+          <button class="btn btn-primary" type="button" [disabled]="expenseTypeForm.invalid">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

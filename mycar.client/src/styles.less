@@ -1,66 +1,88 @@
-.content {
-    max-width: 435px;
-    margin: 0 auto;
-    background-color: white;
-}
-
-.modal-content {
-    max-width: 400px;
-    background-color: white;
-    margin: 0 auto;
-}
-
-.form-group {
-    color: #6482AD;
-}
-
-.modal-container {
-    position:absolute;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.2);
-    top: 0;
-    left: 0;
-    z-index: 10;
-    padding-top: 200px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .btn {
-    color: #6482AD;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 60px;
-    height: 38px;
-    background-color: #f8f9fa;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 100px;
 }
 
-.custom-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    z-index: 999;
+.text-danger {
+    font-size: 0.875rem; 
+}
+
+ul, ol {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.kendo-datetime {
+    height: 38px;
+}
+
+.form-label {
+    color: #7367f0;
+}
+
+.btn-close {
     outline: none;
 }
 
-.btn-outline-danger {
-    margin: 5px;
+.btn-primary {
+    background-color: #7367f0;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
 }
 
-.error-message {
-    color: red;
-    font-size: 0.8rem;
+.btn-primary:hover {
+    background-color: #6e62e4;
 }
 
-.blue-border {
-    border: 1px solid, #d4d9e2;
-    border-radius: 5px;
-    padding: 10px;
+.btn-secondary {
+    background-color: #f5f5f5;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+.modal {
+    background: rgba(0, 0, 0, 0.5);
+}    
+
+.modal-content {
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #7367f0;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+.modal-backdrop {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
 }

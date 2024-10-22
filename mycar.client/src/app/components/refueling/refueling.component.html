@@ -1,78 +1,75 @@
-<div class="container">
-	<div class="baseRefuelling">
-		<div class="refuelling" tabindex="-1" role="dialog">
-			<div class="content blue-border">
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<kendo-label text="Date and Time:">
-								<kendo-datetimepicker [format]="format" [(value)]="date"></kendo-datetimepicker>
-							</kendo-label>
-						</div>
+<div class="card p-5">
+	<form [formGroup]="refuelingForm" class="row g-3">
+		<div class="col-md-6">
+			<label class="form-label" for="date">Date and Time:</label>
+			<kendo-datetimepicker class="kendo-datetime" formControlName="date"
+				[format]="'yyyy-MM-dd HH:mm'"></kendo-datetimepicker>
+		</div>
 
-						<div class="form-group">
-							<label for="odometer">Odometer:</label>
-							<input type="number" [(ngModel)]="odometer" class="form-control" id="odometer"
-								name="odometer" (input)="onInputChange('odometer')" />
-							<div class="text-danger error-message" *ngIf="odometerError">{{ odometerError }}</div>
-						</div>
-
-						<div class="form-group">
-							<label for="fuel" class="fuel-label">Fuel:</label>
-							<app-select [options]="fuels" [(ngModel)]="fuelId" (selectionChange)="onInputChange('fuel')">
-							</app-select>
-							<div class="text-danger error-message" *ngIf="fuelError">{{ fuelError }}</div>
-						</div>
-
-						<div class="form-group">
-							<label for="price">Price:</label>
-							<input 
-								type="number" [(ngModel)]="price" class="form-control" id="price" 
-								name="price" (blur)="updateValues('price')"
-								(input)="onInputChange('price')" />
-							<div class="text-danger error-message" *ngIf="priceError">{{ priceError }}</div>
-						</div>
-
-						<div class="form-group">
-							<label for="quantity">Quantity:</label>
-							<input 
-								type="number" [(ngModel)]="quantity" class="form-control" id="quantity" name="quantity"
-								(blur)="updateValues('quantity')"
-								(input)="onInputChange('quantity')" />
-							<div class="text-danger error-message" *ngIf="quantityError">{{ quantityError }}</div>
-						</div>
-
-						<div class="form-group">
-							<label for="totalCost">Total cost:</label>
-							<input 
-								type="number" [(ngModel)]="totalCost" class="form-control" id="totalCost" name="totalCost"
-								(blur)="updateValues('totalCost')"
-								(input)="onInputChange('totalCost')" />
-							<div class="text-danger error-message" *ngIf="totalCostError">{{ totalCostError }}</div>
-						</div>
-
-						<div class="form-group">
-							<div class="form-check form-switch">
-								<input class="form-check-input" [(ngModel)]="isFilled" type="checkbox" role="switch"
-									id="flexSwitchCheckDefault" name="isFilled">
-								<label class="form-check-label" for="flexSwitchCheckDefault">Are you filling the
-									tank?</label>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="station">Gas station:</label>
-							<input type="text" [(ngModel)]="station" class="form-control" name="station"
-								(input)="onInputChange('station')" />
-							<div class="text-danger error-message" *ngIf="stationError">{{ stationError }}</div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-outline-danger" type="button" (click)="cancel()">Cancel</button>
-					<button class="btn btn-outline-success" type="button" (click)="saveAddChanges()">Save</button>
-				</div>
+		<div class="col-md-6">
+			<label class="form-label" for="quantity">Quantity:</label>
+			<input type="number" formControlName="quantity" class="form-control" (blur)="updateTotalCostOnBlur()"
+				id="quantity" />
+			<div class="text-danger error-message"
+				*ngIf="refuelingForm.get('quantity')?.invalid && refuelingForm.get('quantity')?.touched">
+				Quantity cannot be negative!
 			</div>
 		</div>
-	</div>
+
+		<div class="col-md-6">
+			<app-select [options]="selectModel" label="Fuel type:" formControlName="fuel"></app-select>
+			<div class="text-danger error-message" *ngIf="refuelingForm.get('fuel')?.invalid && refuelingForm.get('fuel')?.touched">
+				Fuel is required!
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<label class="form-label" for="price">Price:</label>
+			<input type="number" formControlName="price" class="form-control" (blur)="updateTotalCostOnBlur()"
+				id="price" />
+			<div class="text-danger error-message" *ngIf="refuelingForm.get('price')?.invalid && refuelingForm.get('price')?.touched">
+				Price cannot be negative!
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<label class="form-label" for="odometer">Odometer:</label>
+			<input type="number" formControlName="odometer" class="form-control" id="odometer" />
+			<div class="text-danger error-message"
+				*ngIf="refuelingForm.get('odometer')?.invalid && refuelingForm.get('odometer')?.touched">
+				Odometer cannot be negative!
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<label class="form-label" for="totalCost">Total cost:</label>
+			<input type="number" formControlName="totalCost" class="form-control" (blur)="updatePriceOnBlur()"
+				id="totalCost" />
+			<div class="text-danger error-message"
+				*ngIf="refuelingForm.get('totalCost')?.invalid && refuelingForm.get('totalCost')?.touched">
+				Total cost cannot be negative!
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<label class="form-label" for="station">Gas station:</label>
+			<input type="text" formControlName="station" class="form-control" id="station" />
+			<div class="text-danger error-message"
+				*ngIf="refuelingForm.get('station')?.invalid && refuelingForm.get('station')?.touched">
+				Gas station is required!
+			</div>
+		</div>
+
+		<div class="col-md-6 pt-4">
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" formControlName="isFilled" role="switch" id="isFilled">
+				<label class="form-check-label" for="isFilled">Are you filling the tank?</label>
+			</div>
+		</div>
+
+		<div class="col-12 d-flex justify-content-end mt-4">
+			<button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+			<button class="btn btn-primary ms-2" type="button" (click)="saveAddChanges()">Save</button>
+		</div>
+	</form>
 </div>

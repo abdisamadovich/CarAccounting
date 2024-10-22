@@ -1,4 +1,4 @@
 export class Manufacturer {
-  public id: number | null = null;
+  public id: number = 0;
   public name: string = '';
 }

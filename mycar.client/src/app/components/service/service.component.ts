@@ -1,53 +1,54 @@
 import { ServiceService, ServiceTypeService } from '@@services/services';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Service, ServiceType } from '@@services/models';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SelectModel } from '@@components/models';
 
 @Component({
   selector: 'app-service',
   templateUrl: './service.component.html',
-  styleUrl: './service.component.less',
+  styleUrls: ['./service.component.less'],
 })
-export class ServiceComponent {
-  //Inject
+export class ServiceComponent implements OnInit {
+  public myForm!: FormGroup;
+  public serviceTypeForm!: FormGroup;
+  public vehicleId: number = 0;
+  public selectModel: SelectModel[] = [];
+  public modalServiceTypeCreate: boolean = false;
+
   constructor(
     private serviceService: ServiceService,
     private serviceTypeService: ServiceTypeService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder,
+    private spinner: NgxSpinnerService
   ) {}
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      this.vehicleId = +params.get('vehicleId')!;
+  public ngOnInit(): void {
+    this.myForm = this.fb.group({
+      date: [new Date(), Validators.required],
+      odometer: [0, [Validators.required, Validators.min(0)]],
+      serviceType: [null, Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      place: ["", Validators.required],
+      notes: [""],
     });
+
+    this.serviceTypeForm = this.fb.group({
+      name: ["", [Validators.required, Validators.maxLength(30)]],
+    });
+
+    this.route.paramMap.subscribe((params) => {
+      this.vehicleId = +params.get("vehicleId")!;
+    });
+
     this.getServiceType();
   }
-
-  public vehicleId: number = 0;
-  // Service
-  public id: number = 0;
-  public date: Date = new Date();
-  public format = "MM/dd/yyyy HH:mm";
-  public odometer: number = 0;
-  public serviceTypeId: number = 0;
-  public place: string = '';
-  public price: number = 0;
-  public notes: string = '';
-  // Servicetype
-  public name: string = '';
-  public serviceTypes: ServiceType[] = [];
-  //For ModalWindow
-  public modalServiceTypeCreate: boolean = false;
-  // Variables for error
-  public nameError: string = "";
-  public odometerError: string = "";
-  public serviceTypeError: string = "";
-  public priceError: string = "";
-  public placeError: string = "";
-  public notesError: string = "";
 
   public showModalServiceTypeCreate(): void {
     this.modalServiceTypeCreate = true;
@@ -55,170 +56,86 @@ export class ServiceComponent {
 
   public hideModalServiceTypeCreate(): void {
     this.modalServiceTypeCreate = false;
+    this.serviceTypeForm.reset();
   }
 
-  // ServiceType
   public getServiceType(): void {
+    this.spinner.show();
     this.serviceTypeService.getServiceTypes().subscribe((res) => {
-      this.serviceTypes = res;
+      this.selectModel = res.map((service) => ({
+        label: service.name,
+        value: service.id!
+      }));
     });
+    this.spinner.hide();
   }
 
   public saveAddServiceChanges(): void {
-    this.place = this.place.trim();
-    this.notes = this.notes.trim();
-    if (
-      !this.validatFormService(
-        this.odometer,
-        this.serviceTypeId,
-        this.price,
-        this.place
-      )
-    ) {
+    if (this.myForm.invalid) {
+      this.myForm.markAllAsTouched();
+      this.toastr.warning("Please fill out all required fields correctly.");
       return;
     }
-    const serviceCreateModel = new Service();
-    (serviceCreateModel.vehicleId = this.vehicleId),
-      (serviceCreateModel.date = this.date),
-      (serviceCreateModel.odometer = this.odometer),
-      (serviceCreateModel.serviceTypeId = this.serviceTypeId),
-      (serviceCreateModel.price = this.price),
-      (serviceCreateModel.place = this.place),
-      (serviceCreateModel.notes = this.notes),
-      this.serviceService.postService(serviceCreateModel).subscribe({
-        next: (response) => {
-          this.toastr.success('Succes add Service!');
-          this.router.navigate(['/vehicle', this.vehicleId, 'history']);
-        },
-        error: (err) => {
-          this.toastr.warning('Error during add!');
-        },
-      });
 
-    this.modalServiceTypeCreate = false;
+    const serviceCreateModel = new Service();
+    serviceCreateModel.vehicleId = this.vehicleId;
+    serviceCreateModel.date = this.myForm.value.date;
+    serviceCreateModel.odometer = this.myForm.value.odometer;
+    serviceCreateModel.serviceTypeId = this.myForm.value.serviceType;
+    serviceCreateModel.price = this.myForm.value.price;
+    serviceCreateModel.place = this.myForm.value.place;
+    serviceCreateModel.notes = this.myForm.value.notes;
+
+    this.spinner.show();
+    this.serviceService.postService(serviceCreateModel).subscribe({
+      next: () => {
+        this.toastr.success("Successfully added Service!");
+        this.router.navigate(["/vehicle", this.vehicleId, "history"]);
+        this.spinner.hide();
+      },
+      error: () => {
+        this.toastr.warning("Error during adding!");
+        this.spinner.hide();
+      },
+    });
   }
 
   public cancel(): void {
-    this.router.navigate(['/vehicle', this.vehicleId, 'history']);
+    this.router.navigate(["/vehicle", this.vehicleId, "history"]);
   }
 
   public saveAddServiceTypeChanges(): void {
-    this.name = this.name.trim();
+    if (this.serviceTypeForm.invalid) {
+      this.serviceTypeForm.markAllAsTouched();
+      this.toastr.warning("Service type name is required and must not exceed 30 characters.");
+      return;
+    }
+
+    const serviceTypeCreateModel = new ServiceType();
+    serviceTypeCreateModel.name = this.serviceTypeForm.value.name;
+
+    this.spinner.show();
     if (
-      this.serviceTypes.some(
-        (serviceType) =>
-          serviceType.name.toLowerCase() === this.name.toLowerCase()
+      this.selectModel.some(
+        (serviceType) => String(serviceType["value"]).toLowerCase() === serviceTypeCreateModel.name.toLowerCase()
       )
     ) {
       this.toastr.warning("Service type with the same name already exists!");
       return;
     }
-
-    if (!this.validateFormServiceType(this.name)) {
-      return;
-    }
-    const servicetypeCreateModel = new ServiceType();
-    servicetypeCreateModel.name = this.name;
-    this.serviceTypeService.postServiceType(servicetypeCreateModel).subscribe({
-      next: (response) => {
-        this.toastr.success('Succes add ServiceType!');
-        this.resetServiceType();
+    
+    this.serviceTypeService.postServiceType(serviceTypeCreateModel).subscribe({
+      next: () => {
+        this.toastr.success("Successfully added service type!");
         this.getServiceType();
         this.hideModalServiceTypeCreate();
+        this.spinner.show();
       },
-      error: (err) => {
-        this.toastr.warning('Error during add!');
-        this.resetServiceType();
+      error: () => {
+        this.toastr.warning("Error during adding!");
         this.getServiceType();
+        this.spinner.show();
       },
     });
-  }
-
-  public onInputChangeService(field: string): void {
-    switch (field) {
-      case "odometer":
-        if (this.odometer >= 0) {
-          this.odometerError = "";
-        }
-        break;
-      case "service":
-        if (this.serviceTypeId && this.serviceTypeId != 0) {
-          this.serviceTypeError = "";
-        }
-        break;
-      case "price":
-        if (this.price >= 0) {
-          this.priceError = "";
-        }
-        break;
-      case "place":
-        if (this.place && this.place.trim() !== "") {
-          this.placeError = "";
-        }
-        break;
-    }
-  }
-
-  public onInputChangeServiceType(field: string): void {
-    switch (field) {
-      case "name":
-        if (this.name.trim()) {
-          this.nameError = "";
-        }
-        break;
-    }
-  }
-
-  private resetServiceType(): void {
-    this.name = '';
-  }
-
-  // ValidateForm
-  private validatFormService(
-    odometer: number,
-    serviceTypeId: number,
-    price: number,
-    place: string
-  ): boolean {
-    let isValid = true;
-
-    if (odometer < 0) {
-      this.odometerError = "Odometer cannot be a negative value!";
-      isValid = false;
-    }
-
-    if (!serviceTypeId) {
-      this.serviceTypeError = "Service is required!";
-      isValid = false;
-    }
-
-    if (price < 0) {
-      this.priceError = "Price cannot be a negative value!";
-      isValid = false;
-    }
-
-    if (!place || place.trim() === "") {
-      this.placeError = "Place is required!";
-      isValid = false;
-    }
-
-    return isValid;
-  }
-
-  //Validate form service type
-  private validateFormServiceType(name: string): boolean {
-    let isValid = true;
-
-    if (!name.trim()) {
-      this.nameError = "Name is required and cannot be empty!";
-      isValid = false;
-    } else if (name.length > 30) {
-      this.nameError = "Name cannot exceed 30 characters";
-      isValid = false;
-    } else {
-      this.nameError = "";
-    }
-
-    return isValid;
   }
 }

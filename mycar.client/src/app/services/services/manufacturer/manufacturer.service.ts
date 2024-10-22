@@ -25,7 +25,7 @@ export class ManufacturerService {
   private toClass(source: ManufacturerModel): Manufacturer {
     const model = new Manufacturer();
     model.name = source.name;
-    model.id = source.id || null;
+    model.id = source.id ?? 0;
     return model;
   }
 }

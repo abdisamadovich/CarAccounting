@@ -38,7 +38,7 @@ export class ExpenseTypeService {
   private toClass(source: ExpenseTypeModel): ExpenseType {
     const model = new ExpenseType();
     model.name = source.name;
-    model.id = source.id || null;
+    model.id = source.id ?? 0;
     return model;
   }
 }

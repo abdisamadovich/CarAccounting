@@ -25,7 +25,7 @@ export class FuelTypeService {
   private toClass(source: FuelTypeModel): FuelType {
     const model = new FuelType();
     model.name = source.name;
-    model.id = source.id || null;
+    model.id = source.id ?? 0;
     return model;
   }
 }

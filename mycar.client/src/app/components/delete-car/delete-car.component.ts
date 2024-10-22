@@ -1,8 +1,9 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { Vehicle } from '@@services/models';
-import { VehicleService } from '@@services/services';
+import { ManufacturerService, VehicleService } from '@@services/services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Manufacturer, Vehicle } from '@@services/models';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-more',
@@ -10,27 +11,50 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './delete-car.component.less',
 })
 export class DeleteCarComponent implements OnInit {
+  public vehicles: Vehicle[] = [];
+  public manufacturers: Manufacturer[] = [];
+  public vehicleId: number | null = null;
+
   constructor(
     private vehicleService: VehicleService,
+    private manufacturerService: ManufacturerService,
     private toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private spinner: NgxSpinnerService
   ) {}
-
-  public vehicles: Vehicle[] = [];
-  public vehicleId: number | null = null;
 
   ngOnInit(): void {
     this.getVehicles();
+    this.getManufacturers();
   }
 
   public getVehicles(): void {
-    this.vehicleService.getVehicle().subscribe((res) => {
-      this.vehicles = res;
-    });
+    this.spinner.show();
+    this.vehicleService.getVehicle().subscribe(
+      (res) => {
+        this.vehicles = res;
+        this.spinner.hide();
+      },
+      (error) => {
+        this.spinner.hide(); 
+        this.toastr.error("Error fetching vehicles!"); 
+      }
+    );
   }
 
-  public showModalDeleteCar(vehicleId: number | null, modal: TemplateRef<any>): void {
-    this.vehicleId = vehicleId; 
+  public getManufacturers(): void {
+    this.spinner.show();
+    this.manufacturerService.getManufacturers().subscribe((res) => {
+      this.manufacturers = res;
+    });
+    this.spinner.hide();
+  }
+
+  public showModalDeleteCar(
+    vehicleId: number | null,
+    modal: TemplateRef<any>
+  ): void {
+    this.vehicleId = vehicleId;
     this.modalService.open(modal);
   }
 
@@ -47,12 +71,17 @@ export class DeleteCarComponent implements OnInit {
 
   public deleteVehicle(id: number | null): void {
     if (id !== null) {
-      this.vehicleService.deleteVehicle(id).subscribe(() => {
-        this.vehicles = this.vehicles.filter(vehicle => vehicle.id !== id);
-        this.toastr.success('Vehicle deleted successfully!');
-      }, error => {
-        this.toastr.error('Failed to delete vehicle');
-      });
+      this.vehicleService.deleteVehicle(id).subscribe(
+        () => {
+          this.vehicles = this.vehicles.filter(
+            (vehicle) => vehicle.id!== id
+          );
+          this.toastr.success("Vehicle deleted successfully!");
+        },
+        (error) => {
+          this.toastr.error("Failed to delete vehicle");
+        }
+      );
     }
   }
 }

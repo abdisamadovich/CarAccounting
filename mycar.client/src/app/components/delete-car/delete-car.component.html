@@ -1,25 +1,42 @@
 <div class="container">
-    <div *ngIf="vehicles.length > 0; else noVehicles" class="vehicles-container">
-        <div *ngFor="let vehicle of vehicles" class="vehicle">
-            <p class="vehicle-name">{{ vehicle.name }}</p>
-            <button class="btn btn-outline-danger" (click)="showModalDeleteCar(vehicle.id, deleteCarModal)">
-                Delete
-            </button>
-        </div>
+    <h2>Vehicle List</h2>
+    <div *ngIf="vehicles.length > 0; else noVehicles">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let vehicle of vehicles">
+                    <td>{{ vehicle.name }}</td>
+                    <td>{{ vehicle.manufacturerName }}</td>
+                    <td>{{ vehicle.model }}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="showModalDeleteCar(vehicle.id, deleteCarModal)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+
+    <ng-template #deleteCarModal let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title" id="myModalLabel">Do you want to delete this vehicle?</h5>
+            <button type="button" (click)="hideModalDeleteCar()" class="btn-close" aria-label="Close"></button>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="hideModalDeleteCar()">No</button>
+            <button type="button" class="btn btn-primary" (click)="confirmDelete()">Yes</button>
+        </div>
+    </ng-template>
+
     <ng-template #noVehicles>
         <p>No records found.</p>
     </ng-template>
 </div>
-
-<!-- Modal -->
-<ng-template #deleteCarModal let-modal class="delete-modal-car">
-    <div class="modal-header">
-        <h5 class="modal-title" id="myModalLabel">Do you want to delete this vehicle?</h5>
-        <button type="button" (click)="hideModalDeleteCar()" class="btn-close custom-close-btn" aria-label="Close"></button>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-danger" (click)="confirmDelete()">No</button>
-        <button type="button" class="btn btn-outline-success" (click)="hideModalDeleteCar()">Yes</button>
-    </div>
-</ng-template>

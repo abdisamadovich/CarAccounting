@@ -1,51 +1,54 @@
-import { ExpenseType, Expense } from '@@services/models';
-import { ExpenseTypeService, ExpenseService } from '@@services/services';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ExpenseType, Expense } from '@@services/models';
+import { ExpenseTypeService, ExpenseService } from '@@services/services';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SelectModel } from '@@components/models';
 
 @Component({
   selector: 'app-expense',
   templateUrl: './expense.component.html',
   styleUrl: './expense.component.less',
 })
-export class ExpenseComponent {
-  public constructor(
+export class ExpenseComponent implements OnInit {
+  public expenseForm!: FormGroup;
+  public expenseTypeForm!: FormGroup;
+  public vehicleId: number = 0;
+  public selectModel: SelectModel[] = [];
+  public modalExpenseTypeCreate: boolean = false;
+
+  constructor(
+    private fb: FormBuilder,
     private expenseService: ExpenseService,
     private expenseTypeService: ExpenseTypeService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private spinner: NgxSpinnerService
   ) {}
 
   public ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      this.vehicleId = +params.get('vehicleId')!;
+    this.expenseForm = this.fb.group({
+      date: [new Date(), Validators.required],
+      odometer: [0, [Validators.required, Validators.min(0)]],
+      expenseType: [null, Validators.required],
+      place: ["", Validators.required],
+      description: [""],
+      cost: [0, [Validators.required, Validators.min(0)]],
     });
+
+    this.expenseTypeForm = this.fb.group({
+      name: ["", [Validators.required, Validators.maxLength(30)]],
+    });
+
+    this.route.paramMap.subscribe((params) => {
+      this.vehicleId = +params.get("vehicleId")!;
+    });
+
     this.getExpenseType();
   }
-
-  // Expense
-  public id: number = 0;
-  public vehicleId: number = 0;
-  public date: Date = new Date();
-  public format = "MM/dd/yyyy HH:mm";
-  public odometer: number = 0;
-  public expenseTypeId: number = 0;
-  public place: string = '';
-  public description: string = '';
-  public cost: number = 0;
-  //Expense type
-  public name: string = '';
-  public expenseTypes: ExpenseType[] = [];
-  //Variables for error
-  public nameError: string = "";
-  public odometerError: string = "";
-  public expenseError: string = "";
-  public placeError: string = "";
-  public costError: string = "";
-  //For modal windows
-  public modalExpenseTypeCreate: boolean = false;
 
   public showModalExpenseTypeCreate(): void {
     this.modalExpenseTypeCreate = true;
@@ -53,168 +56,89 @@ export class ExpenseComponent {
 
   public hideModalExpenseTypeCreate(): void {
     this.modalExpenseTypeCreate = false;
+    this.expenseTypeForm.reset();
   }
 
-  // ServiceType
   public getExpenseType(): void {
+    this.spinner.show();
     this.expenseTypeService.getExpenseTypes().subscribe((res) => {
-      this.expenseTypes = res;
+      this.selectModel = res.map((expense) => ({
+        label: expense.name,
+        value: expense.id!,
+      }));
     });
+    this.spinner.hide();
   }
 
   public saveAddExpenseChanges(): void {
-    this.place = this.place.trim();
-    this.description = this.description.trim();
-    if (
-      !this.validatForm(
-        this.odometer,
-        this.expenseTypeId,
-        this.cost,
-        this.place
-      )
-    ) {
+    if (this.expenseForm.invalid) {
+      this.expenseForm.markAllAsTouched();
+      this.toastr.warning("Please fill out all required fields correctly");
       return;
     }
+
     const expenseCreateModel = new Expense();
-    (expenseCreateModel.vehicleId = this.vehicleId),
-      (expenseCreateModel.date = this.date),
-      (expenseCreateModel.odometer = this.odometer),
-      (expenseCreateModel.expenseTypeId = this.expenseTypeId),
-      (expenseCreateModel.place = this.place),
-      (expenseCreateModel.description = this.description),
-      (expenseCreateModel.cost = this.cost),
-      this.expenseService.postExpense(expenseCreateModel).subscribe({
-        next: (response) => {
-          this.toastr.success("Succes add Expense!");
-          this.router.navigate(['/vehicle', this.vehicleId, 'history']);
-        },
-        error: (err) => {
-          this.toastr.warning("Error during add!");
-        },
-      });
-  }
+    expenseCreateModel.vehicleId = this.vehicleId;
+    expenseCreateModel.date = this.expenseForm.value.date;
+    expenseCreateModel.odometer = this.expenseForm.value.odometer;
+    expenseCreateModel.expenseTypeId = this.expenseForm.value.expenseType;
+    expenseCreateModel.cost = this.expenseForm.value.cost;
+    expenseCreateModel.description = this.expenseForm.value.description;
+    expenseCreateModel.place = this.expenseForm.value.place;
 
-  public cancel(): void {
-    this.router.navigate(['/vehicle', this.vehicleId, 'history']);
-  }
-
-  public saveAddExpenseTypeChanges(): void {
-    this.name = this.name.trim();
-    if (
-      this.expenseTypes.some(
-        (expenseType) =>
-          expenseType.name.toLowerCase() === this.name.toLowerCase()
-      )
-    ) {
-      this.toastr.warning("Service type with the same name already exists!");
-      return;
-    }
-
-    if (!this.validateFormServiceType(this.name)) {
-      return;
-    }
-    const expenseTypeCreateModel = new ExpenseType();
-    expenseTypeCreateModel.name = this.name;
-    this.expenseTypeService.postExpenseType(expenseTypeCreateModel).subscribe({
+    this.spinner.show();
+    this.expenseService.postExpense(expenseCreateModel).subscribe({
       next: (response) => {
-        this.toastr.success("Succes add ExpenseType!");
-        this.resetExpenseType();
-        this.getExpenseType();
-        this.hideModalExpenseTypeCreate();
+        this.toastr.success("Successfully added expense!");
+        this.router.navigate(["/vehicle", this.vehicleId, "history"]);
+        this.spinner.hide();
       },
-      error: (err) => {
-        this.toastr.warning("Error during add!");
-        this.resetExpenseType();
-        this.getExpenseType();
+      error: () => {
+        this.toastr.warning("Error during adding!");
+        this.spinner.hide();
       },
     });
   }
 
-  public onInputChangeExpense(field: string): void {
-    switch (field) {
-      case "odometer":
-        if (this.odometer >= 0) {
-          this.odometerError = "";
-        }
-        break;
-      case "expense":
-        if (this.expenseTypeId && this.expenseTypeId != 0) {
-          this.expenseError = "";
-        }
-        break;
-      case "cost":
-        if (this.cost >= 0) {
-          this.costError = "";
-        }
-        break;
-      case "place":
-        if (this.place && this.place.trim() !== "") {
-          this.placeError = "";
-        }
-        break;
-    }
+  public cancel(): void {
+    this.router.navigate(["/vehicle", this.vehicleId, "history"]);
   }
 
-  // Validate form
-  private validatForm(
-    odometer: number,
-    expenseTypeId: number,
-    cost: number,
-    place: string
-  ): boolean {
-    let isValid = true;
-
-    if (odometer < 0) {
-      this.odometerError = "Odometer cannot be a negative value!";
-      isValid = false;
+  public saveAddExpenseTypeChanges(): void {
+    if (this.expenseTypeForm.invalid) {
+      this.expenseTypeForm.markAllAsTouched();
+      this.toastr.warning("Service type name is required and must not exceed 30 characters");
+      return;
     }
 
-    if (!expenseTypeId) {
-      this.expenseError = "Expense is required!";
-      isValid = false;
+    const expenseTypeCreateModel = new ExpenseType();
+    expenseTypeCreateModel.name = this.expenseTypeForm.value.name;
+
+
+    this.spinner.show();
+    if (
+      this.selectModel.some(
+        (expenseType) =>
+          String(expenseType["value"]).toLowerCase() ===
+          expenseTypeCreateModel.name.toLowerCase()
+      )
+    ) {
+      this.toastr.warning("Expense type with the same name already exists!");
+      return;
     }
 
-    if (cost < 0) {
-      this.costError = "Cost cannot be a negative value!";
-      isValid = false;
-    }
-
-    if (!place || place.trim() === "") {
-      this.placeError = "Place is required!";
-      isValid = false;
-    }
-
-    return isValid;
-  }
-
-  public onInputChangeExpenseType(field: string): void {
-    switch (field) {
-      case "name":
-        if (this.name.trim()) {
-          this.nameError = "";
-        }
-        break;
-    }
-  }
-
-  private resetExpenseType(): void {
-    this.name = '';
-  }
-
-  //Validate form service type
-  private validateFormServiceType(name: string): boolean {
-    let isValid = true;
-
-    if (!name.trim()) {
-      this.nameError = "Name is required and cannot be empty!";
-      isValid = false;
-    } else if (name.length > 30) {
-      this.nameError = "Name cannot exceed 30 characters";
-      isValid = false;
-    } else {
-      this.nameError = "";
-    }
-
-    return isValid;
+    this.expenseTypeService.postExpenseType(expenseTypeCreateModel).subscribe({
+      next: () => {
+        this.toastr.success("Successfully added expense type!");
+        this.getExpenseType();
+        this.hideModalExpenseTypeCreate();
+        this.spinner.hide();
+      },
+      error: () => {
+        this.toastr.warning("Error during adding!");
+        this.getExpenseType();
+        this.spinner.hide();
+      },
+    });
   }
 }

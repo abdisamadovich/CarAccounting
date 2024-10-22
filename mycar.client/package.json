@@ -39,6 +39,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "jest-editor-support": "*",
+    "ngx-bootstrap": "^18.1.1",
     "ngx-spinner": "^17.0.0",
     "ngx-toastr": "^18.0.0",
     "run-script-os": "*",

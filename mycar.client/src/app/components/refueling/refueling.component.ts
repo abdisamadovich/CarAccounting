@@ -1,7 +1,10 @@
+import { SelectModel } from '@@components/models';
 import { Fuel, Refuelling } from '@@services/models';
 import { FuelService, RefuellingService } from '@@services/services';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -10,205 +13,104 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './refueling.component.less',
 })
 export class RefuelingComponent implements OnInit {
-  //Inject
+  public refuelingForm!: FormGroup;
+  public selectModel: SelectModel[] = [];
+  public vehicleId: number = 0;
+
   constructor(
+    private fb: FormBuilder,
     private refuellingService: RefuellingService,
     private fuelService: FuelService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private spinner: NgxSpinnerService 
   ) {}
 
   ngOnInit(): void {
+    this.refuelingForm = this.fb.group({
+      date: [new Date(), Validators.required],
+      odometer: [0, [Validators.required, Validators.min(0)]],
+      fuel: [null, Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      quantity: [0, [Validators.required, Validators.min(0)]],
+      totalCost: [0, [Validators.required, Validators.min(0)]],
+      station: ["", Validators.required],
+      isFilled: [true]
+    });
+
     this.route.paramMap.subscribe((params) => {
-      this.vehicleId = +params.get('vehicleId')!;
+      this.vehicleId = +params.get("vehicleId")!;
     });
-    this.getFuel();
+
+    this.getFuels();
   }
 
-  public vehicleId: number = 0;
-  // Refuelling
-  public id: number = 0;
-  public date: Date = new Date();
-  public format = "MM/dd/yyyy HH:mm";
-  public odometer: number = 0;
-  public fuelId: number = 0;
-  public price: number = 0;
-  public totalCost: number = 0;
-  public quantity: number = 0;
-  public isFilled: boolean = true;
-  public station: string = '';
-  //For ModalWindow
-  public modalRefuellingCreate: boolean = false;
-  public fuels: Fuel[] = [];
-  //Variables For Error
-  public odometerError: string = "";
-  public fuelError: string = "";
-  public priceError: string = "";
-  public quantityError: string = "";
-  public totalCostError: string = "";
-  public stationError: string = "";
-
-  public updateValues(changedField: string): void {
-    switch (changedField) {
-      case "price":
-        if (this.price > 0 && this.quantity > 0) {
-          this.totalCost = this.price * this.quantity;
-        } else if (this.price > 0 && this.totalCost > 0) {
-          this.quantity = this.totalCost / this.price;
-        }
-        break;
-
-      case "quantity":
-        if (this.price > 0) {
-          this.totalCost = this.price * this.quantity;
-        } else if (this.totalCost > 0 && this.quantity > 0) {
-          this.price = this.totalCost / this.quantity;
-        }
-        break;
-
-      case "totalCost":
-        if (this.price > 0 && this.quantity === 0) {
-          this.quantity = this.totalCost / this.price;
-        } else if (this.quantity > 0) {
-          this.price = this.totalCost / this.quantity;
-        }
-        break;
-    }
-  }
-
-  // Fuels
-  public getFuel(): void {
+  public getFuels(): void {
+    this.spinner.show(); 
     this.fuelService.getFuel().subscribe((res) => {
-      this.fuels = res;
+      this.selectModel = res.map(fuel => ({
+        label: fuel.name,
+        value: fuel.id!
+      }));
+      this.spinner.hide(); 
+    }, () => {
+      this.spinner.hide();
+      this.toastr.error("Error fetching fuels!");
     });
-  }
-
-  public showModalRefuellingCreate(): void {
-    this.modalRefuellingCreate = true;
-  }
-  public hideModalRefuellingCreate(): void {
-    this.modalRefuellingCreate = false;
   }
 
   public saveAddChanges(): void {
-    this.station = this.station.trim();
-    if (
-      !this.validatForm(
-        this.odometer,
-        this.fuelId,
-        this.price,
-        this.quantity,
-        this.totalCost,
-        this.station
-      )
-    ) {
+    if (this.refuelingForm.invalid) {
+      this.refuelingForm.markAllAsTouched();
+      this.toastr.warning("Please fill out all required fields correctly");
       return;
     }
+    
     const refuellingCreateModel = new Refuelling();
-    (refuellingCreateModel.vehicleId = this.vehicleId),
-      (refuellingCreateModel.date = this.date),
-      (refuellingCreateModel.odometer = this.odometer),
-      (refuellingCreateModel.fuelId = this.fuelId),
-      (refuellingCreateModel.price = this.price),
-      (refuellingCreateModel.totalCost = this.quantity * this.price),
-      (refuellingCreateModel.quantity = this.quantity),
-      (refuellingCreateModel.isFilled = this.isFilled),
-      (refuellingCreateModel.station = this.station),
-      this.refuellingService.postRefuelling(refuellingCreateModel).subscribe({
-        next: (response) => {
-          this.toastr.success("Success add Refueling!");
-          this.router.navigate(['/vehicle', this.vehicleId, 'history']);
-        },
-        error: (err) => {
-          this.toastr.warning('Error during add!');
-        },
-      });
-    this.modalRefuellingCreate = false;
+    refuellingCreateModel.vehicleId = this.vehicleId;
+    refuellingCreateModel.date = this.refuelingForm.value.date;
+    refuellingCreateModel.odometer = this.refuelingForm.value.odometer;
+    refuellingCreateModel.fuelId = this.refuelingForm.value.fuel;
+    refuellingCreateModel.price = this.refuelingForm.value.price;
+    refuellingCreateModel.quantity = this.refuelingForm.value.quantity;
+    refuellingCreateModel.totalCost = this.refuelingForm.value.totalCost;
+    refuellingCreateModel.station = this.refuelingForm.value.station;
+    refuellingCreateModel.isFilled = this.refuelingForm.value.isFilled;
+
+    this.spinner.show();
+    this.refuellingService.postRefuelling(refuellingCreateModel).subscribe({
+      next: () => {
+        this.toastr.success("Successfully add Refueling!");
+        this.router.navigate(["/vehicle", this.vehicleId, "history"]);
+        this.spinner.hide();
+      },
+      error: () => {
+        this.toastr.warning("Error during add!");
+        this.spinner.hide();
+      },
+    });
+  }
+
+  public updateTotalCostOnBlur(): void {
+    const price = this.refuelingForm.get("price")?.value;
+    const quantity = this.refuelingForm.get("quantity")?.value;
+
+    if (price != null && quantity != null) {
+      this.refuelingForm.patchValue({ totalCost: price * quantity });
+    }
+  }
+
+  public updatePriceOnBlur(): void {
+    const totalCost = this.refuelingForm.get("totalCost")?.value;
+    const quantity = this.refuelingForm.get("quantity")?.value;
+
+    if (totalCost != null && quantity != null && quantity > 0) {
+      this.refuelingForm.patchValue({ price: totalCost / quantity });
+    }
   }
 
   public cancel(): void {
-    this.router.navigate(['/vehicle', this.vehicleId, 'history']);
-  }
-
-  public onInputChange(field: string): void {
-    switch (field) {
-      case "odometer":
-        if (this.odometer >= 0) {
-          this.odometerError = "";
-        }
-        break;
-      case "fuel":
-        if (this.fuelId && this.fuelId != 0) {
-          this.fuelError = "";
-        }
-        break;
-
-      case "price":
-        if (this.price >= 0) {
-          this.priceError = "";
-        }
-        break;
-      case "quantity":
-        if (this.quantity >= 0) {
-          this.quantityError = "";
-        }
-        break;
-      case "totalCost":
-        if (this.totalCost >= 0) {
-          this.totalCostError = "";
-        }
-        break;
-
-      case "station":
-        if (this.station && this.station.trim() !== "") {
-          this.stationError = "";
-        }
-        break;
-    }
-  }
-
-  // Validate form
-  private validatForm(
-    odometer: number,
-    fuelId: number,
-    price: number,
-    quantity: number,
-    totalCost: number,
-    station: string
-  ): boolean {
-    let isValid = true;
-
-    if (odometer < 0) {
-      this.odometerError = "Odometer cannot be a negative value!";
-      isValid = false;
-    }
-
-    if (!fuelId) {
-      this.fuelError = "Fuel is required!";
-      isValid = false;
-    }
-
-    if (price < 0) {
-      this.priceError = "Price cannot be a negative value!";
-      isValid = false;
-    }
-
-    if (quantity < 0) {
-      this.quantityError = "Quantity cannot be a negative value!";
-      isValid = false;
-    }
-
-    if (totalCost < 0) {
-      this.totalCostError = "Total cost cannot be a negative value!";
-      isValid = false;
-    }
-
-    if (!station || station.trim() === "") {
-      this.stationError = "Gas station is required!";
-      isValid = false;
-    }
-
-    return isValid;
+    this.router.navigate(["/vehicle", this.vehicleId, "history"]);
   }
 }

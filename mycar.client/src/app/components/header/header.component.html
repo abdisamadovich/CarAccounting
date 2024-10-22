@@ -1,86 +1,76 @@
-<div class="container">
-  <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-    <ul class="nav nav-pills">
-      <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle',vehicleId,'refueling']">Add Refueling</a></li>
-      <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle',vehicleId,'service']">Add Service</a></li>
-      <li class="nav-item"><a href="#" class="nav-link" [routerLink]="['/vehicle',vehicleId,'expense']">Add Expence</a></li>
-      <li class="nav-item"><a href="#" class="nav-link" (click)="goToHistory()">History</a></li>
-      <div class="dropdown">
-        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">  
-          <span>
-            {{ getSelectedVehicleName() }}  
-          </span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton"> 
-          <li *ngFor="let vehicle of vehicles">
-            <a class="dropdown-item" [attr.title]="vehicle.name" (click)="onVehicleChange(vehicle.id)">
-              {{ vehicle.name }}
-            </a>
-          </li>
-          <li><hr class="dropdown-divider"></li>
-          <li>
-            <button class="dropdown-item" (click)="showModalCarCreate()" type="button">+ Add a vehicle</button>
-          </li>
-        </ul>
+<div class="dropdown">
+  <button class="btn dropdown-toggle" type="button" id="vehicleDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+    {{ getSelectedVehicleName() }}
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="vehicleDropdownMenuButton">
+    <li *ngFor="let vehicle of vehicles">
+      <a class="dropdown-item" (click)="onVehicleChange(vehicle.id)">
+        {{ vehicle.name }}
+      </a>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+    <li>
+      <button class="dropdown-item" (click)="showModalCarCreate()">+ Add a vehicle</button>
+    </li>
+  </ul>
+</div>
+
+<div id="vehicleModal" *ngIf="modalCarCreate" class="modal fade show d-block" tabindex="-1" role="dialog" aria-labelledby="vehicleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="vehicleModalLabel">Add a Vehicle</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="hideModalCarCreate()"></button>
       </div>
-    </ul>
-  </header>
-
-  <div id="vehicle" *ngIf="modalCarCreate" class="modal z-2" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="myModalLabel">Add a vehicle</h5>
-          <button type="button" (click)="hideModalCarCreate()" class="btn-close custom-close-btn" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="name">Name:</label>
-              <input type="text" [(ngModel)]="name" class="form-control" id="carName" name="carName" (input)="onInputChange('name')" />
-              <div class="text-danger error-message" *ngIf="nameError">{{ nameError }}</div>
+      <div class="modal-body">
+        <form [formGroup]="expenseForm">
+          <div class="form-label">
+            <label for="name">Name:</label>
+            <input type="text" id="name" formControlName="name" class="form-control" />
+            <div class="text-danger error-message" *ngIf="expenseForm.get('name')?.invalid && expenseForm.get('name')?.touched">
+              Name is required and should not exceed 20 characters.
             </div>
+          </div>
 
-            <div class="form-group">
-              <label for="manufacturer">Manufacturers:</label>
-              <app-select [options]="manufacturers" [(ngModel)]="manufacturerId" (selectionChange)="onInputChange('serviceType')">
-              </app-select>
-              <div class="text-danger error-message" *ngIf="manufacturerError">{{ manufacturerError }}</div>
+          <div class="col-md-6">
+            <app-select [options]="selectModel" label="Manufacturer:" formControlName="manufacturer"></app-select>
+            <div class="text-danger error-message" *ngIf="expenseForm.get('fuel')?.invalid && expenseForm.get('fuel')?.touched">
+              Fuel is required!
             </div>
+          </div>
+          
+          <div class="form-label">
+            <label for="model">Model:</label>
+            <input type="text" id="model" formControlName="model" class="form-control" />
+            <div class="text-danger error-message" *ngIf="expenseForm.get('model')?.invalid && expenseForm.get('model')?.touched">
+              Model is required and should not exceed 20 characters.
+            </div>
+          </div>
 
-            <div class="form-group">
-              <label for="model">Model:</label>
-              <input type="text" [(ngModel)]="model" class="form-control" name="name" (input)="onInputChange('model')"/>
-              <div class="text-danger error-message" *ngIf="modelError">{{ modelError }}</div>
+          <div class="col-md-6">
+            <app-select [options]="selectModel" label="Fuel type:" formControlName="fuelType"></app-select>
+            <div class="text-danger error-message" *ngIf="expenseForm.get('fuelType')?.invalid && expenseForm.get('fuelType')?.touched">
+              Fuel is required!
             </div>
-
-            <div class="form-group">
-              <label for="fuelType">Fuel types:</label>
-              <select id="fuelType" [(ngModel)]="fuelTypeId" name="fuelTypeId" class="form-control dropdown-select" (change)="onInputChange('fuelType')">
-                <option *ngFor="let fuelType of fuelTypes" [value]="fuelType.id">
-                  {{ fuelType.name }}
-                </option>
-              </select>
-              <div class="text-danger error-message" *ngIf="fuelTypeError">{{ fuelTypeError }}</div>
+          </div>
+          
+          <div class="form-label">
+            <label for="fuelCapacity">Fuel Capacity:</label>
+            <input type="number" id="fuelCapacity" formControlName="fuelCapacity" class="form-control" />
+            <div class="text-danger error-message" *ngIf="expenseForm.get('fuelCapacity')?.invalid && expenseForm.get('fuelCapacity')?.touched">
+              Please enter a valid fuel capacity.
             </div>
-
-            <div class="form-group">
-              <label for="model">Fuel capacity:</label>
-              <input type="number" [(ngModel)]="fuelCapacity" class="form-control" name="modelName" />
-              <div class="text-danger error-message" *ngIf="fuelCapacityError">{{ fuelCapacityError }}</div>
-            </div>
-
-            <div class="form-group">
-              <label for="model">Description:</label>
-              <input type="text" [(ngModel)]="description" class="form-control" name="descriptionName" />
-            </div>
-          </form>
-        </div>
-        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-danger" (click)="hideModalCarCreate()">Cancel</button>
-          <button type="button" class="btn btn-outline-success" (click)="saveAddChanges()">Save</button>
-        </div>
+          </div>
+          
+          <div class="form-label">
+            <label for="description">Description:</label>
+            <input type="text" id="description" formControlName="description" class="form-control" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="hideModalCarCreate()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="saveAddChanges()">Save</button>
       </div>
     </div>
   </div>

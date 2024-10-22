@@ -1,7 +1,19 @@
-<div class="container d-flex flex-column min-vh-100">
-    <app-header></app-header>
-    <main>
-        <router-outlet></router-outlet>
-    </main>
-    <app-footer></app-footer>
+<div class="wrapper">
+  <aside class="sidebar d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
+      <ul class="nav nav-pills flex-column mb-auto">
+          <li *ngFor="let route of routes" class="nav-item">
+              <a [routerLink]="route.value" [ngClass]="isActive(route.value) ? 'nav-link active' : 'nav-link text-white'" aria-current="page">
+                  {{ route.label }}
+              </a>
+          </li>
+      </ul>
+  </aside>
+  <main class="main">
+      <app-header></app-header>
+      <div class="outlet-wrapper">
+          <div class="history-container">
+              <router-outlet></router-outlet>
+          </div>
+      </div>
+  </main>
 </div>

@@ -1,3 +1,7 @@
-<select class="form-control" [ngModel]="selectedValue" (change)="onSelectionChange($event)">
-    <option *ngFor="let option of options" [value]="option.id">{{ option.name }}</option>
-</select>
+<div class="form-group">
+  <label class="form-label">{{ label }}</label>
+  <select class="form-control" (change)="handleChange($event)" [ngClass]="{'is-invalid': !isValid}">
+    <option value="" disabled selected>Select an option</option>
+    <option *ngFor="let option of options" [value]="option.value">{{ option.label }}</option>
+  </select>
+</div>

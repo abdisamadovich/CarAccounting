@@ -46,13 +46,15 @@ export class VehicleService {
 
   private toClass(source: VehicleModel): Vehicle {
     const model = new Vehicle();
-    model.id = source.id || null;
+    model.id = source.id ?? 0;
     model.name = source.name;
     model.manufacturerId = source.manufacturerId;
+    model.manufacturerName = source.manufacturer?.name || "";
     model.model = source.model;
-    model.fuelTypeId = model.fuelTypeId;
+    model.fuelTypeId = source.fuelTypeId;
+    model.fuelTypeName = source.fuelType?.name || "";
     model.fuelCapacity = source.fuelCapacity;
-    model.description = model.description;
+    model.description = source.description;
     return model;
   }
 }

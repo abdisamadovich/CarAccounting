@@ -1,87 +1,79 @@
-<div class="container">
-	<div class="baseService">
-		<div class="service" tabindex="-1" role="dialog">
-			<div>
-				<div class="content blue-border">
-					<div class="modal-body">
-						<form>
-							<div class="form-group">
-								<kendo-label text="Date and Time:">
-									<kendo-datetimepicker
-									  [format]="format"
-									  [(value)]="date"
-									></kendo-datetimepicker>
-								  </kendo-label>
-							</div>
-	
-							<div class="form-group">
-								<label for="odometer">Odometer:</label>
-								<input type="number" [(ngModel)]="odometer" class="form-control" id="odometer" name="odometer" (change)="onInputChangeService('odometer')"/>
-								<div class="text-danger error-message" *ngIf="odometerError">{{ odometerError }}</div>
-							</div>
-							
-							<div class="form-group">
-								<label for="serviceType">Service:</label>
-								<div class="d-flex align-items-stretch">
-									<div class="flex-grow-1">
-										<app-select [options]="serviceTypes" [(ngModel)]="serviceTypeId"
-											(selectionChange)="onInputChangeService('serviceType')">
-										</app-select>
-									</div>
-									<div class="service-type-create">
-										<button type="button" (click)="showModalServiceTypeCreate()" class="btn btn-outline-success">+</button>
-									</div>
-								</div>
-								<div class="text-danger error-message" *ngIf="serviceTypeError">{{ serviceTypeError }}</div>
-							</div>
-							  
-							<div class="form-group">
-								<label for="price">Price:</label>
-								<input type="number" [(ngModel)]="price" class="form-control" id="price" name="price" (change)="onInputChangeService('price')"/>
-								<div class="text-danger error-message" *ngIf="priceError">{{ priceError }}</div>
-							</div>
-	
-							<div class="form-group">
-								<label for="place">Place:</label>
-								<input type="text" [(ngModel)]="place" class="form-control" name="place" (change)="onInputChangeService('place')"/>
-								<div class="text-danger error-message" *ngIf="placeError">{{ placeError }}</div>
-							</div>
-	
-							<div class="form-group">
-								<label for="notes">Notes:</label>
-								<input type="text" [(ngModel)]="notes" class="form-control" name="notes" />
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button class="btn btn-outline-danger" type="button" (click)="cancel()">Cancel</button>
-						<button class="btn btn-outline-success" type="button" (click)="saveAddServiceChanges()">Save</button>
-					</div>
-				</div>
-			</div>
+<div class="card p-5">
+	<form [formGroup]="myForm" class="row g-3">
+	  <div class="col-md-6">
+		<label class="form-label" for="date">Date and Time:</label>
+		<kendo-datetimepicker class="kendo-datetime" formControlName="date" [format]="'yyyy-MM-dd HH:mm'"></kendo-datetimepicker>
+	  </div>
+  
+	  <div class="col-md-6">
+		<label class="form-label" for="odometer">Odometer:</label>
+		<input type="number" formControlName="odometer" class="form-control" id="odometer" />
+		<div class="text-danger error-message" *ngIf="myForm.get('odometer')?.invalid && myForm.get('odometer')?.touched">
+		  Odometer cannot be negative!
 		</div>
-	</div>	
-
-	<div *ngIf="modalServiceTypeCreate" class="modal-container" tabindex="-1" role="dialog">
-		<div class="modal-content blue-border">
-			<div class="modal-header">
-				<h5 class="modal-title" id="myModalLabel">Add service type</h5>
-				<button type="button" (click)="hideModalServiceTypeCreate()" class="btn-close custom-close-btn"
-					aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<form>
-					<div class="form-group">
-						<label for="name">Name:</label>
-						<input type="text" [(ngModel)]="name" class="form-control" id="carName" name="carName" (change)="onInputChangeServiceType('name')"/>
-						<div class="text-danger error-message" *ngIf="nameError">{{ nameError }}</div>
-					</div>
-				</form>
+	  </div>
+  
+	  <div class="col-md-6">
+		<app-select [options]="selectModel" label="Service type:" formControlName="serviceType"></app-select>
+		<div class="text-danger error-message" *ngIf="myForm.get('serviceType')?.invalid && myForm.get('serviceType')?.touched">
+		  Service type is required!
+		</div>
+		<button type="button" (click)="showModalServiceTypeCreate()" class="btn btn-primary btn-sm mt-2">
+		  + Add New Service Type
+		</button>
+	  </div>
+  
+	  <div class="col-md-6">
+		<label class="form-label" for="price">Price:</label>
+		<input type="number" formControlName="price" class="form-control" id="price" />
+		<div class="text-danger error-message" *ngIf="myForm.get('price')?.invalid && myForm.get('price')?.touched">
+		  Price cannot be negative!
+		</div>
+	  </div>
+  
+	  <div class="col-md-6">
+		<label class="form-label" for="place">Place:</label>
+		<input type="text" formControlName="place" class="form-control" id="place" />
+		<div class="text-danger error-message" *ngIf="myForm.get('place')?.invalid && myForm.get('place')?.touched">
+		  Place is required!
+		</div>
+	  </div>
+  
+	  <div class="col-md-6">
+		<label class="form-label" for="notes">Notes:</label>
+		<textarea formControlName="notes" class="form-control" id="notes" rows="3"></textarea>
+	  </div>
+  
+	  <div class="col-12 d-flex justify-content-end mt-4">
+		<button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+		<button class="btn btn-primary ms-2" type="button" (click)="saveAddServiceChanges()">Save</button>
+	  </div>
+	</form>
+  </div>
+  
+  <div *ngIf="modalServiceTypeCreate" class="modal fade show d-block" tabindex="-1">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title">Add Service Type</h5>
+		  <button type="button" class="btn-close" (click)="hideModalServiceTypeCreate()"></button>
+		</div>
+		<div class="modal-body">
+		  <form [formGroup]="serviceTypeForm" (ngSubmit)="saveAddServiceTypeChanges()">
+			<div class="mb-3">
+			  <label class="form-label" for="serviceTypeName">Name:</label>
+			  <input type="text" formControlName="name" class="form-control" id="serviceTypeName" />
+			  <div class="text-danger error-message" *ngIf="serviceTypeForm.get('name')?.invalid && serviceTypeForm.get('name')?.touched">
+				Name is required and cannot exceed 30 characters.
+			  </div>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-outline-danger" type="button" (click)="hideModalServiceTypeCreate()">Cancel</button>
-				<button class="btn btn-outline-success" type="button" (click)="saveAddServiceTypeChanges()">Save</button>
+			  <button class="btn btn-secondary" type="button" (click)="hideModalServiceTypeCreate()">Cancel</button>
+			  <button class="btn btn-primary" type="button" [disabled]="serviceTypeForm.invalid">Save</button>
 			</div>
+		  </form>
 		</div>
+	  </div>
 	</div>
-</div>
+  </div>
+  
