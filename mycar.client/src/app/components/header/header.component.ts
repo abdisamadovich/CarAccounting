@@ -13,9 +13,10 @@ import { SelectModel } from '@@components/models';
   styleUrl: './header.component.less',
 })
 export class HeaderComponent implements OnInit {
-  public expenseForm!: FormGroup;
+  public myForm!: FormGroup;
   public vehicles: Vehicle[] = [];
-  public selectModel: SelectModel[] = [];
+  public manufacturerSelectModel: SelectModel[] = [];
+  public fuelTypeSelectModel: SelectModel[] = [];
   public vehicleId: number = 0;
   public modalCarCreate: boolean = false;
 
@@ -31,7 +32,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.expenseForm = this.fb.group({
+    this.myForm = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(20)]],
       model: ["", [Validators.required, Validators.maxLength(20)]],
       manufacturer: [null, Validators.required],
@@ -68,7 +69,7 @@ export class HeaderComponent implements OnInit {
   public getManufacturers(): void {
     this.spinner.show();
     this.manufacturerService.getManufacturers().subscribe((res) => {
-      this.selectModel = res.map(Manufacturer => ({
+      this.manufacturerSelectModel = res.map(Manufacturer => ({
         label: Manufacturer.name,
         value: Manufacturer.id!
       }))
@@ -79,7 +80,7 @@ export class HeaderComponent implements OnInit {
   public getFuelType(): void {
     this.spinner.show(); 
     this.fuelTypeService.getFuelTypes().subscribe((res) => {
-      this.selectModel = res.map(fuel => ({
+      this.fuelTypeSelectModel = res.map(fuel => ({
         label: fuel.name,
         value: fuel.id!
       }));
@@ -98,19 +99,19 @@ export class HeaderComponent implements OnInit {
   }
 
   public saveAddChanges(): void {
-    if (this.expenseForm.invalid) {
-      this.expenseForm.markAllAsTouched();
+    if (this.myForm.invalid) {
+      this.myForm.markAllAsTouched();
       this.toastr.warning("Please fill out all required fields correctly");
       return;
     }
 
     const vehicleCreateModel = new Vehicle();
-    vehicleCreateModel.name = this.expenseForm.value.name;
-    vehicleCreateModel.model = this.expenseForm.value.model;
-    vehicleCreateModel.manufacturerId = this.expenseForm.value.manufacturer;
-    vehicleCreateModel.fuelTypeId = this.expenseForm.value.fuelType;
-    vehicleCreateModel.fuelCapacity = this.expenseForm.value.fuelCapacity;
-    vehicleCreateModel.description = this.expenseForm.value.description;
+    vehicleCreateModel.name = this.myForm.value.name;
+    vehicleCreateModel.model = this.myForm.value.model;
+    vehicleCreateModel.manufacturerId = this.myForm.value.manufacturer;
+    vehicleCreateModel.fuelTypeId = this.myForm.value.fuelType;
+    vehicleCreateModel.fuelCapacity = this.myForm.value.fuelCapacity;
+    vehicleCreateModel.description = this.myForm.value.description;
 
     this.vehicleService.postVehicle(vehicleCreateModel).subscribe({
       next: (response: Vehicle) => {
@@ -120,6 +121,7 @@ export class HeaderComponent implements OnInit {
         this.router.navigate(["/vehicle", this.vehicleId, "history"]);
         this.resetForm();
         this.hideModalCarCreate();
+        this.getVehicles();
       },
       error: () => {
         this.toastr.warning("Error while adding vehicle!");
@@ -128,7 +130,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public resetForm(): void {
-    this.expenseForm.reset({
+    this.myForm.reset({
       name: "",
       model: "",
       manufacturer: null,
@@ -151,5 +153,6 @@ export class HeaderComponent implements OnInit {
     this.vehicleId = vehicleId;
     localStorage.setItem("selectedVehicleId", this.vehicleId.toString());
     this.router.navigate(["/vehicle", this.vehicleId, "history"]);
+    this.getVehicles();
   }
 }
