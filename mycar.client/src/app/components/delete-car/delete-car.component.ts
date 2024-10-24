@@ -33,7 +33,7 @@ export class DeleteCarComponent implements OnInit {
     this.vehicleService.getVehicle().subscribe(
       (res) => {
         this.vehicles = res;
-        this.spinner.hide();
+        this.spinner.hide();                                                        
       },
       (error) => {
         this.spinner.hide(); 
@@ -77,6 +77,8 @@ export class DeleteCarComponent implements OnInit {
             (vehicle) => vehicle.id!== id
           );
           this.toastr.success("Vehicle deleted successfully!");
+
+          this.vehicleService.notifyVehicleDeleted(id);
         },
         (error) => {
           this.toastr.error("Failed to delete vehicle");

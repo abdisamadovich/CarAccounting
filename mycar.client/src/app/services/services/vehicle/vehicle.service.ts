@@ -1,11 +1,13 @@
-import { Injectable, inject, model } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { map, Observable, Subject } from 'rxjs';
 import { VehicleApiService } from '@api/service';
 import { VehicleModel } from '@api/models';
 import { Vehicle } from '@@services/models';
 
 @Injectable({ providedIn: 'root' })
 export class VehicleService {
+  public vehicleDeletedSubject = new Subject<number>();
+
   constructor(private vehicle: VehicleApiService) {}
 
   public postVehicle(vehicle: Vehicle): Observable<Vehicle> {
@@ -41,7 +43,19 @@ export class VehicleService {
   }
 
   public deleteVehicle(id: number): Observable<void> {
-    return this.vehicle.deleteVehicle(id);
+    return this.vehicle.deleteVehicle(id).pipe(
+      map(() => {
+        this.notifyVehicleDeleted(id);
+      })
+    );
+  }
+
+  public notifyVehicleDeleted(id: number): void {
+    this.vehicleDeletedSubject.next(id);
+  }
+
+  public getVehicleDeletedNotification(): Observable<number> {
+    return this.vehicleDeletedSubject.asObservable();
   }
 
   private toClass(source: VehicleModel): Vehicle {

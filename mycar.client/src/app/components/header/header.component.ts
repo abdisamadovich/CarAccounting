@@ -56,6 +56,10 @@ export class HeaderComponent implements OnInit {
     this.getVehicles();
     this.getManufacturers();
     this.getFuelType();
+
+    this.vehicleService.getVehicleDeletedNotification().subscribe((deletedVehicleId: number) => {
+      this.vehicles = this.vehicles.filter(vehicle => vehicle.id !== deletedVehicleId);
+    });
   }
 
   public getVehicles(): void {
