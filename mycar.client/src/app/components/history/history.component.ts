@@ -30,7 +30,10 @@ export class HistoryComponent implements OnInit {
   public records: RecordModel[] = [];
   public vehicleId: number = 1;
   public offset: number = 0;
-  public limit: number = 10;
+  public limit: number = 5;
+  public totalPages: number = 0;
+  public currentPage: number = 1;
+  public totalItems: number = 0;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -68,9 +71,12 @@ export class HistoryComponent implements OnInit {
 
   public getRecords(): void {
     this.spinner.show();
-    this.record.getRecords(this.vehicleId).subscribe({
+    this.record.getRecords(this.vehicleId, this.offset, this.limit).subscribe({
       next: data => {
-        this.records = data;
+        this.records = data.records;
+        this.totalPages = data.pagination.totalPages;
+        this.totalItems = data.pagination.totalItems;
+        this.currentPage = data.pagination.currentPage;
         this.spinner.hide();
       },
       error: () => {
@@ -78,6 +84,13 @@ export class HistoryComponent implements OnInit {
         this.spinner.hide();
       }
     });
+  }
+
+  public goToPage(pageNumber: number): void {
+    if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+      this.offset = (pageNumber - 1) * this.limit;
+      this.getRecords();
+    }
   }
 
   public getRecordTypeName(type: number): string {
@@ -115,6 +128,13 @@ export class HistoryComponent implements OnInit {
       next: () => {
         this.toastr.success(`${this.getRecordTypeName(recordType)} deleted`);
         this.records = this.records.filter(record => record.recordId !== id);
+
+        if (this.records.length === 0 && this.currentPage > 1) {
+          this.currentPage--;
+          this.offset = (this.currentPage - 1) * this.limit;
+        }
+  
+        this.getRecords();
         this.spinner.hide();
       },
       error: () => {

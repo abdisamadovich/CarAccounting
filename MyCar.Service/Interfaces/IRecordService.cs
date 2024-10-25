@@ -1,8 +1,9 @@
 ﻿using MyCar.Repository.Dto;
+using MyCar.Repository.Utils;
 
 namespace MyCar.Service.Interfaces;
 
 public interface IRecordService
 {
-    IList<RecordViewModel> GetRecords(long vehicleId, int offset, int limit);
+    PaginationResult<RecordViewModel> GetRecords(long vehicleId, int skip, int take);
 }

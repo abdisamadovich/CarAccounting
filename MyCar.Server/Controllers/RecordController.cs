@@ -15,12 +15,17 @@ public class RecordController : ControllerBase
     }
 
     [HttpGet("{vehicleId}")]
-    public ActionResult<IList<RecordViewModel>> GetRecords(long vehicleId, [FromQuery] int offset = 0, [FromQuery] int limit = 10)
+    public ActionResult<IList<RecordViewModel>> GetRecords(long vehicleId, [FromQuery] int offset = 0, [FromQuery] int limit = 5)
     {
         try
         {
             var records = _recordService.GetRecords(vehicleId, offset, limit);
-            return Ok(records);
+
+            return Ok(new
+            {
+                records = records.Records,
+                pagination = records.Pagination
+            });
         }
         catch (KeyNotFoundException ex)
         {

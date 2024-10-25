@@ -1,4 +1,3 @@
-import { Vehicle } from '@@services/models';
 import { RecordType } from './record-type';
 
 export interface RecordModel {

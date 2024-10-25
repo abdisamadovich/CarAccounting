@@ -42,6 +42,7 @@ builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<IExpenseTypeService, ExpenseTypeService>();
 builder.Services.AddScoped<IRecordService, RecordService>();
+builder.Services.AddScoped<IPaginator,Paginator>();
 
 var connectionString = builder.Configuration.GetConnectionString("MainDatabase");
 builder.Services.AddDbContext<MainContext>(options =>

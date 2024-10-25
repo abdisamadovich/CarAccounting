@@ -9,3 +9,5 @@ export { RefuellingModel } from './refuelling/refuelling.model';
 export { ServiceModel } from './service/service.model';
 export { ServiceTypeModel } from './service-type/service-type.model';
 export { VehicleModel } from './vehicle/vehicle.model';
+export { PaginationMetaData } from './pagination/Pagination-meta-data';
+export { PaginationResult } from './pagination/Pagination-result';

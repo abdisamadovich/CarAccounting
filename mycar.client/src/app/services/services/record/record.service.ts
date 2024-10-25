@@ -1,6 +1,6 @@
 import { Record } from '@@services/models';
 import { Injectable } from '@angular/core';
-import { RecordModel } from '@api/models';
+import { PaginationResult, RecordModel } from '@api/models';
 import { RecordApiService } from '@api/service';
 import { map, Observable } from 'rxjs';
 
@@ -10,16 +10,16 @@ export class RecordService {
 
   public getRecords(
     vehicleId: number,
-  ): Observable<Record[]> {
-    return this.record.getRecords(vehicleId).pipe(
+    offset: number = 0,
+    limit: number = 5
+  ): Observable<PaginationResult<RecordModel>> {
+    return this.record.getRecords(vehicleId, offset, limit).pipe(
       map((x) => {
-        const result: Record[] = [];
-        for (let i = 0; i < x.length; i++) {
-          const model = this.toClass(x[i]);
-          result.push(model);
-        }
-
-        return result;
+        const recordModels: RecordModel[] = x.records.map(this.toClass);
+        return {
+          records: recordModels,
+          pagination: x.pagination
+        };
       })
     );
   }
@@ -33,6 +33,7 @@ export class RecordService {
     model.description = source.description;
     model.place = source.place;
     model.cost = source.cost;
+    model.vehicleId = source.vehicleId;
     return model;
   }
 }
