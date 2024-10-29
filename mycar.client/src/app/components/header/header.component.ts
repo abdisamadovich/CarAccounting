@@ -1,4 +1,4 @@
-import { Vehicle, Manufacturer, Fuel, FuelType } from '@@services/models';
+import { Vehicle } from '@@services/models';
 import { VehicleService, ManufacturerService, FuelTypeService } from '@@services/services';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -46,29 +46,63 @@ export class HeaderComponent implements OnInit {
       if (vehicleIdParam) {
         this.vehicleId = +vehicleIdParam;
       } else {
-        const savedVehicleId = localStorage.getItem("selectedVehicleId");
+        const savedVehicleId = this.getVehicleId()
         if (savedVehicleId) {
           this.vehicleId = +savedVehicleId;
-          this.router.navigate(["/vehicle", this.vehicleId, "history"]);
+
+          this.router.navigate(["/vehicle", this.vehicleId, "history"], {
+            onSameUrlNavigation: "reload"
+          });
         }
       }
     });
-    this.getVehicles();
+    if(this.vehicleId == 0) {
+      this.getVehicles(true);
+    }
+    else {
+      this.getVehicles();
+    }
     this.getManufacturers();
     this.getFuelType();
 
     this.vehicleService.getVehicleDeletedNotification().subscribe((deletedVehicleId: number) => {
       this.vehicles = this.vehicles.filter(vehicle => vehicle.id !== deletedVehicleId);
+      this.getVehicles();
     });
   }
 
-  public getVehicles(): void {
+  public setVehicleId(vehicleId: number): void {
+    this.vehicleId = vehicleId; 
+    localStorage.setItem("selectedVehicleId", this.vehicleId.toString());
+    this.router.navigate(["/vehicle", this.vehicleId, "history"], {
+      onSameUrlNavigation: "reload"
+    });
+  }
+
+  public getVehicleId(): string | null {
+    return localStorage.getItem("selectedVehicleId");
+  }
+
+  public getVehicles(getLast?: boolean): void {
     this.spinner.show();
     this.vehicleService.getVehicle().subscribe((res) => {
       this.vehicles = res;
+      const count = res.length;
+      if(getLast && count > 0) {
+        this.onVehicleChange(res[count - 1].id);
+      } else {
+        if(count === 0) {
+          this.showModalCarCreate()
+        }
+      }
     });
     this.spinner.hide();
   }
+
+  public handleChangeVehicle(vehicleId: number): void {
+    this.onVehicleChange(vehicleId);
+    this.getVehicles();
+  } 
 
   public getManufacturers(): void {
     this.spinner.show();
@@ -94,12 +128,15 @@ export class HeaderComponent implements OnInit {
       this.toastr.error("Error fetching fuels!");
     });
   }
+
   public showModalCarCreate(): void {
     this.modalCarCreate = true;
   }
 
-  public hideModalCarCreate(): void {
-    this.modalCarCreate = false;
+  public hideModalCarCreate(canClose: boolean = true): void {
+    if(canClose) {
+      this.modalCarCreate = false;
+    }
   }
 
   public saveAddChanges(): void {
@@ -120,12 +157,10 @@ export class HeaderComponent implements OnInit {
     this.vehicleService.postVehicle(vehicleCreateModel).subscribe({
       next: (response: Vehicle) => {
         this.toastr.success("Vehicle successfully added!");
-        this.vehicleId = response.id!;
-        localStorage.setItem('selectedVehicleId', this.vehicleId.toString());
-        this.router.navigate(["/vehicle", this.vehicleId, "history"]);
+        this.vehicles.push(response);
         this.resetForm();
-        this.hideModalCarCreate();
-        this.getVehicles();
+        this.hideModalCarCreate(true);
+        this.onVehicleChange(response.id);
       },
       error: () => {
         this.toastr.warning("Error while adding vehicle!");
@@ -145,7 +180,9 @@ export class HeaderComponent implements OnInit {
   }
 
   public cancel(): void {
-    this.router.navigate(["/vehicle", this.vehicleId, "history"]);
+    this.router.navigate(["/vehicle", this.vehicleId, "history"], {
+      "onSameUrlNavigation": "reload"
+    });
   }
 
   public getSelectedVehicleName(): string {
@@ -154,9 +191,11 @@ export class HeaderComponent implements OnInit {
   }
 
   public onVehicleChange(vehicleId: number): void {
+    this.setVehicleId(vehicleId);
     this.vehicleId = vehicleId;
     localStorage.setItem("selectedVehicleId", this.vehicleId.toString());
-    this.router.navigate(["/vehicle", this.vehicleId, "history"]);
-    this.getVehicles();
+    this.router.navigate(["/vehicle", this.vehicleId, "history"], {
+      "onSameUrlNavigation": "reload"
+    });
   }
 }

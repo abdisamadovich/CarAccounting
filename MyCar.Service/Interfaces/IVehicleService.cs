@@ -4,7 +4,7 @@ namespace MyCar.Service.Interfaces;
 
 public interface IVehicleService
 {
-    void CreateNew(VehiclePostViewModel vehicle);
+    VehicleViewModel CreateNew(VehicleViewModel vehicle);
     void Delete(int id);
-    List<VehicleGetViewModel> GetAll();
+    List<VehicleViewModel> GetAll();
 }

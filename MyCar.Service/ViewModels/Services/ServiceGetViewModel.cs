@@ -7,7 +7,7 @@ public class ServiceGetViewModel
 {
     public int Id { get; set; }
     public int VehicleId { get; set; }
-    public VehicleGetViewModel Vehicle { get; set; }
+    public VehicleViewModel Vehicle { get; set; }
     public DateTime Date { get; set; }
     public int Odometer { get; set; }
     public int ServiceTypeId { get; set; }

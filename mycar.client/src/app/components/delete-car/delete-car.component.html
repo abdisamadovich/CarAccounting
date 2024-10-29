@@ -13,7 +13,7 @@
             <tbody>
                 <tr *ngFor="let vehicle of vehicles">
                     <td>{{ vehicle.name }}</td>
-                    <td>{{ vehicle.manufacturerName }}</td>
+                    <td>{{ getManufacturerName(vehicle.manufacturerId) }}</td>
                     <td>{{ vehicle.model }}</td>
                     <td>
                         <button class="btn btn-primary" (click)="showModalDeleteCar(vehicle.id, deleteCarModal)">

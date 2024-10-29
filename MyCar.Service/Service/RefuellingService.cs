@@ -66,26 +66,6 @@ public class RefuellingService : IRefuellingService
         {
             Id = x.Id,
             VehicleId = x.VehicleId,
-            Vehicle = new VehicleGetViewModel
-            {
-                Id = x.Vehicle.Id,
-                Name = x.Vehicle.Name,
-                ManufacturerId = x.Vehicle.ManufacturerId,
-                Manufacturer = new ManufacturerViewModel
-                {
-                    Id = x.Vehicle.Manufacturer.Id,
-                    Name = x.Vehicle.Manufacturer.Name
-                },
-                Model = x.Vehicle.Model,
-                FuelTypeId = x.Vehicle.FuelTypeId,
-                FuelType = new FuelTypeViewModel
-                {
-                    Id = x.Vehicle.FuelType.Id,
-                    Name = x.Vehicle.FuelType.Name,
-                },
-                FuelCapacity = x.Vehicle.FuelCapacity,
-                Description = x.Vehicle.Description,
-            },
             Date = x.Date,
             Odometer = x.Odometer,
             FuelId = x.FuelId,

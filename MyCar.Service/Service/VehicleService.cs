@@ -2,8 +2,6 @@
 using MyCar.Errors;
 using MyCar.Repository.Interfaces;
 using MyCar.Service.Interfaces;
-using MyCar.Service.ViewModels.FuelsTypesViewModel;
-using MyCar.Service.ViewModels.Manufacturers;
 using MyCar.Service.ViewModels.Vehicles;
 
 namespace MyCar.Service.Service;
@@ -27,7 +25,7 @@ public class VehicleService : IVehicleService
         _refuellingRepository = refuellingRepository;
         _serviceRepository = serviceRepository;
     }
-    public void CreateNew(VehiclePostViewModel vehicle)
+    public VehicleViewModel CreateNew(VehicleViewModel vehicle)
     {
         if (vehicle == null)
         {
@@ -51,6 +49,17 @@ public class VehicleService : IVehicleService
 
         _vehicleRepository.Insert(entity);
         _vehicleRepository.SaveChanges();
+
+        return new VehicleViewModel
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            ManufacturerId = entity.ManufacturerId,
+            Model = entity.Model,
+            FuelTypeId = entity.FuelTypeId,
+            FuelCapacity = entity.FuelCapacity,
+            Description = entity.Description
+        };
     }
 
     public void Delete(int id)
@@ -63,25 +72,15 @@ public class VehicleService : IVehicleService
         _vehicleRepository.SaveChanges();
     }
 
-    public List<VehicleGetViewModel> GetAll()
+    public List<VehicleViewModel> GetAll()
     {
-        var result = _vehicleRepository.GetAll().Select(x => new VehicleGetViewModel
+        var result = _vehicleRepository.GetAll().Select(x => new VehicleViewModel
         {
             Id = x.Id,
             Name = x.Name,
-            Manufacturer = new ManufacturerViewModel
-            {
-                Id = x.Manufacturer.Id,
-                Name = x.Manufacturer.Name,
-            },
             ManufacturerId = x.ManufacturerId,
             Model = x.Model,
             FuelTypeId = x.FuelTypeId,
-            FuelType = new FuelTypeViewModel
-            {
-                Id = x.FuelType.Id,
-                Name = x.FuelType.Name,
-            },
             FuelCapacity = x.FuelCapacity,
             Description = x.Description,
         }).ToList();

@@ -1,62 +1,53 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.less'
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
+  private vehicleIdSubject = new BehaviorSubject<number | null>(null); 
+  public vehicleId$ = this.vehicleIdSubject.asObservable();
+  public vehicleId: number | null = null;  
+
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
+    private activeRoute: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
   ) {}
 
-  public vehicleId: number | null = null;
-  public name: string = "";
-  public routes: { label: string, value: string }[] = []
-
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      if (params["vehicleId"]) {
-        this.vehicleId = +params["vehicleId"];
-      } else {
-        const savedVehicleId = localStorage.getItem("selectedVehicleId");
-        if (savedVehicleId) {
-          this.vehicleId = +savedVehicleId;
-          this.router.navigate(["/vehicle", this.vehicleId, "history"]);
-          this.updateRoutes()
-        }
+    const savedVehicleId = localStorage.getItem("selectedVehicleId");
+    if (savedVehicleId) {
+      this.updateVehicleId(+savedVehicleId); 
+    }
+
+    this.activeRoute.paramMap.subscribe((params: ParamMap) => {
+      const paramVehicleId = params.get("vehicleId");
+      if (paramVehicleId) {
+        this.updateVehicleId(+paramVehicleId);
+      }
+    });
+
+    this.vehicleId$.subscribe((vehicleId) => {
+      if (vehicleId !== null) {
+        this.vehicleId = vehicleId;
+        this.cdr.detectChanges();
       }
     });
   }
 
   public isActive(route: string): boolean {
-    return this.router.url === route;
+    return this.router.url.endsWith(route);
   }
 
-  public updateRoutes(): void {
-    this.routes = [
-      {
-        label: "History",
-        value: `/vehicle/${this.vehicleId}/history`
-      },
-      {
-        label: "Add Refuelling",
-        value: `/vehicle/${this.vehicleId}/refueling`
-      },
-      {
-        label: "Add Service",
-        value: `/vehicle/${this.vehicleId}/service`
-      },
-      {
-        label: "Add Expense",
-        value: `/vehicle/${this.vehicleId}/expense`
-      },
-      {
-        label: "Delete Car",
-        value: `/delete-car`
-      }
-    ];
+  private updateVehicleId(vehicleId: number): void { 
+    if (this.vehicleIdSubject.value !== vehicleId) {
+      this.vehicleIdSubject.next(vehicleId);
+      localStorage.setItem("selectedVehicleId", vehicleId.toString()); 
+      this.router.navigate(["/vehicle", vehicleId, "history"]);
+    }
   }
 }

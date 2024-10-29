@@ -50,6 +50,11 @@ export class DeleteCarComponent implements OnInit {
     this.spinner.hide();
   }
 
+  public getManufacturerName(manufacturerId: number): string {
+    const manufacturer = this.manufacturers.find(m => m.id === manufacturerId);
+    return manufacturer ? manufacturer.name : "Unknown";
+  }
+
   public showModalDeleteCar(
     vehicleId: number | null,
     modal: TemplateRef<any>

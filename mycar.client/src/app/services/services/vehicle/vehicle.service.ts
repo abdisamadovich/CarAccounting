@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { VehicleApiService } from '@api/service';
 import { VehicleModel } from '@api/models';
 import { Vehicle } from '@@services/models';
 
 @Injectable({ providedIn: 'root' })
 export class VehicleService {
-  public vehicleDeletedSubject = new Subject<number>();
+  private vehicleDeletedSubject = new Subject<number>();
 
   constructor(private vehicle: VehicleApiService) {}
 
@@ -63,10 +63,8 @@ export class VehicleService {
     model.id = source.id ?? 0;
     model.name = source.name;
     model.manufacturerId = source.manufacturerId;
-    model.manufacturerName = source.manufacturer?.name || "";
     model.model = source.model;
     model.fuelTypeId = source.fuelTypeId;
-    model.fuelTypeName = source.fuelType?.name || "";
     model.fuelCapacity = source.fuelCapacity;
     model.description = source.description;
     return model;

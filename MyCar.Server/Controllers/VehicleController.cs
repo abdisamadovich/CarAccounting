@@ -16,10 +16,14 @@ public class VehicleController : ControllerBase
     }
 
     [HttpPost]
-    public VehiclePostViewModel CreateNew(VehiclePostViewModel model)
+    public ActionResult<VehicleViewModel> CreateNew(VehicleViewModel model)
     {
-        _service.CreateNew(model);
-        return model;
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var vehicle = _service.CreateNew(model);
+        return CreatedAtAction(nameof(CreateNew), new { id = vehicle.Id }, vehicle);
     }
 
     [HttpDelete]
@@ -29,7 +33,7 @@ public class VehicleController : ControllerBase
     }
 
     [HttpGet]
-    public List<VehicleGetViewModel> GetAll()
+    public List<VehicleViewModel> GetAll()
     {
         return _service.GetAll();
     }
