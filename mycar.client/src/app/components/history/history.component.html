@@ -45,26 +45,32 @@
 
     <nav *ngIf="totalPages > 1" aria-label="Page navigation">
         <ul class="pagination">
-            <li class="page-item" [class.disabled]="currentPage === 1">
-                <button class="page-link" (click)="goToPage(currentPage - 1)">
-                    &laquo; Previous
-                </button>
-            </li>
-            <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="i + 1 === currentPage">
-                <button class="page-link" (click)="goToPage(i + 1)">
-                    {{ i + 1 }}
-                </button>
-            </li>
-            <li class="page-item" [class.disabled]="currentPage === totalPages">
-                <button class="page-link" (click)="goToPage(currentPage + 1)">
-                    Next &raquo;
-                </button>
-            </li>
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="goToPage(currentPage - 1)">
+              &laquo; Previous
+            </button>
+          </li>
+      
+          <li *ngFor="let page of getPages()" class="page-item" 
+              [class.active]="page === currentPage" 
+              [class.disabled]="page === '...'">
+            <button *ngIf="page !== '...'" class="page-link" (click)="goToPage(+page)">
+              {{ page }}
+            </button>
+            <span *ngIf="page === '...'" class="page-link">...</span>
+          </li>
+      
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link" (click)="goToPage(currentPage + 1)">
+              Next &raquo;
+            </button>
+          </li>
         </ul>
-    </nav>
+      </nav>   
 
-    <ng-template #noRecords>
+    <ng-template #noRecords class="noRecords">
         <p class="text-muted">No records found.</p>
+        <img src="assets/Images/pose-m-1.png" alt="pose" class="pose-image" />
     </ng-template>
 </div>
 

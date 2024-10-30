@@ -1,5 +1,9 @@
+@import '../../../styles/color-variables.less';
+@lightGray: #d3d3d3; 
+@white: #ffffff;
+
 .container {
-    width: 510px;
+    width: 550px;
     margin: 0 auto;
 }
 
@@ -47,4 +51,62 @@
 
 .cost {
     font-weight: bold;
+}
+
+.pose-image {
+    margin-top: 70px;
+    width: 300px; 
+    height: auto;
+    text-align: center;
+}
+
+// Pagination
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+
+    .page-item {
+        margin: 0 5px;
+
+        &.disabled .page-link {
+            cursor: not-allowed;
+            color: @lightGray;
+            background-color: @white;
+            border-color: @lightGray;
+        }
+
+        &.active .page-link {
+            color: @white;
+            background-color: @primary-color;
+            border-color: @primary-color;
+        }
+
+        .page-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            font-size: 1rem;
+            color: @primary-color;
+            background-color: @white;
+            border: 1px solid @primary-color;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+
+            &:hover {
+                color: @white;
+                background-color: darken(@primary-color, 10%);
+                border-color: darken(@primary-color, 10%);
+            }
+
+            &:focus {
+                outline: none;
+                box-shadow: 0 0 5px lighten(@primary-color, 20%);
+            }
+        }
+    }
 }

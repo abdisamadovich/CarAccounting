@@ -106,6 +106,28 @@ export class HistoryComponent implements OnInit {
     }
   }
 
+  public getPages(): (number | string)[] {
+    const totalPagesToShow = 5;
+    const pages: (number | string)[] = [];
+  
+    if (this.totalPages <= totalPagesToShow) {
+      for (let i = 1; i <= this.totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (this.currentPage <= 3) {
+        pages.push(1, 2, 3, '...', this.totalPages);
+      } else if (this.currentPage >= this.totalPages - 2) {
+        pages.push(1, '...', this.totalPages - 2, this.totalPages - 1, this.totalPages);
+      } else {
+        pages.push(1, '...', this.currentPage, this.currentPage + 1, '...', this.totalPages);
+      }
+    }
+  
+    return pages;
+  }
+  
+
   private deleteRecordById(recordType: RecordType, id: number): void {
     let deleteObservable: Observable<void>;
     switch (recordType) {

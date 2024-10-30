@@ -1,4 +1,4 @@
-<div class="container">
+<div class="card p-5">
     <h2>Vehicle List</h2>
     <div *ngIf="vehicles.length > 0; else noVehicles">
         <table class="table">
@@ -7,7 +7,7 @@
                     <th>Name</th>
                     <th>Manufacturer</th>
                     <th>Model</th>
-                    <th>Actions</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +37,6 @@
     </ng-template>
 
     <ng-template #noVehicles>
-        <p>No records found.</p>
+        <p>No vehicles found.</p>
     </ng-template>
 </div>

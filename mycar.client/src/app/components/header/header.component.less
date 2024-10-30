@@ -1,12 +1,81 @@
-.wrapper {
-    box-shadow: 0 .5em 1.5em rgba(0, 0, 0, .1)
-}
+@import '../../../styles/color-variables.less';
 
-.dropdown-toggle {
-    background-color: #7367f0;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 16px;
-    transition: background-color 0.3s ease;
+@modal-shadow-color: rgba(0, 0, 0, 0.1);
+
+.wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+
+    .vehicle-dropdown-button {
+        background-color: @primary-color;
+        color: @text-color;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.3s ease;
+        justify-content: space-between;
+        position: relative;
+        width: 160px;
+        height: 44px;
+        margin-right: 30px;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        .dropdown-toggle-text {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        &:hover {
+            background-color: @hover-color;
+        }
+    }
+
+    .dropdown-menu {
+        width: 160px;
+    }
+
+    .dropdown-item {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 140px;
+        display: inline-block;
+    }
+
+    .dropdown-divider {
+        margin: 8px 0;
+        background-color: @divider-color;
+
+        border: 1px solid @modal-shadow-color;
+    }
+
+    .vehicle-dropdown-item {
+        display: flex;
+        align-items: center;
+
+        &:hover {
+            background-color: @divider-color;
+        }
+    }
+
+    .add-vehicle-button {
+        background-color: transparent;
+        border: none;
+        padding: 8px 16px;
+        width: 100%;
+        text-align: left;
+
+        &:hover {
+            background-color: @divider-color;
+        }
+    }
 }

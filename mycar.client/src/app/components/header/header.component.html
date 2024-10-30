@@ -1,16 +1,16 @@
-<div class="dropdown">
-  <button class="btn dropdown-toggle" type="button" id="vehicleDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-    {{ getSelectedVehicleName() }}
+<div class="dropdown wrapper">
+  <button class="btn dropdown-toggle vehicle-dropdown-button" type="button" id="vehicleDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="dropdown-toggle-text">{{ getSelectedVehicleName() }}</span>
   </button>
   <ul class="dropdown-menu" aria-labelledby="vehicleDropdownMenuButton">
     <li *ngFor="let vehicle of vehicles">
-      <a class="dropdown-item" (click)="handleChangeVehicle(vehicle.id)">
+      <a class="dropdown-item vehicle-dropdown-item" title="{{ vehicle.name }}" (click)="handleChangeVehicle(vehicle.id)">
         {{ vehicle.name }}
       </a>
     </li>
     <li><hr class="dropdown-divider"></li>
     <li>
-      <button class="dropdown-item" (click)="showModalCarCreate()">+ Add a vehicle</button>
+      <button class="dropdown-item add-vehicle-button" (click)="showModalCarCreate()">+ Add a vehicle</button>
     </li>
   </ul>
 </div>
@@ -32,10 +32,10 @@
             </div>
           </div>
 
-          <div class="col-md-6">
+          <div>
             <app-select [options]="manufacturerSelectModel" label="Manufacturer:" formControlName="manufacturer"></app-select>
-            <div class="text-danger error-message" *ngIf="myForm.get('fuel')?.invalid && myForm.get('fuel')?.touched">
-              Fuel is required!
+            <div class="text-danger error-message" *ngIf="myForm.get('manufacturer')?.invalid && myForm.get('manufacturer')?.touched">
+              Manufacturer is required!
             </div>
           </div>
           
@@ -47,7 +47,7 @@
             </div>
           </div>
 
-          <div class="col-md-6">
+          <div>
             <app-select [options]="fuelTypeSelectModel" label="Fuel type:" formControlName="fuelType"></app-select>
             <div class="text-danger error-message" *ngIf="myForm.get('fuelType')?.invalid && myForm.get('fuelType')?.touched">
               Fuel is required!
