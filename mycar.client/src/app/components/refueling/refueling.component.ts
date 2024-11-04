@@ -24,7 +24,7 @@ export class RefuelingComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private router: Router,
-    private spinner: NgxSpinnerService 
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -66,7 +66,7 @@ export class RefuelingComponent implements OnInit {
       this.toastr.warning("Please fill out all required fields correctly");
       return;
     }
-    
+
     const refuellingCreateModel = new Refuelling();
     refuellingCreateModel.vehicleId = this.vehicleId;
     refuellingCreateModel.date = this.refuelingForm.value.date;
@@ -92,22 +92,45 @@ export class RefuelingComponent implements OnInit {
     });
   }
 
-  public updateTotalCostOnBlur(): void {
+  public updateTotalCost(): void {
     const price = this.refuelingForm.get("price")?.value;
-    const quantity = this.refuelingForm.get("quantity")?.value;
+    const quantity = this.refuelingForm.get('quantity')?.value;
 
     if (price != null && quantity != null) {
       this.refuelingForm.patchValue({ totalCost: price * quantity });
     }
   }
 
-  public updatePriceOnBlur(): void {
+  public updatePrice(): void {
     const totalCost = this.refuelingForm.get("totalCost")?.value;
     const quantity = this.refuelingForm.get("quantity")?.value;
 
     if (totalCost != null && quantity != null && quantity > 0) {
       this.refuelingForm.patchValue({ price: totalCost / quantity });
     }
+  }
+
+  public updateQuantity(): void {
+    const totalCost = this.refuelingForm.get("totalCost")?.value;
+    const price = this.refuelingForm.get("price")?.value;
+
+    if (totalCost != null && price != null && price > 0) {
+      this.refuelingForm.patchValue({ quantity: totalCost / price });
+    }
+  }
+
+  public onPriceBlur(): void {
+    this.updateTotalCost();
+  }
+
+  public onQuantityBlur(): void {
+    this.updateTotalCost();
+    this.updatePrice();
+  }
+
+  public onTotalCostBlur(): void {
+    this.updateQuantity();
+    this.updatePrice();
   }
 
   public cancel(): void {

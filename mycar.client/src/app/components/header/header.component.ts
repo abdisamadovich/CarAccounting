@@ -6,6 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SelectModel } from '@@components/models';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { changeVehicle } from 'app/store/vehicle/vehicle.actions';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +16,7 @@ import { SelectModel } from '@@components/models';
   styleUrl: './header.component.less',
 })
 export class HeaderComponent implements OnInit {
+  public count: Observable<number>;
   public myForm!: FormGroup;
   public vehicles: Vehicle[] = [];
   public manufacturerSelectModel: SelectModel[] = [];
@@ -28,59 +32,20 @@ export class HeaderComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private router: Router,
-    private spinner: NgxSpinnerService
-  ) {}
+    private spinner: NgxSpinnerService,
+    private store: Store<{ vehicleId: number }>
+  ) {
+    this.count = store.select("vehicleId");
+  }
 
   ngOnInit(): void {
-    this.myForm = this.fb.group({
-      name: ["", [Validators.required, Validators.maxLength(20)]],
-      model: ["", [Validators.required, Validators.maxLength(20)]],
-      manufacturer: [null, Validators.required],
-      fuelType: [null, Validators.required],
-      fuelCapacity: [0, [Validators.required, Validators.min(1)]],
-      description: [""],
+    this.initializeForm();
+    this.loadVehicleId().then(() => {
+      this.loadVehiclesBasedOnId();
     });
-
-    this.route.paramMap.subscribe((params) => {
-      const vehicleIdParam = params.get("vehicleId");
-      if (vehicleIdParam) {
-        this.vehicleId = +vehicleIdParam;
-      } else {
-        const savedVehicleId = this.getVehicleId()
-        if (savedVehicleId) {
-          this.vehicleId = +savedVehicleId;
-
-          this.router.navigate(["/vehicle", this.vehicleId, "history"], {
-            onSameUrlNavigation: "reload"
-          });
-        }
-      }
-    });
-    if(this.vehicleId == 0) {
-      this.getVehicles(true);
-    }
-    else {
-      this.getVehicles();
-    }
     this.getManufacturers();
     this.getFuelType();
-
-    this.vehicleService.getVehicleDeletedNotification().subscribe((deletedVehicleId: number) => {
-      this.vehicles = this.vehicles.filter(vehicle => vehicle.id !== deletedVehicleId);
-      this.getVehicles();
-    });
-  }
-
-  public setVehicleId(vehicleId: number): void {
-    this.vehicleId = vehicleId; 
-    localStorage.setItem("selectedVehicleId", this.vehicleId.toString());
-    this.router.navigate(["/vehicle", this.vehicleId, "history"], {
-      onSameUrlNavigation: "reload"
-    });
-  }
-
-  public getVehicleId(): string | null {
-    return localStorage.getItem("selectedVehicleId");
+    this.subscribeToVehicleDeletion();
   }
 
   public getVehicles(getLast?: boolean): void {
@@ -102,7 +67,7 @@ export class HeaderComponent implements OnInit {
   public handleChangeVehicle(vehicleId: number): void {
     this.onVehicleChange(vehicleId);
     this.getVehicles();
-  } 
+  }
 
   public getManufacturers(): void {
     this.spinner.show();
@@ -164,11 +129,89 @@ export class HeaderComponent implements OnInit {
       },
       error: () => {
         this.toastr.warning("Error while adding vehicle!");
-      }
+      },
     });
   }
 
-  public resetForm(): void {
+  public getSelectedVehicleName(): string {
+    const selectedVehicle = this.vehicles.find((v) => v.id === this.vehicleId);
+    return selectedVehicle ? selectedVehicle.name : "Select a vehicle";
+  }
+
+  public onVehicleChange(vehicleId: number): void {
+    this.store.dispatch(changeVehicle({ vehicleId }));
+    this.setVehicleId(vehicleId);
+  }
+
+  private initializeForm(): void {
+    this.myForm = this.fb.group({
+      name: ["", [Validators.required, Validators.maxLength(20)]],
+      model: ["", [Validators.required, Validators.maxLength(20)]],
+      manufacturer: [null, Validators.required],
+      fuelType: [null, Validators.required],
+      fuelCapacity: [0, [Validators.required, Validators.min(1)]],
+      description: [""],
+    });
+  }
+
+  private loadVehicleId(): Promise<void> {
+    return new Promise((resolve) => {
+      this.route.paramMap.subscribe((params) => {
+        const vehicleIdParam = params.get("vehicleId");
+        if (vehicleIdParam) {
+          this.vehicleId = +vehicleIdParam;
+        } else {
+          const savedVehicleId = this.getVehicleId();
+          if (savedVehicleId) {
+            this.setVehicleId(+savedVehicleId);
+          }
+        }
+        resolve();
+      });
+    });
+  }
+
+  private loadVehiclesBasedOnId(): void {
+    if (this.vehicleId === 0) {
+      this.getVehicles(true);
+    } else {
+      this.getVehicles();
+    }
+  }
+
+  private subscribeToVehicleDeletion(): void {
+    this.vehicleService
+      .getVehicleDeletedNotification()
+      .subscribe((deletedVehicleId: number) => {
+        this.vehicles = this.vehicles.filter(
+          (vehicle) => vehicle.id !== deletedVehicleId
+        );
+        
+        if (this.vehicleId === deletedVehicleId) {
+          if (this.vehicles.length > 0) {
+            this.onVehicleChange(this.vehicles[0].id);
+          } else {
+            this.vehicleId = 0;
+          }
+        }
+        this.getVehicles();
+      });
+  }
+
+  private setVehicleId(vehicleId: number): void {
+    this.vehicleId = vehicleId;
+    localStorage.setItem("selectedVehicleId", this.vehicleId.toString());
+    this.router.navigate(["/vehicle", this.vehicleId, "history"], {
+      onSameUrlNavigation: "reload",
+    });
+    this.store.dispatch(changeVehicle({ vehicleId }));
+  }
+
+  private getVehicleId(): string | null {
+    return localStorage.getItem("selectedVehicleId");
+  }
+
+  private resetForm(): void {
     this.myForm.reset({
       name: "",
       model: "",
@@ -176,26 +219,6 @@ export class HeaderComponent implements OnInit {
       fuelType: null,
       fuelCapacity: 0,
       description: "",
-    });
-  }
-
-  public cancel(): void {
-    this.router.navigate(["/vehicle", this.vehicleId, "history"], {
-      "onSameUrlNavigation": "reload"
-    });
-  }
-
-  public getSelectedVehicleName(): string {
-    const selectedVehicle = this.vehicles.find(v => v.id === this.vehicleId);
-    return selectedVehicle ? selectedVehicle.name : "Select a vehicle";
-  }
-
-  public onVehicleChange(vehicleId: number): void {
-    this.setVehicleId(vehicleId);
-    this.vehicleId = vehicleId;
-    localStorage.setItem("selectedVehicleId", this.vehicleId.toString());
-    this.router.navigate(["/vehicle", this.vehicleId, "history"], {
-      "onSameUrlNavigation": "reload"
     });
   }
 }

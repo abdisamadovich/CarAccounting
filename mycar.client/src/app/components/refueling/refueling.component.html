@@ -7,12 +7,11 @@
 		</div>
 
 		<div class="col-md-6">
-			<label class="form-label" for="quantity">Quantity:</label>
-			<input type="number" formControlName="quantity" class="form-control" (blur)="updateTotalCostOnBlur()"
-				id="quantity" />
-			<div class="text-danger error-message"
-				*ngIf="refuelingForm.get('quantity')?.invalid && refuelingForm.get('quantity')?.touched">
-				Quantity cannot be negative!
+			<label class="form-label" for="price">Price:</label>
+			<input type="number" formControlName="price" class="form-control" (blur)="onPriceBlur()"
+				id="price" />
+			<div class="text-danger error-message" *ngIf="refuelingForm.get('price')?.invalid && refuelingForm.get('price')?.touched">
+				Price cannot be negative!
 			</div>
 		</div>
 
@@ -24,11 +23,12 @@
 		</div>
 
 		<div class="col-md-6">
-			<label class="form-label" for="price">Price:</label>
-			<input type="number" formControlName="price" class="form-control" (blur)="updateTotalCostOnBlur()"
-				id="price" />
-			<div class="text-danger error-message" *ngIf="refuelingForm.get('price')?.invalid && refuelingForm.get('price')?.touched">
-				Price cannot be negative!
+			<label class="form-label" for="totalCost">Total cost:</label>
+			<input type="number" formControlName="totalCost" class="form-control" (blur)="onTotalCostBlur()"
+				id="totalCost" />
+			<div class="text-danger error-message"
+				*ngIf="refuelingForm.get('totalCost')?.invalid && refuelingForm.get('totalCost')?.touched">
+				Total cost cannot be negative!
 			</div>
 		</div>
 
@@ -42,12 +42,12 @@
 		</div>
 
 		<div class="col-md-6">
-			<label class="form-label" for="totalCost">Total cost:</label>
-			<input type="number" formControlName="totalCost" class="form-control" (blur)="updatePriceOnBlur()"
-				id="totalCost" />
+			<label class="form-label" for="quantity">Quantity:</label>
+			<input type="number" formControlName="quantity" class="form-control" (blur)="onQuantityBlur()"
+				id="quantity" />
 			<div class="text-danger error-message"
-				*ngIf="refuelingForm.get('totalCost')?.invalid && refuelingForm.get('totalCost')?.touched">
-				Total cost cannot be negative!
+				*ngIf="refuelingForm.get('quantity')?.invalid && refuelingForm.get('quantity')?.touched">
+				Quantity cannot be negative!
 			</div>
 		</div>
 

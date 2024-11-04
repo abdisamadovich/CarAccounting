@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^18.2.5",
     "@angular/router": "^18.2.5",
     "@ng-bootstrap/ng-bootstrap": "^17.0.1",
+    "@ngrx/store": "^18.1.1",
     "@progress/kendo-angular-buttons": "16.10.0",
     "@progress/kendo-angular-common": "16.10.0",
     "@progress/kendo-angular-dateinputs": "^16.10.0",

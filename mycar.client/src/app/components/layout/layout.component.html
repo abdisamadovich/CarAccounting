@@ -2,28 +2,28 @@
     <aside class="sidebar d-flex flex-column">
         <ul class="nav nav-pills flex-column">
             <li class="nav-item">
-                <a [routerLink]="['/', 'vehicle', vehicleId]"
+                <a [routerLink]="['/', 'vehicle',  vehicleId$ | async]"
                     [ngClass]="['nav-link', isActive('history') ? 'active' : '']"
                     aria-current="page">
                     History
                 </a>
             </li>
             <li class="nav-item">
-                <a [routerLink]="['/', 'vehicle', vehicleId, 'refueling']"
+                <a [routerLink]="['/', 'vehicle',  vehicleId$ | async, 'refueling']"
                     [ngClass]="['nav-link', isActive('refueling') ? 'active' : '']"
                     aria-current="page">
                     Add Refuelling
                 </a>
             </li>
             <li class="nav-item">
-                <a [routerLink]="['/', 'vehicle', vehicleId, 'service']"
+                <a [routerLink]="['/', 'vehicle',  vehicleId$ | async, 'service']"
                     [ngClass]="['nav-link', isActive('service') ? 'active' : '']"
                     aria-current="page">
                     Add Service
                 </a>
             </li>
             <li class="nav-item">
-                <a [routerLink]="['/', 'vehicle', vehicleId, 'expense']"
+                <a [routerLink]="['/', 'vehicle',  vehicleId$ | async, 'expense']"
                     [ngClass]="['nav-link', isActive('expense') ? 'active' : '']"
                     aria-current="page">
                     Add Expense

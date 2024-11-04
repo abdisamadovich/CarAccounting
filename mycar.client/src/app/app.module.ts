@@ -28,6 +28,8 @@ import { ExpenseComponent } from './components/expense/expense.component';
 import { RefuelingComponent } from '@@components/refueling/refueling.component';
 import { DeleteCarComponent } from '@@components/delete-car/delete-car.component';
 import { SelectComponent } from './components/shared/select/select.component';
+import { StoreModule } from '@ngrx/store';
+import { vehicleReducer } from './store/vehicle/vehicle.reducer';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -62,5 +64,6 @@ import { SelectComponent } from './components/shared/select/select.component';
             timeOut: 2000,
             positionClass: 'toast-top-right',
             preventDuplicates: true,
-        })], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        }),
+        StoreModule.forRoot({ vehicleId: vehicleReducer }, {})], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {}
