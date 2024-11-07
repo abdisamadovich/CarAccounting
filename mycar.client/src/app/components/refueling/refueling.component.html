@@ -9,9 +9,9 @@
 		<div class="col-md-6">
 			<label class="form-label" for="price">Price:</label>
 			<input type="number" formControlName="price" class="form-control" (blur)="onPriceBlur()"
-				id="price" />
+				id="price" tabindex="1" />
 			<div class="text-danger error-message" *ngIf="refuelingForm.get('price')?.invalid && refuelingForm.get('price')?.touched">
-				Price cannot be negative!
+				Price cannot be negative and must not exceed the limit!
 			</div>
 		</div>
 
@@ -25,29 +25,29 @@
 		<div class="col-md-6">
 			<label class="form-label" for="totalCost">Total cost:</label>
 			<input type="number" formControlName="totalCost" class="form-control" (blur)="onTotalCostBlur()"
-				id="totalCost" />
+				id="totalCost" tabindex="2" />
 			<div class="text-danger error-message"
 				*ngIf="refuelingForm.get('totalCost')?.invalid && refuelingForm.get('totalCost')?.touched">
-				Total cost cannot be negative!
+				Total cost cannot be negative and must not exceed the limit!
 			</div>
 		</div>
 
 		<div class="col-md-6">
 			<label class="form-label" for="odometer">Odometer:</label>
-			<input type="number" formControlName="odometer" class="form-control" id="odometer" />
+			<input type="number" formControlName="odometer" max="2147483647" class="form-control" id="odometer" />
 			<div class="text-danger error-message"
 				*ngIf="refuelingForm.get('odometer')?.invalid && refuelingForm.get('odometer')?.touched">
-				Odometer cannot be negative!
+				Odometer cannot be negative and must not exceed the limit!
 			</div>
 		</div>
 
 		<div class="col-md-6">
 			<label class="form-label" for="quantity">Quantity:</label>
 			<input type="number" formControlName="quantity" class="form-control" (blur)="onQuantityBlur()"
-				id="quantity" />
+				id="quantity" tabindex="3"/>
 			<div class="text-danger error-message"
 				*ngIf="refuelingForm.get('quantity')?.invalid && refuelingForm.get('quantity')?.touched">
-				Quantity cannot be negative!
+				Quantity cannot be negative and must not exceed the limit!
 			</div>
 		</div>
 

@@ -35,9 +35,11 @@
                         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABt0lEQVR4nO2Wuy8EURjFf0sQr9omim1EVJ4tGpHsIqIQ/wLBX4DKq6dD9Kj8BWQlEiIKFLYSQTwKbyph5MaRTOzYnZ2ZXZHsSb5kcr9zzvfdO3fuHcjjH6ITWAISwIviGFgEOrJZuBaIA1aa2ARqgi7eDtypwDUwBjQA5YpGYFw5w7kFWoOc+Z2MV4CKFNxKYNXWRCArEbcVD7ngG86aNBtBbDhLS5tq5k4rcSOtr425JBPzzjPFhLQLfhpIyKTeIdcNXADnQMwh3yit+UQ940kmTst/bvv0zn55DZY8PONFJlUeGggr9+yngX2ZOC1xTE2Y4lGHfJe0e34amJHJsgftsrTTfg+hD+ARKMtAVwo8qIE6fGJLRsMZaEakMVrf6LNttGIX/CLgVJreIBoIAYcyHHTBHxL3wOXR7QoDMr1McySb3JW4/QSIELAt48kUvClxdoOc/TfaZP4KREhGRDkryH+Bn/i+69eTMl9jljhZQxi4V6Ee23hUY+a8qCbLGFWxE9sv2YnGTC7rKAB2VHAOmLed+YXkCC3AG/CuMM/N5BiztuvY14XjFSXAkcI8/wmaFHngFZ8Iv4WumFnlpQAAAABJRU5ErkJggg==">
                     <span class="place" [attr.title]="record.place">{{ record.place }}</span>
                 </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-primary" type="button" (click)="showModalDeleteRecord(record)">Delete</button>
+                
+                <div class="record-item">
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" (click)="showModalDeleteRecord(record)">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>

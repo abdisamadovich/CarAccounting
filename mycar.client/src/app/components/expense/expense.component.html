@@ -9,7 +9,7 @@
       <label class="form-label" for="odometer">Odometer:</label>
       <input type="number" formControlName="odometer" class="form-control" id="odometer" />
       <div class="text-danger error-message" *ngIf="expenseForm.get('odometer')?.invalid && expenseForm.get('odometer')?.touched">
-        Odometer cannot be negative!
+        Odometer cannot be negative and must not exceed the limit!
       </div>
     </div>
 
@@ -27,7 +27,7 @@
       <label class="form-label" for="cost">Price:</label>
       <input type="number" formControlName="cost" class="form-control" id="cost" />
       <div class="text-danger error-message" *ngIf="expenseForm.get('cost')?.invalid && expenseForm.get('cost')?.touched">
-        Price cannot be negative!
+        Price cannot be negative and must not exceed the limit!
       </div>
     </div>
 

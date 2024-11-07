@@ -34,8 +34,8 @@
 .record-item {
     display: flex;
     align-items: center;
-    width: 118px;
-    height: 30px;
+    width: 145px;
+    height: 45px;
     overflow: hidden;
 }
 
@@ -45,8 +45,18 @@
     margin-right: 5px;
 }
 
-.place-img {
-    margin-left: 5px;
+.place {
+    white-space: nowrap;      
+    overflow: hidden;       
+    text-overflow: ellipsis;  
+    max-width: 250px;   
+}
+
+.odometer {
+    white-space: nowrap;   
+    overflow: hidden;       
+    text-overflow: ellipsis; 
+    max-width: 250px;  
 }
 
 .cost {
@@ -58,6 +68,14 @@
     width: 300px; 
     height: auto;
     text-align: center;
+}
+
+.date-img {
+    margin-left: 15px;
+}
+
+.modal-footer {
+    margin-left: 25px;
 }
 
 // Pagination

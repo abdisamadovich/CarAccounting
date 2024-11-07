@@ -30,11 +30,11 @@ export class RefuelingComponent implements OnInit {
   ngOnInit(): void {
     this.refuelingForm = this.fb.group({
       date: [new Date(), Validators.required],
-      odometer: [0, [Validators.required, Validators.min(0)]],
+      odometer: [0, [Validators.required, Validators.min(0), Validators.max(2147483647)]],
       fuel: [null, Validators.required],
-      price: [0, [Validators.required, Validators.min(0)]],
-      quantity: [0, [Validators.required, Validators.min(0)]],
-      totalCost: [0, [Validators.required, Validators.min(0)]],
+      price: [0, [Validators.required, Validators.min(0), Validators.max(99999.99)]],
+      quantity: [0, [Validators.required, Validators.min(0), Validators.max(99999.99)]],
+      totalCost: [0, [Validators.required, Validators.min(0), Validators.max(99999.99)]],
       station: ["", Validators.required],
       isFilled: [true]
     });
@@ -44,6 +44,7 @@ export class RefuelingComponent implements OnInit {
     });
 
     this.getFuels();
+    this.setupValueChanges();
   }
 
   public getFuels(): void {
@@ -85,55 +86,95 @@ export class RefuelingComponent implements OnInit {
         this.router.navigate(["/vehicle", this.vehicleId, "history"]);
         this.spinner.hide();
       },
-      error: () => {
-        this.toastr.warning("Error during add!");
+      error: (err) => {
         this.spinner.hide();
-      },
+        if (err.error && err.error.Message) {
+          this.toastr.error(err.error.Message);
+        } else {
+          this.toastr.warning("Error during add!");
+        }
+      }
     });
   }
 
-  public updateTotalCost(): void {
-    const price = this.refuelingForm.get("price")?.value;
-    const quantity = this.refuelingForm.get('quantity')?.value;
-
-    if (price != null && quantity != null) {
-      this.refuelingForm.patchValue({ totalCost: price * quantity });
-    }
+  public onPriceBlur(): void {
+    this.calculateTotalCost();
   }
 
-  public updatePrice(): void {
-    const totalCost = this.refuelingForm.get("totalCost")?.value;
+  public onTotalCostBlur(): void {
+    this.calculateQuantity();
+  }
+
+  public onQuantityBlur(): void {
+    this.calculatePrice();
+  }
+  
+  public cancel(): void {
+    this.router.navigate(["/vehicle", this.vehicleId, "history"]);
+  }
+
+  private setupValueChanges(): void {
+    // `price` yoki `quantity` o'zgarsa, `totalCost`ni hisoblash
+    this.refuelingForm.get("price")?.valueChanges.subscribe(() => {
+      const price = this.refuelingForm.get("price")?.value;
+      const quantity = this.refuelingForm.get("quantity")?.value;
+
+      if (price != null && quantity != null && price > 0 && quantity > 0) {
+        this.refuelingForm.patchValue({ totalCost: price * quantity }, { emitEvent: false });
+      } else {
+        this.calculateQuantity();
+      }
+    });
+
+    // `totalCost` yoki `price` o'zgarsa, `quantity`ni hisoblash
+    this.refuelingForm.get("totalCost")?.valueChanges.subscribe(() => {
+      const totalCost = this.refuelingForm.get("totalCost")?.value;
+      const price = this.refuelingForm.get("price")?.value;
+
+      if (totalCost != null && price != null && price > 0) {
+        this.refuelingForm.patchValue({ quantity: totalCost / price }, { emitEvent: false });
+      } else {
+        this.calculatePrice();
+      }
+    });
+
+    // `quantity` yoki `totalCost` o'zgarsa, `price`ni hisoblash
+    this.refuelingForm.get("quantity")?.valueChanges.subscribe(() => {
+      const totalCost = this.refuelingForm.get("totalCost")?.value;
+      const quantity = this.refuelingForm.get("quantity")?.value;
+
+      if (totalCost != null && quantity != null && quantity > 0) {
+        this.refuelingForm.patchValue({ price: totalCost / quantity }, { emitEvent: false });
+      } else {
+        this.calculateTotalCost();
+      }
+    });
+  }
+
+  private calculateTotalCost(): void {
+    const price = this.refuelingForm.get("price")?.value;
     const quantity = this.refuelingForm.get("quantity")?.value;
 
-    if (totalCost != null && quantity != null && quantity > 0) {
-      this.refuelingForm.patchValue({ price: totalCost / quantity });
+    if (price != null && quantity != null && price > 0 && quantity > 0) {
+      this.refuelingForm.patchValue({ totalCost: price * quantity }, { emitEvent: false });
     }
   }
 
-  public updateQuantity(): void {
+  private calculateQuantity(): void {
     const totalCost = this.refuelingForm.get("totalCost")?.value;
     const price = this.refuelingForm.get("price")?.value;
 
     if (totalCost != null && price != null && price > 0) {
-      this.refuelingForm.patchValue({ quantity: totalCost / price });
+      this.refuelingForm.patchValue({ quantity: totalCost / price }, { emitEvent: false });
     }
   }
 
-  public onPriceBlur(): void {
-    this.updateTotalCost();
-  }
+  private calculatePrice(): void {
+    const totalCost = this.refuelingForm.get("totalCost")?.value;
+    const quantity = this.refuelingForm.get("quantity")?.value;
 
-  public onQuantityBlur(): void {
-    this.updateTotalCost();
-    this.updatePrice();
-  }
-
-  public onTotalCostBlur(): void {
-    this.updateQuantity();
-    this.updatePrice();
-  }
-
-  public cancel(): void {
-    this.router.navigate(["/vehicle", this.vehicleId, "history"]);
+    if (totalCost != null && quantity != null && quantity > 0) {
+      this.refuelingForm.patchValue({ price: totalCost / quantity }, { emitEvent: false });
+    }
   }
 }

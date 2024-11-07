@@ -26,10 +26,26 @@ public class RefuellingService : IRefuellingService
 
         var recordInfo = _recordRepository.GetPreviousAndNextRecord(refuelling.VehicleId, refuelling.Date);
 
-        if ((recordInfo.PreviousRecord != null && refuelling.Odometer < recordInfo.PreviousRecord.Odometer) ||
-                (recordInfo.NextRecord != null && refuelling.Odometer > recordInfo.NextRecord.Odometer))
+        if (recordInfo.PreviousRecord != null && recordInfo.NextRecord != null)
         {
-            throw new ArgumentException("Odometer reading must be between the previous and next readings.");
+            if (refuelling.Odometer < recordInfo.PreviousRecord.Odometer || refuelling.Odometer > recordInfo.NextRecord.Odometer)
+            {
+                throw new ArgumentException($"Odometer reading must be between {recordInfo.PreviousRecord.Odometer} and {recordInfo.NextRecord.Odometer}.");
+            }
+        }
+        else if (recordInfo.PreviousRecord != null)
+        {
+            if (refuelling.Odometer < recordInfo.PreviousRecord.Odometer)
+            {
+                throw new ArgumentException($"Odometer reading must be greater than or equal to {recordInfo.PreviousRecord.Odometer}.");
+            }
+        }
+        else if (recordInfo.NextRecord != null)
+        {
+            if (refuelling.Odometer > recordInfo.NextRecord.Odometer)
+            {
+                throw new ArgumentException($"Odometer reading must be less than or equal to {recordInfo.NextRecord.Odometer}.");
+            }
         }
 
         var entity = new Refuelling

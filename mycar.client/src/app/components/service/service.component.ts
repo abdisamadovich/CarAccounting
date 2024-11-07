@@ -32,9 +32,9 @@ export class ServiceComponent implements OnInit {
   public ngOnInit(): void {
     this.myForm = this.fb.group({
       date: [new Date(), Validators.required],
-      odometer: [0, [Validators.required, Validators.min(0)]],
+      odometer: [0, [Validators.required, Validators.min(0), Validators.max(2147483647)]],
       serviceType: [null, Validators.required],
-      price: [0, [Validators.required, Validators.min(0)]],
+      price: [0, [Validators.required, Validators.min(0), Validators.max(99999.99)]],
       place: ["", Validators.required],
       notes: [""],
     });
@@ -93,10 +93,14 @@ export class ServiceComponent implements OnInit {
         this.router.navigate(["/vehicle", this.vehicleId, "history"]);
         this.spinner.hide();
       },
-      error: () => {
-        this.toastr.warning("Error during adding!");
+      error: (err) => {
         this.spinner.hide();
-      },
+        if (err.error && err.error.Message) {
+          this.toastr.error(err.error.Message);
+        } else {
+          this.toastr.warning("Error during add!");
+        }
+      }
     });
   }
 

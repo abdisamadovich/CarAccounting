@@ -32,11 +32,11 @@ export class ExpenseComponent implements OnInit {
   public ngOnInit(): void {
     this.expenseForm = this.fb.group({
       date: [new Date(), Validators.required],
-      odometer: [0, [Validators.required, Validators.min(0)]],
+      odometer: [0, [Validators.required, Validators.min(0), Validators.max(2147483647)]],
       expenseType: [null, Validators.required],
       place: ["", Validators.required],
       description: [""],
-      cost: [0, [Validators.required, Validators.min(0)]],
+      cost: [0, [Validators.required, Validators.min(0), Validators.max(99999.99)]],
     });
 
     this.expenseTypeForm = this.fb.group({
@@ -93,10 +93,14 @@ export class ExpenseComponent implements OnInit {
         this.router.navigate(["/vehicle", this.vehicleId, "history"]);
         this.spinner.hide();
       },
-      error: () => {
-        this.toastr.warning("Error during adding!");
+      error: (err) => {
         this.spinner.hide();
-      },
+        if (err.error && err.error.Message) {
+          this.toastr.error(err.error.Message);
+        } else {
+          this.toastr.warning("Error during add!");
+        }
+      }
     });
   }
 
