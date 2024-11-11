@@ -102,6 +102,7 @@ export class HeaderComponent implements OnInit {
     if(canClose) {
       this.modalCarCreate = false;
     }
+    this.resetForm();
   }
 
   public saveAddChanges(): void {

@@ -82,7 +82,7 @@
 <!-- Modal -->
 <ng-template #deleteRecordModal let-modal class="delete-record-button">
     <div class="modal-header justify-content-between">
-        <h5 class="modal-title" id="myModalLabel">Do you want to delete this record?</h5>
+        <h5 class="modal-title" id="myModalLabel">Do you want to delete this {{recordTypeName}}?</h5>
         <button type="button" (click)="hideModalDeleteRecord()" class="btn-close" aria-label="Close"></button>
     </div>
     <div class="modal-footer">

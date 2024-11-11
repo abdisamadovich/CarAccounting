@@ -34,6 +34,7 @@ export class HistoryComponent implements OnInit {
   public totalPages: number = 0;
   public currentPage: number = 1;
   public totalItems: number = 0;
+  public recordTypeName!: string;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -53,6 +54,7 @@ export class HistoryComponent implements OnInit {
 
   public showModalDeleteRecord(record: RecordModel): void {
     this.recordToDelete = record;
+    this.recordTypeName = this.getRecordTypeName(record.recordType);
     this.modalService.open(this.deleteRecordModal);
   }
   

@@ -14,6 +14,7 @@ export class DeleteCarComponent implements OnInit {
   public vehicles: Vehicle[] = [];
   public manufacturers: Manufacturer[] = [];
   public vehicleId: number | null = null;
+  public vehicleName: string = "";
 
   constructor(
     private vehicleService: VehicleService,
@@ -56,10 +57,11 @@ export class DeleteCarComponent implements OnInit {
   }
 
   public showModalDeleteCar(
-    vehicleId: number | null,
+    vehicle: Vehicle,
     modal: TemplateRef<any>
   ): void {
-    this.vehicleId = vehicleId;
+    this.vehicleId = vehicle.id;
+    this.vehicleName = vehicle.name
     this.modalService.open(modal);
   }
 
