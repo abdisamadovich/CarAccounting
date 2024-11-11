@@ -34,9 +34,9 @@ export class ExpenseComponent implements OnInit {
       date: [new Date(), Validators.required],
       odometer: [0, [Validators.required, Validators.min(0), Validators.max(2147483647)]],
       expenseType: [null, Validators.required],
-      place: ["", Validators.required],
+      place: [""],
       description: [""],
-      cost: [0, [Validators.required, Validators.min(0), Validators.max(99999.99)]],
+      cost: [0, [Validators.required, Validators.min(0)]],
     });
 
     this.expenseTypeForm = this.fb.group({
@@ -77,6 +77,14 @@ export class ExpenseComponent implements OnInit {
       return;
     }
 
+    const cost = this.expenseForm.value.cost;
+    const maxAllowedCost = 9999999999999998;
+
+    if (cost > maxAllowedCost) {
+      this.toastr.warning("The Price value exceeds the maximum allowed for decimal(18, 2). Maximum allowed is ${maxAllowedCost}.");
+      return;
+    }
+
     const expenseCreateModel = new Expense();
     expenseCreateModel.vehicleId = this.vehicleId;
     expenseCreateModel.date = this.expenseForm.value.date;
@@ -109,15 +117,16 @@ export class ExpenseComponent implements OnInit {
   }
 
   public saveAddExpenseTypeChanges(): void {
-    if (this.expenseTypeForm.invalid) {
+    let name = this.expenseTypeForm.value.name.trim(); 
+    this.expenseTypeForm.patchValue({ name });
+    if (this.expenseTypeForm.invalid || !name) {
       this.expenseTypeForm.markAllAsTouched();
-      this.toastr.warning("Service type name is required and must not exceed 30 characters");
+      this.toastr.warning("Service type name is required and must not exceed 30 characters.");
       return;
     }
 
     const expenseTypeCreateModel = new ExpenseType();
-    expenseTypeCreateModel.name = this.expenseTypeForm.value.name;
-
+    expenseTypeCreateModel.name = name;
 
     this.spinner.show();
     if (
@@ -128,6 +137,7 @@ export class ExpenseComponent implements OnInit {
       )
     ) {
       this.toastr.warning("Expense type with the same name already exists!");
+      this.spinner.hide();
       return;
     }
 

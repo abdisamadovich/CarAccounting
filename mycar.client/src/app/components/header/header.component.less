@@ -41,14 +41,17 @@
 
     .dropdown-menu {
         width: 160px;
+        max-width: 160px;
     }
 
     .dropdown-item {
+        display: inline-block;
+        padding: 8px 16px;
+        box-sizing: border-box;
+        width: 100%; 
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        width: 140px;
-        display: inline-block;
     }
 
     .dropdown-divider {

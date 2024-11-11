@@ -7,9 +7,12 @@
   
 	  <div class="col-md-6">
 		<label class="form-label" for="odometer">Odometer:</label>
-		<input type="number" formControlName="odometer" max="2147483647" class="form-control" id="odometer" />
+		<div class="input-group">
+			<input type="number" formControlName="odometer" max="2147483647" class="form-control" id="odometer" />
+			<span class="input-group-text">km</span>
+		</div>
 		<div class="text-danger error-message" *ngIf="myForm.get('odometer')?.invalid && myForm.get('odometer')?.touched">
-		  Odometer cannot be negative and must not exceed the limit!
+			Odometer value must be between 0 and 2147483647 km!
 		</div>
 	  </div>
   
@@ -25,9 +28,9 @@
   
 	  <div class="col-md-6">
 		<label class="form-label" for="price">Price:</label>
-		<input type="number" formControlName="price" class="form-control" id="price" />
-		<div class="text-danger error-message" *ngIf="myForm.get('price')?.invalid && myForm.get('price')?.touched">
-		  Price cannot be negative and must not exceed the limit!
+		<div class="input-group">
+			<input type="number" formControlName="price" class="form-control" id="price" />
+			<span class="input-group-text">$</span>
 		</div>
 	  </div>
   
@@ -69,7 +72,7 @@
 			</div>
 			<div class="modal-footer">
 			  <button class="btn btn-secondary" type="button" (click)="hideModalServiceTypeCreate()">Cancel</button>
-			  <button class="btn btn-primary" type="button" [disabled]="serviceTypeForm.invalid">Save</button>
+			  <button class="btn btn-primary" type="button" [disabled]="serviceTypeForm.invalid" (click)="saveAddServiceTypeChanges()">Save</button>
 			</div>
 		  </form>
 		</div>

@@ -34,8 +34,8 @@ export class ServiceComponent implements OnInit {
       date: [new Date(), Validators.required],
       odometer: [0, [Validators.required, Validators.min(0), Validators.max(2147483647)]],
       serviceType: [null, Validators.required],
-      price: [0, [Validators.required, Validators.min(0), Validators.max(99999.99)]],
-      place: ["", Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      place: [""],
       notes: [""],
     });
 
@@ -77,6 +77,15 @@ export class ServiceComponent implements OnInit {
       return;
     }
 
+    const price = this.myForm.value.price;
+    const maxAllowedCost = 9999999999999998;
+
+    if (price > maxAllowedCost) {
+      this.toastr.warning("The Price value exceeds the maximum allowed for decimal(18, 2). Maximum allowed is ${maxAllowedCost}.");
+      return;
+    }
+
+
     const serviceCreateModel = new Service();
     serviceCreateModel.vehicleId = this.vehicleId;
     serviceCreateModel.date = this.myForm.value.date;
@@ -109,14 +118,16 @@ export class ServiceComponent implements OnInit {
   }
 
   public saveAddServiceTypeChanges(): void {
-    if (this.serviceTypeForm.invalid) {
+    let name = this.serviceTypeForm.value.name.trim();
+    this.serviceTypeForm.patchValue({ name });
+    if (this.serviceTypeForm.invalid || !name) {
       this.serviceTypeForm.markAllAsTouched();
       this.toastr.warning("Service type name is required and must not exceed 30 characters.");
       return;
     }
 
     const serviceTypeCreateModel = new ServiceType();
-    serviceTypeCreateModel.name = this.serviceTypeForm.value.name;
+    serviceTypeCreateModel.name = name;
 
     this.spinner.show();
     if (
@@ -125,6 +136,7 @@ export class ServiceComponent implements OnInit {
       )
     ) {
       this.toastr.warning("Service type with the same name already exists!");
+      this.spinner.hide();
       return;
     }
     

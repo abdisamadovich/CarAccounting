@@ -112,12 +112,12 @@ export class HeaderComponent implements OnInit {
     }
 
     const vehicleCreateModel = new Vehicle();
-    vehicleCreateModel.name = this.myForm.value.name;
-    vehicleCreateModel.model = this.myForm.value.model;
+    vehicleCreateModel.name = this.myForm.value.name.trim();
+    vehicleCreateModel.model = this.myForm.value.model.trim();
     vehicleCreateModel.manufacturerId = this.myForm.value.manufacturer;
     vehicleCreateModel.fuelTypeId = this.myForm.value.fuelType;
     vehicleCreateModel.fuelCapacity = this.myForm.value.fuelCapacity;
-    vehicleCreateModel.description = this.myForm.value.description;
+    vehicleCreateModel.description = this.myForm.value.description.trim();
 
     this.vehicleService.postVehicle(vehicleCreateModel).subscribe({
       next: (response: Vehicle) => {
@@ -133,6 +133,20 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  public getNameErrorMessage(): string {
+    const nameControl = this.myForm.get("name");
+    
+    if (nameControl?.hasError("required")) {
+      return "Name is required.";
+    } else if (nameControl?.hasError("maxlength")) {
+      return "Name should not exceed 20 characters.";
+    } else if (nameControl?.hasError("pattern")) {
+      return "Name cannot be only whitespace.";
+    }
+  
+    return "";
+  }
+
   public getSelectedVehicleName(): string {
     const selectedVehicle = this.vehicles.find((v) => v.id === this.vehicleId);
     return selectedVehicle ? selectedVehicle.name : "Select a vehicle";
@@ -145,7 +159,7 @@ export class HeaderComponent implements OnInit {
 
   private initializeForm(): void {
     this.myForm = this.fb.group({
-      name: ["", [Validators.required, Validators.maxLength(20)]],
+      name: ["", [Validators.required, Validators.maxLength(20), Validators.pattern(/^(?!\s*$).+/)]],
       model: ["", [Validators.required, Validators.maxLength(20)]],
       manufacturer: [null, Validators.required],
       fuelType: [null, Validators.required],

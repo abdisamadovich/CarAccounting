@@ -8,10 +8,10 @@
 
 		<div class="col-md-6">
 			<label class="form-label" for="price">Price:</label>
-			<input type="number" formControlName="price" class="form-control" (blur)="onPriceBlur()"
+			<div class="input-group">
+				<input type="number" formControlName="price" class="form-control" (blur)="onPriceBlur()"
 				id="price" tabindex="1" />
-			<div class="text-danger error-message" *ngIf="refuelingForm.get('price')?.invalid && refuelingForm.get('price')?.touched">
-				Price cannot be negative and must not exceed the limit!
+				<span class="input-group-text">$</span>
 			</div>
 		</div>
 
@@ -24,30 +24,30 @@
 
 		<div class="col-md-6">
 			<label class="form-label" for="totalCost">Total cost:</label>
-			<input type="number" formControlName="totalCost" class="form-control" (blur)="onTotalCostBlur()"
+			<div class="input-group">
+				<input type="number" formControlName="totalCost" class="form-control" (blur)="onTotalCostBlur()"
 				id="totalCost" tabindex="2" />
-			<div class="text-danger error-message"
-				*ngIf="refuelingForm.get('totalCost')?.invalid && refuelingForm.get('totalCost')?.touched">
-				Total cost cannot be negative and must not exceed the limit!
+				<span class="input-group-text">$</span>
 			</div>
 		</div>
 
 		<div class="col-md-6">
 			<label class="form-label" for="odometer">Odometer:</label>
-			<input type="number" formControlName="odometer" max="2147483647" class="form-control" id="odometer" />
-			<div class="text-danger error-message"
-				*ngIf="refuelingForm.get('odometer')?.invalid && refuelingForm.get('odometer')?.touched">
-				Odometer cannot be negative and must not exceed the limit!
+			<div class="input-group">
+			  <input type="number" formControlName="odometer" class="form-control" id="odometer" />
+			  <span class="input-group-text">km</span>
 			</div>
-		</div>
+			<div class="text-danger error-message" *ngIf="refuelingForm.get('odometer')?.invalid && refuelingForm.get('odometer')?.touched">
+			  Odometer value must be between 0 and 2147483647 km!
+			</div>
+		  </div>
 
 		<div class="col-md-6">
 			<label class="form-label" for="quantity">Quantity:</label>
-			<input type="number" formControlName="quantity" class="form-control" (blur)="onQuantityBlur()"
+			<div class="input-group">
+				<input type="number" formControlName="quantity" class="form-control" (blur)="onQuantityBlur()"
 				id="quantity" tabindex="3"/>
-			<div class="text-danger error-message"
-				*ngIf="refuelingForm.get('quantity')?.invalid && refuelingForm.get('quantity')?.touched">
-				Quantity cannot be negative and must not exceed the limit!
+				<span class="input-group-text">$</span>
 			</div>
 		</div>
 

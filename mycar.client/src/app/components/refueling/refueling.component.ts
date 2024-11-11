@@ -32,10 +32,10 @@ export class RefuelingComponent implements OnInit {
       date: [new Date(), Validators.required],
       odometer: [0, [Validators.required, Validators.min(0), Validators.max(2147483647)]],
       fuel: [null, Validators.required],
-      price: [0, [Validators.required, Validators.min(0), Validators.max(99999.99)]],
-      quantity: [0, [Validators.required, Validators.min(0), Validators.max(99999.99)]],
-      totalCost: [0, [Validators.required, Validators.min(0), Validators.max(99999.99)]],
-      station: ["", Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      quantity: [0, [Validators.required, Validators.min(0)]],
+      totalCost: [0, [Validators.required, Validators.min(0)]],
+      station: [""],
       isFilled: [true]
     });
 
@@ -65,6 +65,26 @@ export class RefuelingComponent implements OnInit {
     if (this.refuelingForm.invalid) {
       this.refuelingForm.markAllAsTouched();
       this.toastr.warning("Please fill out all required fields correctly");
+      return;
+    }
+
+    const price = this.refuelingForm.value.price;
+    const quantity = this.refuelingForm.value.quantity;
+    const totalCost = this.refuelingForm.value.totalCost;
+    const maxAllowedCost = 9999999999999998;
+
+    if (price > maxAllowedCost) {
+      this.toastr.warning("The Price value exceeds the maximum allowed for decimal(18, 2). Maximum allowed is ${maxAllowedCost}.");
+      return;
+    }
+
+    if (quantity > maxAllowedCost) {
+      this.toastr.warning("The Quantity value exceeds the maximum allowed for decimal(18, 2). Maximum allowed is ${maxAllowedCost}.");
+      return;
+    }
+
+    if (totalCost > maxAllowedCost) {
+      this.toastr.warning("The Total cost value exceeds the maximum allowed for decimal(18, 2). Maximum allowed is ${maxAllowedCost}.");
       return;
     }
 
@@ -114,7 +134,6 @@ export class RefuelingComponent implements OnInit {
   }
 
   private setupValueChanges(): void {
-    // `price` yoki `quantity` o'zgarsa, `totalCost`ni hisoblash
     this.refuelingForm.get("price")?.valueChanges.subscribe(() => {
       const price = this.refuelingForm.get("price")?.value;
       const quantity = this.refuelingForm.get("quantity")?.value;
@@ -126,7 +145,6 @@ export class RefuelingComponent implements OnInit {
       }
     });
 
-    // `totalCost` yoki `price` o'zgarsa, `quantity`ni hisoblash
     this.refuelingForm.get("totalCost")?.valueChanges.subscribe(() => {
       const totalCost = this.refuelingForm.get("totalCost")?.value;
       const price = this.refuelingForm.get("price")?.value;
@@ -138,7 +156,6 @@ export class RefuelingComponent implements OnInit {
       }
     });
 
-    // `quantity` yoki `totalCost` o'zgarsa, `price`ni hisoblash
     this.refuelingForm.get("quantity")?.valueChanges.subscribe(() => {
       const totalCost = this.refuelingForm.get("totalCost")?.value;
       const quantity = this.refuelingForm.get("quantity")?.value;
