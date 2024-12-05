@@ -1,0 +1,50 @@
+@import '../../../styles/color-variables.less';
+
+.card {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+
+    h2 {
+        text-align: center;
+        color: @primary-color;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+
+        thead {
+            text-align: center;
+            font-weight: bold;
+            background-color: @divider-color;
+
+            th {
+                padding: 10px;
+                color: @sidebar-text-color;
+            }
+        }
+
+        tbody {
+            text-align: center;
+
+            tr {
+                border-bottom: 1px solid @divider-color;
+                
+                td {
+                    padding: 8px;
+                    color: @sidebar-text-color;
+                }
+
+                .btn {
+                    background-color: @primary-color;
+                    color: @text-color;
+
+                    &:hover {
+                        background-color: @hover-color;
+                    }
+                }
+            }
+        }
+    }
+}

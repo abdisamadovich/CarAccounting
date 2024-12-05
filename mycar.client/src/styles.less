@@ -1,0 +1,100 @@
+@import './styles/color-variables.less'; 
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.btn {
+    min-width: 100px;
+}
+
+.text-danger {
+    font-size: 0.875rem;
+}
+
+ul, ol {  
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.kendo-datetime {
+    height: 38px;
+}
+
+.form-label {
+    color: @primary-color;
+}
+
+.btn-close {
+    outline: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.btn-primary {
+    background-color: @primary-color;
+    color: @text-color;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: @hover-color
+    }
+}
+
+.btn-secondary {
+    background-color: @divider-color;
+    color: @sidebar-text-color ;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: hover-background-color;
+    }
+}
+
+.modal {
+    background: @modal-background-color;
+}
+
+.modal-content {
+    border-radius: 8px;
+    box-shadow: 0 4px 20px @modal-shadow-color;
+}
+
+.modal-header {
+    border-bottom: none;
+    position: relative;
+    margin-top: 5px;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: @primary-color;
+    margin-top: 20px;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+.modal-backdrop {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.text-muted {
+    align-items: center;
+}

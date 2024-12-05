@@ -1,0 +1,82 @@
+<div class="card p-5">
+  <form [formGroup]="expenseForm" class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label" for="date">Date and Time:</label>
+      <kendo-datetimepicker class="kendo-datetime" formControlName="date" [format]="'yyyy-MM-dd HH:mm'"></kendo-datetimepicker>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label" for="odometer">Odometer:</label>
+      <div class="input-group">
+        <input type="number" formControlName="odometer" class="form-control" id="odometer" />
+        <span class="input-group-text">km</span>
+      </div>
+      <div class="text-danger error-message" *ngIf="expenseForm.get('odometer')?.invalid && expenseForm.get('odometer')?.touched">
+        Odometer value must be between 0 and 2147483647 km!
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <app-select [options]="selectModel" label="Expense type:" formControlName="expenseType"></app-select>
+      <div class="text-danger error-message" *ngIf="expenseForm.get('expenseType')?.invalid && expenseForm.get('expenseType')?.touched">
+        Expense type is required!
+      </div>
+      <button type="button" (click)="showModalExpenseTypeCreate()" class="btn btn-primary btn-sm mt-2">
+        + Add new expense type
+      </button>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label" for="cost">Price:</label>
+      <div class="input-group">
+        <input type="number" formControlName="cost" class="form-control" id="cost" />
+        <span class="input-group-text">$</span>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label" for="place">Place:</label>
+      <input type="text" formControlName="place" class="form-control" id="place" />
+      <div class="text-danger error-message" *ngIf="expenseForm.get('place')?.invalid && expenseForm.get('place')?.touched">
+        Place is required!
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label" for="description">Description:</label>
+      <textarea formControlName="description" class="form-control" id="description" rows="3"></textarea>
+    </div>
+
+    <div class="col-12 d-flex justify-content-end mt-4">
+      <button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+      <button class="btn btn-primary ms-2" type="button" (click)="saveAddExpenseChanges()">Save</button>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="modalExpenseTypeCreate" class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add expense type</h5>
+        <button type="button" class="btn-close" (click)="hideModalExpenseTypeCreate()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="expenseTypeForm" (ngSubmit)="saveAddExpenseTypeChanges()">
+          <div class="mb-3">
+            <label class="form-label" for="expenseTypeName">Name:</label>
+            <input type="text" formControlName="name" class="form-control" id="expenseTypeName" />
+            <div class="text-danger error-message" *ngIf="expenseTypeForm.get('name')?.invalid && expenseTypeForm.get('name')?.touched">
+              Name is required and cannot exceed 30 characters.
+            </div>
+          </div>
+          
+        </form>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" (click)="hideModalExpenseTypeCreate()">Cancel</button>
+          <button class="btn btn-primary" type="button" [disabled]="expenseTypeForm.invalid" (click)="saveAddExpenseTypeChanges()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

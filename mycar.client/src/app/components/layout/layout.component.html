@@ -1,0 +1,50 @@
+<div class="wrapper">
+    <aside class="sidebar d-flex flex-column">
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <a [routerLink]="['/', 'vehicle',  vehicleId$ | async]"
+                    [ngClass]="['nav-link', isActive('history') ? 'active' : '']"
+                    aria-current="page">
+                    History
+                </a>
+            </li>
+            <li class="nav-item">
+                <a [routerLink]="['/', 'vehicle',  vehicleId$ | async, 'refueling']"
+                    [ngClass]="['nav-link', isActive('refueling') ? 'active' : '']"
+                    aria-current="page">
+                    Add Refuelling
+                </a>
+            </li>
+            <li class="nav-item">
+                <a [routerLink]="['/', 'vehicle',  vehicleId$ | async, 'service']"
+                    [ngClass]="['nav-link', isActive('service') ? 'active' : '']"
+                    aria-current="page">
+                    Add Service
+                </a>
+            </li>
+            <li class="nav-item">
+                <a [routerLink]="['/', 'vehicle',  vehicleId$ | async, 'expense']"
+                    [ngClass]="['nav-link', isActive('expense') ? 'active' : '']"
+                    aria-current="page">
+                    Add Expense
+                </a>
+            </li>
+            <li class="nav-item">
+                <a [routerLink]="['/delete-car']"
+                    [ngClass]="['nav-link', isActive('delete-car') ? 'active' : '']"
+                    aria-current="page">
+                    Delete Car
+                </a>
+            </li>
+        </ul>
+        <img src="assets/Images/tree.png" alt="tree" class="tree-image" />
+    </aside>
+    <main class="main">
+        <app-header></app-header>
+        <div class="outlet-wrapper">
+            <div class="history-container">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </main>
+</div>

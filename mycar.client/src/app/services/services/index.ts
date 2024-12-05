@@ -1,0 +1,10 @@
+export { ExpenseService } from './expense/expense.service';
+export { ExpenseTypeService } from './expense-type/expense-type.service';
+export { FuelService } from './fuel/fuel.service';
+export { FuelTypeService } from './fuel-type/fuel-type.service';
+export { ManufacturerService } from './manufacturer/manufacturer.service';
+export { RecordService } from './record/record.service';
+export { RefuellingService } from './refuelling/refuelling.service';
+export { ServiceService } from './service/service.service';
+export { ServiceTypeService } from './service-type/service-type.service';
+export { VehicleService } from './vehicle/vehicle.service';

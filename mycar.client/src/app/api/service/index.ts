@@ -1,0 +1,10 @@
+export { ExpenseApiService } from './expense/expense.api-service';
+export { ExpenseTypeApiService } from './expense-type/expense-type.api-service';
+export { FuelApiService } from './fuel/fuel.api-service';
+export { FuelTypeApiService } from './fuel-type/fuel-type.api-service';
+export { ManufacturerApiService } from './manufacturer/manufacturer.api-service';
+export { RecordApiService } from './record/record.api-service';
+export { RefuellingApiService } from './refuelling/refuelling.api-service';
+export { ServiceApiService } from './service/service.api-service';
+export { ServiceTypeApiService } from './service-type/service-type.api-service';
+export { VehicleApiService } from './vehicles/vehicle.api-service';

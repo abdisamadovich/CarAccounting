@@ -1,0 +1,75 @@
+<div class="card p-5">
+	<form [formGroup]="refuelingForm" class="row g-3">
+		<div class="col-md-6">
+			<label class="form-label" for="date">Date and Time:</label>
+			<kendo-datetimepicker class="kendo-datetime" formControlName="date"
+				[format]="'yyyy-MM-dd HH:mm'"></kendo-datetimepicker>
+		</div>
+
+		<div class="col-md-6">
+			<label class="form-label" for="price">Price:</label>
+			<div class="input-group">
+				<input type="number" formControlName="price" class="form-control" (blur)="onPriceBlur()"
+				id="price" tabindex="1" />
+				<span class="input-group-text">$</span>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<app-select [options]="selectModel" label="Fuel type:" formControlName="fuel"></app-select>
+			<div class="text-danger error-message" *ngIf="refuelingForm.get('fuel')?.invalid && refuelingForm.get('fuel')?.touched">
+				Fuel is required!
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<label class="form-label" for="totalCost">Total cost:</label>
+			<div class="input-group">
+				<input type="number" formControlName="totalCost" class="form-control" (blur)="onTotalCostBlur()"
+				id="totalCost" tabindex="2" />
+				<span class="input-group-text">$</span>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<label class="form-label" for="odometer">Odometer:</label>
+			<div class="input-group">
+			  <input type="number" formControlName="odometer" class="form-control" id="odometer" />
+			  <span class="input-group-text">km</span>
+			</div>
+			<div class="text-danger error-message" *ngIf="refuelingForm.get('odometer')?.invalid && refuelingForm.get('odometer')?.touched">
+			  Odometer value must be between 0 and 2147483647 km!
+			</div>
+		  </div>
+
+		<div class="col-md-6">
+			<label class="form-label" for="quantity">Quantity:</label>
+			<div class="input-group">
+				<input type="number" formControlName="quantity" class="form-control" (blur)="onQuantityBlur()"
+				id="quantity" tabindex="3"/>
+				<span class="input-group-text">$</span>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<label class="form-label" for="station">Gas station:</label>
+			<input type="text" formControlName="station" class="form-control" id="station" />
+			<div class="text-danger error-message"
+				*ngIf="refuelingForm.get('station')?.invalid && refuelingForm.get('station')?.touched">
+				Gas station is required!
+			</div>
+		</div>
+
+		<div class="col-md-6 pt-4">
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" formControlName="isFilled" role="switch" id="isFilled">
+				<label class="form-check-label" for="isFilled">Are you filling the tank?</label>
+			</div>
+		</div>
+
+		<div class="col-12 d-flex justify-content-end mt-4">
+			<button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+			<button class="btn btn-primary ms-2" type="button" (click)="saveAddChanges()">Save</button>
+		</div>
+	</form>
+</div>
